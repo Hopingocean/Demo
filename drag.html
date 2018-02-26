@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>解决iframe导致Drag卡顿问题</title>
+	<style>
+		html, body {
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+		}
+		#iframe__game {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		#parent {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+		#drag {
+			width: 40px;
+			height: auto;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 99;
+		}
+	</style>
+</head>
+<body>
+<div id="parent">
+	<img id="drag" class="drag" src="http://h5api.xgame9.com/upload/logo/ddzj_1505878054.png" alt="拖曳图标">
+</div>
+<iframe id="iframe__game" name="iframe__game" src="http://test.h5i.xgame9.com/Game/game/appid/100156/agent/0" scrolling="no" width="100%" height="100%" frameborder="0" marginwidth="0" marginheight="0" class="myiframe"></iframe>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"></script>
+<script>
+  var draggable = $('#drag').draggabilly({
+    
+  })
+  draggable.on('dragStart', function (event, pointer) {
+    $("iframe").each(function() {
+	　　 $("<div class='ui-resizable-iframeFix' style='background: #fff;'></div>")
+	    .css({
+	    width: this.offsetWidth+"px", height: this.offsetHeight+"px",
+	    position: "absolute", opacity: "0.001", zIndex: 1000
+	    })
+	    .css($(this).offset())
+	    .appendTo("body");
+	});
+  });
+  draggable.on('dragMove', function (event, pointer, moveVector) {
+
+  });
+  draggable.on('dragEnd', function (event, pointer) {
+ 	$("div.ui-resizable-iframeFix").each(function() {
+    	this.parentNode.removeChild(this);
+    });
+  });
+  draggable.on('pointerDown', function (event, pointer) {
+
+  });
+  draggable.on('pointerMove', function (event, pointer) {
+
+  });
+  draggable.on('pointerUp', function (event, pointer) {
+  	console.log(pointer);
+  	var width = document.body.clientWidth; // 网页可见区域宽
+    var height = document.body.clientHeight;
+    var curClientX = pointer.clientX;
+    var curClientY = pointer.clientY;
+    var imgLeft = width - 40 + 'px';
+    var imgLeftMore = width - 25 + 'px';
+    // 浮动窗口在右侧
+    if (curClientY < 80) {
+      $('#drag').animate({'left': imgLeft, 'top': '80px'});
+    } else if (curClientY > (height - 80)) {
+      var top = parseInt(height) - 120 + 'px';
+      $('#drag').animate({'left': imgLeft, 'top': top});
+    } else {
+      $('#drag').animate({'left': imgLeft});
+    }
+    // 定时隐藏
+    setTimeout(function () {
+      $('#drag').animate({ 'left': imgLeftMore });
+    }, 3000);
+  });
+  draggable.on('staticClick', function (event, pointer) {
+
+  });
+</script>
+</body>
+</html>

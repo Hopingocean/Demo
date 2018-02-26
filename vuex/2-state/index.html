@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>State</title>
+</head>
+<body>
+  <div id="app">
+    
+  </div>
+  <script src="../libs/vue.js"></script>
+  <script src="../libs/vuex.js"></script>
+  <script>
+    // 创建store
+    var store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increment: function (state) {
+          state.count++
+        },
+        decrement (state) {
+          state.count--
+        }
+      }
+    })
+    // 创建一个Counter组件
+    var Counter = {
+      template: `
+        <p>{{ count }}</p>
+      `,
+      computed: {
+        count: function () {
+          return this.$store.state.count
+        }
+      }
+    }
+    // 创建Vue
+    var app = new Vue({
+      el: '#app',
+      // 把store对象提供给‘store’选项，这可以把store的实例注入所有的子组件
+      store,
+      components: {
+        Counter
+      },
+      template: `
+        <div class="app">
+          <counter></counter>
+        </div>
+      `
+    })
+  </script>
+</body>
+</html>

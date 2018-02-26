@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>最基本的Vuex计数应用</title>
+</head>
+<body>
+  <div id="app">
+    <p>{{ count }}</p>
+    <p>
+      <button @click='increment'>+</button>
+      <button @click='decrement'>-</button>
+    </p>
+  </div>
+  <script src="../libs/vue.js"></script>
+  <script src="../libs/vuex.js"></script>
+  <script>
+    var store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increment: function (state) {
+          state.count++
+        },
+        decrement: function (state) {
+          state.count--
+        }
+      }
+    })
+    var app = new Vue({
+      el: '#app',
+      computed: {
+        count () {
+          return store.state.count
+        }
+      },
+      methods: {
+        increment: function () {
+          store.commit('increment')
+        },
+        decrement: function () {
+          store.commit('decrement')
+        }
+      }
+    })
+  </script>
+</body>
+</html>
