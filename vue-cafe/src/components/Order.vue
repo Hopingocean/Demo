@@ -4,7 +4,7 @@
       <el-col :span="8" class="order__tabs">
         <el-tabs v-model="activeTab">
           <el-tab-pane label="购物车" name="first">
-            <el-table :data="orderList" border show-summary style="width: 100%;">
+            <el-table :data="orderList" border style="width: 100%;">
               <el-table-column prop="goodsName" label="商品"></el-table-column>
               <el-table-column prop="count" label="数量"></el-table-column>
               <el-table-column prop="price" label="金额"></el-table-column>
@@ -15,6 +15,12 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div class="totalDiv">
+              <small>数量：</small>
+              <strong>{{totalCount}}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+              <small>总计：</small>
+              <strong>{{totalMoney}}</strong> 元
+            </div>
             <div class="order__btn">
               <el-button type="danger" @click="delAllGoods">删除</el-button>
               <el-button type="success" @click="checkout">付款</el-button>
@@ -102,6 +108,7 @@ export default {
       activeTab: "first",
       foodTabs: 'food01',
       totalMoney: 0,
+      totalCount: 0,
       orderList: [],
       oftenGoods: [],
       type0Goods: [],
@@ -193,10 +200,13 @@ export default {
       }
     },
     getAllMoney: function () {
+      this.totalMoney = 0;
+      this.totalCount = 0;
       for( var i = 0; i < this.orderList.length; i++) {
-        this.totalMoney = this.orderList[i].price;
+        this.totalMoney += this.orderList[i].price * this.orderList[i].count;
+        this.totalCount += this.orderList[i].count;
       }
-    }
+    },
   }
 };
 </script>
@@ -214,6 +224,7 @@ export default {
   height: 100%;
   border-right: 1px solid #cecece;
   text-align: center;
+  overflow-y: scroll;
 }
 .order .order__btn {
   padding-top: 10px;
