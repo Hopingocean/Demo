@@ -1,7 +1,9 @@
-// test
-export const increment = ({commit}) => {
-  commit('INCREMENT')
+// toggleAbout
+export const toggleAbout = ({commit}) => {
+  commit('toggleAbout')
 }
-export const decrement = ({commit}) => {
-  commit('DECREMENT')
+
+// showSidebar
+export const showSidebar = ({commit}) => {
+  commit('showSidebar')
 }

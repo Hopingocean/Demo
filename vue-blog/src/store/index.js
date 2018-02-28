@@ -7,16 +7,17 @@ Vue.use(Vuex)
 
 // 应用初始状态
 const state = {
-  count: 10
+  aboutState: false,
+  behavior: 1
 }
 
 // 定义所需的 mutations
 const mutations = {
-  INCREMENT (state) {
-    state.count++
+  toggleAbout (state) {
+    state.aboutState = !state.aboutState
   },
-  DECREMENT (state) {
-    state.count--
+  showSidebar (state) {
+    state.behavior = (state.behavior === 1) ? 2 : 1
   }
 }
 
