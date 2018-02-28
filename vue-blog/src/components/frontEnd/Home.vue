@@ -25,7 +25,7 @@ export default {
     return {
       homeBlogList: [
         {
-          icon: 'http://oak1q2h54.bkt.clouddn.com/blog/ljdzz_icon.png',
+          icon: 'http://oak1q2h54.bkt.clouddn.com/blog/0.jpg',
           title: 'cloc代码统计工具',
           desc: '项目地址：https://github.com/AlDanial/cloc',
           date: '2017年04月18日'
@@ -83,7 +83,6 @@ export default {
     display: inline-block;
     width: 160px;
     height: 160px;
-    height: auto;
     overflow: hidden;
   }
   .home .blog__info {
