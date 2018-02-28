@@ -45,6 +45,7 @@ export default {
   max-height: 100%;
   top: 0;
   left: 0;
+  z-index: 9;
 }
 .about .about__bg {
   width: 100%;
@@ -83,5 +84,6 @@ export default {
 }
 .about .dialog__box .user--name, .user--desc, .user--address, .user--email {
   line-height: 36px;
+  overflow: hidden;
 }
 </style>

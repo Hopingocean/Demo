@@ -37,7 +37,9 @@ export default {
     ...mapState(['behavior'])
   },
   components: {},
-  methods: {}
+  methods: {
+    ...mapActions(['showSidebar'])
+  }
 }
 </script>
 
