@@ -3,7 +3,9 @@
     <header-bar></header-bar>
     <sidebar></sidebar>
     <about></about>
-    <router-view></router-view>
+    <transition name="fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -99,6 +101,13 @@ ul, li {
     width: calc(100% - 200px);
     overflow: hidden;
   }
+}
+/* router-view 过渡效果 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 
