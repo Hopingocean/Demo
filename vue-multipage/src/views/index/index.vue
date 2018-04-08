@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="../../assets/logo.png">
+    <router-link to="test.html">跳转测试页面</router-link>
     <router-view/>
   </div>
 </template>
