@@ -1,24 +1,55 @@
 <template>
   <div id="app">
-    <img src="../../assets/logo.png">
-    <router-link to="test.html">跳转测试页面</router-link>
-    <router-view/>
+    <!-- <img src="../../assets/logo.png"> -->
+    <!-- <a href="test.html">跳转测试页面</a> -->
+    <menu-bar
+      :current-menu="currentMenu" 
+      :login-status="loginStatus"></menu-bar>
   </div>
 </template>
 
 <script>
+import MenuBar from '@/components/MenuBar'
+import Login from '@/components/Login'
+
+import Reports from '@/assets/js/api'
+
 export default {
-  name: 'App'
+  name: 'Index',
+  components: { MenuBar, Login },
+  data() {
+    return {
+      loginStatus: true,
+      currentMenu: 1,
+    }
+  },
+  created: function () {
+
+  },
+  mounted: function () {
+    this.$nextTick(function() {
+      var that = this;
+      var options = {
+        type: 'get',
+        url: Reports.requestUrl.userinfo,
+        data: {},
+        success: function (data) {
+          if (data.status) {
+            that.loginStatus = true;
+          } else {
+            that.loginStatus = false;
+          }
+        },
+        error: function (error) {
+            that.loginStatus = false;
+        }
+      }
+      Reports.ajax(options);
+    })
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

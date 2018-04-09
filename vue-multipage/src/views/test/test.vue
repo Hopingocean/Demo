@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: 'test',
   data() {
       return {
           title: '这是一个测试页面'
