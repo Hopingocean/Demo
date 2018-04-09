@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <button class="btn--logout" @click="logout">退出</button>
     <menu-bar 
       :current-menu="currentMenu" 
       :login-status="loginStatus"></menu-bar>
@@ -21,7 +22,25 @@ export default {
         }
     },
     methods: {
-        
+        logout() {
+            var that = this;
+            var options = {
+                type: 'get',
+                url: Reports.requestUrl.logout,
+                data: {},
+                success: function (data) {
+                    if (data.code == 'success') {
+                        window.location.href = 'index.html';
+                    } else {
+                        that.loginStatus = true;
+                    }
+                },
+                error: function (error) {
+                    that.loginStatus = true;
+                }
+            }
+            Reports.ajax(options);
+        }
     },
     created: function () {
         var that = this;
@@ -46,6 +65,13 @@ export default {
 </script>
 
 <style scoped>
-
+.btn--logout {
+    box-sizing: border-box;
+    width: 100%;
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 </style>
 

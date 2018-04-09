@@ -5,7 +5,9 @@ var Reports = {
     // 所有请求地址
     requestUrl: {
         login: baseURL + 'admin/login', // 登陆
-        userinfo: baseURL + '/admin/userinfo', // 用户信息
+        logout: baseURL + 'admin/logout', // 登出
+        userinfo: baseURL + 'admin/userinfo', // 用户信息
+        gameList: baseURL + 'h5/game', // 游戏列表
     },
     /**
      * 封装axios
