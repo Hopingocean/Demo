@@ -13,12 +13,12 @@ import Login from '@/components/Login'
 import Reports from '@/assets/js/api'
 
 export default {
-  name: 'ranking',
+  name: 'Classify',
   components: { MenuBar, Login },
   data() {
     return {
       loginStatus: true,
-      currentMenu: 2,
+      currentMenu: 3,
     }
   },
   created: function () {

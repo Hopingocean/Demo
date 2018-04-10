@@ -13,11 +13,11 @@ import Login from '@/components/Login'
 
 import Reports from '@/assets/js/api'
 export default {
-    name: 'Setting',
+    name: 'User',
     components: { MenuBar, Login },
     data() {
         return {
-            currentMenu: 4,
+            currentMenu: 5,
             loginStatus: false,
         }
     },

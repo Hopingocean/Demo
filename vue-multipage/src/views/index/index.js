@@ -6,7 +6,11 @@ import router from './router'
 
 import purecss from 'purecss'
 import flexiable from 'lib-flexible'
-import '../../assets/css/common.css'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.min.css'
+Vue.use(VueAwesomeSwiper)
+
+import '@/assets/css/common.css'
 
 Vue.config.productionTip = false
 

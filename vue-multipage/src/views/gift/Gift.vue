@@ -13,12 +13,12 @@
     import Reports from '@/assets/js/api'
 
     export default {
-        name: 'Task',
+        name: 'Gift',
         components: { MenuBar, Login },
         data() {
             return {
                 loginStatus: true,
-                currentMenu: 3,
+                currentMenu: 2,
             }
         },
         created: function () {
