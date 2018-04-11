@@ -100,12 +100,7 @@ export default {
                 window.location.href = 'community.html';
                 break;
             case 5:
-                if (this.loginStatus) {
-                    window.location.href = 'user.html';
-                } else {
-                    // 未登录，显示登陆页面
-                    this.isHide = false;
-                }
+                window.location.href = 'user.html';
                 break;
           }
       },
@@ -117,23 +112,6 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: 'iconfont';  /* project id 622303 */
-  src: url('//at.alicdn.com/t/font_622303_1ibgrgrswzv9529.eot');
-  src: url('//at.alicdn.com/t/font_622303_1ibgrgrswzv9529.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_622303_1ibgrgrswzv9529.woff') format('woff'),
-  url('//at.alicdn.com/t/font_622303_1ibgrgrswzv9529.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_622303_1ibgrgrswzv9529.svg#iconfont') format('svg');
-}
-.iconfont{
-    font-family: "iconfont" !important;
-    font-size: 60px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-stroke-width: 0.2px;
-    -moz-osx-font-smoothing: grayscale;
-    color: #666;
-}
 .menubar .menu__icon, .menu__font{
     display: block;
     color: #666;
@@ -145,6 +123,8 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 100%;
     background-color: #2b323d;
 }

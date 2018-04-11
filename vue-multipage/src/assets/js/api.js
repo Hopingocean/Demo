@@ -7,7 +7,7 @@ var Reports = {
         login: baseURL + 'admin/login', // 登陆
         logout: baseURL + 'admin/logout', // 登出
         userinfo: baseURL + 'admin/userinfo', // 用户信息
-        gameList: baseURL + 'h5/game', // 游戏列表
+        gameList: baseURL + 'open/jjh/game', // 游戏列表
         mobileCode: baseURL + 'mobileCode', // 短信验证码
     },
     /**

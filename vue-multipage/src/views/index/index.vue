@@ -4,35 +4,28 @@
       <!-- swiper -->
       <div class="swiper">
         <swiper :options="swiperOption">
-          <swiper-slide v-for="game in swiperList" :key="game.id">{{ game.banner }}</swiper-slide>
+          <swiper-slide v-for="game in swiperList" :key="game.id"><img class="swiper__banner" :src="game.banner" alt="banner"></swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
       </div>
       <!-- 游戏分类 -->
       <div class="menu">
         <ul class="pure-g">
-          <li class="pure-u-1-4">
+          <li class="menu--font active pure-u-1-4">
             <router-link to="/hotgame">热门</router-link>
           </li>
-          <li class="pure-u-1-4">
+          <li class="menu--font pure-u-1-4">
             <router-link to="/newgame">新上架</router-link>
           </li>
-          <li class="pure-u-1-4">
+          <li class="menu--font pure-u-1-4">
             <router-link to="/hotactivity">活动</router-link>
           </li>
-          <li class="pure-u-1-4">
+          <li class="menu--font pure-u-1-4">
             <router-link to="/opengame">新开服</router-link>
           </li>
         </ul>
         <router-view></router-view>
       </div>
-      <ul>
-        <li class="gameinfo pure-g" v-for="game in gameList" :key="game.id">
-          <span class="pure-u-1-5"><img></span>
-          <span class="pure-u-3-5">{{ game.name }}</span>
-          <span class="pure-u-1-5"><button class="btn--play"><a :href=" 'game.html?gameId=' + game.id ">开玩</a></button></span>
-        </li>
-      </ul>
     </div>
     <menu-bar
       :current-menu="currentMenu" 
@@ -50,7 +43,7 @@ import Reports from '@/assets/js/api'
 
 export default {
   name: 'Index',
-  components: { MenuBar, Login },
+  components: { MenuBar, Login, swiper, swiperSlide },
   data() {
     return {
       loginStatus: true,
@@ -60,9 +53,26 @@ export default {
       swiperOption: {
         pagination: {
           el: '.swiper-pagination'
-        }
+        },
+        lazy: {
+          loadPrevNext: true,
+        },
+        autoplay: 3000,
       },
-      swiperList: [],
+      swiperList: [
+        {
+          id: '1',
+          banner: 'https://game.11h5.com/static/images/2018/0403/20180403103119329.gif'
+        },
+        {
+          id: '2',
+          banner: 'https://game.11h5.com/static/images/2018/0404/20180404065347540.gif'
+        },
+        {
+          id: '3',
+          banner: 'https://game.11h5.com/static/images/2018/0404/20180404055930689.gif'
+        },
+      ],
     }
   },
   created: function () {
@@ -102,7 +112,7 @@ export default {
         success: function (data) {
           if (data.code == 'success') {
             that.gameList = data.data.data;
-            that.swiperList = data.data.data;
+            // that.swiperList = data.data.data;
           } else {
             
           }
@@ -118,6 +128,11 @@ export default {
     this.$nextTick(function() {
       this.getUserinfo();
       this.getGameList();
+      // 判断当前激活路由
+      if (this.$route.name == 'HotGame') {
+        this.$router.push('hotgame');
+      }
+      console.log(this.$route);
     })
   }
 }
@@ -125,17 +140,32 @@ export default {
 
 <style scoped>
 .game {
-  padding: 20px;
+  padding-bottom: 110px;
 }
+/* 轮播图 */
 .swiper, .swiper-container {
   width: 100%;
   min-height: 300px;
 }
-.game .gameinfo {
-  padding: 10px 0;
+.swiper .swiper__banner {
+  width: 100%;
+  height: auto;
 }
-.game .btn--play {
-  border: none;
-  border-radius: 10px;
+/* 切换游戏类型 */
+.menu .menu--font {
+  line-height: 80px;
+  text-align: center;
+}
+.menu .menu--font .router-link-active {
+  padding: 10px;
+  border-bottom: 4px solid #2697fc;
+  color: #2697fc;
+}
+.menu .menu--font a {
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+  height: 24px;
+  line-height: 24px;
 }
 </style>

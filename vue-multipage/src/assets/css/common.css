@@ -30,6 +30,11 @@ td {
     outline: none;
 }
 
+html {
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+}
+
 ul,
 ol {
     list-style: none;
@@ -44,7 +49,146 @@ a:hover {
     text-decoration: none;
 }
 
-html {
-    font-size: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+
+/*容器*/
+
+.flex {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+}
+
+
+/*从上到下显示*/
+
+.flex-v {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -moz-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+
+/* 从右到左 */
+
+.flex-end {
+    -webkit-box-pack: end;
+    -webkit-box-direction: reverse;
+    -webkit-box-orient: horizontal;
+    -moz-flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+
+/*x轴两端对齐*/
+
+.flex-x-between {
+    -webkit-box-pack: justify;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+
+
+/* 居中 */
+
+.flex-x-center {
+    -webkit-box-pack: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+
+/* 垂直居中 */
+
+.flex-y-center {
+    align-items: center;
+}
+
+
+/* 右对齐 */
+
+.flex-x-end {
+    -webkit-box-pack: end;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+
+
+/* 允许换行 */
+
+.flex-wrap {
+    -moz-box-lines: multiple;
+    -webkit-box-lines: multiple;
+    box-lines: multiple;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+
+/* 子元素 */
+
+.flex-list {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+
+/* button */
+
+.btn {
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 24px;
+    padding: 6px 20px;
+    color: #1381f1;
+    border: 2px solid #1381f1;
+    white-space: nowrap;
+    -o-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+/* iconfont */
+
+@font-face {
+    font-family: 'iconfont';
+    /* project id 622303 */
+    src: url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.eot');
+    src: url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.woff') format('woff'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 60px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    color: #666;
+}
+
+@media screen and (min-width: 750px) {
+    body {
+        background-color: #f5f5fa;
+    }
+    #app {
+        width: 750px;
+        height: auto;
+        margin: 0 auto;
+    }
 }
