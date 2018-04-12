@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="menubar">
+  <div id="menubar" class="menubar">
       <ul class="pure-g">
           <li class="pure-u-1-5">
             <div v-if="currentMenu !== 1" @click="go(1)">
@@ -52,10 +52,6 @@
             </div>
           </li>
       </ul>
-      <login
-        :is-hide="isHide"
-        @listen-hide-status="getHideStatus"
-        ></login>
   </div>
 </template>
 
@@ -69,7 +65,6 @@ export default {
   components: { Login },
   data() {
       return {
-          isHide: true,
       }
   },
   props: {
@@ -103,9 +98,6 @@ export default {
                 window.location.href = 'user.html';
                 break;
           }
-      },
-      getHideStatus(status) {
-          this.isHide = status;
       }
   }
 }

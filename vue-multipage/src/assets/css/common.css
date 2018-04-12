@@ -168,8 +168,8 @@ a:hover {
 @font-face {
     font-family: 'iconfont';
     /* project id 622303 */
-    src: url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.eot');
-    src: url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.woff') format('woff'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_wexmup4ie5dhd7vi.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.eot');
+    src: url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.woff') format('woff'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -182,11 +182,16 @@ a:hover {
     color: #666;
 }
 
+body {
+    background-color: #f5f5fa;
+}
+
 @media screen and (min-width: 750px) {
     body {
         background-color: #f5f5fa;
     }
-    #app {
+    #app,
+    #menubar {
         width: 750px;
         height: auto;
         margin: 0 auto;

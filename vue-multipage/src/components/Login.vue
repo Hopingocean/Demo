@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="dialog__login" v-show="!isHide" @click.self="hiddenLoginDialog">
+  <div id="dialog__login" class="dialog__login" v-if="!isHide" @click.self="hiddenLoginDialog($event)">
       <div class="dialog__content">
-          <input class="mobile" v-model="mobile" type="text" placeholder="输入手机号">
+          <input class="mobile" v-model="mobile" type="text" placeholder="请输入手机号码">
           <div class="code">
-              <input class="" v-model="mobileCode" type="text" placeholder="输入验证码">
+              <input class="" v-model="mobileCode" type="text" placeholder="请输入短信验证码">
               <span class="getCode" v-if="status == 1" @click="getMobileCode">获取验证码</span>
               <span class="countdown" v-if="status != 1">{{ countdown }}S</span>
           </div>
@@ -31,11 +31,16 @@ export default {
       isHide: {
         type: Boolean,
         default: true,
+      },
+      loginStatus: {
+          type: Boolean,
+          default: true
       }
   },
   methods: {
-    hiddenLoginDialog() {
-        this.isHide = !this.isHide;
+    hiddenLoginDialog(event) {
+        // event.currentTarget.style.display = 'none';
+        this.isHide = true;
         this.$emit('listen-hide-status', this.isHide);
     },
     login() {
@@ -110,25 +115,29 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #2b323d;
-        opacity: .8;
+        background-color: rgba(0, 0, 0, .8);
     }
     .dialog__content {
         position: absolute;
         width: 80%;
         max-width: 600px;
-        padding: 0 20px;
+        padding: 20px;
         top: 50%;
         left: 0;
         right: 0;
         margin: 0 auto;
         box-sizing: border-box;
         transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        background-color: #fff;
+        border-radius: 20px;
     }
     .dialog__content input {
         box-sizing: border-box;
         width: 100%;
-        border: none;
+        border: 2px solid #eee;
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 20px;

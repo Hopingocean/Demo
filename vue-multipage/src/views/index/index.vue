@@ -4,14 +4,17 @@
       <!-- swiper -->
       <div class="swiper">
         <swiper :options="swiperOption">
-          <swiper-slide v-for="game in swiperList" :key="game.id"><img class="swiper__banner" :src="game.banner" alt="banner"></swiper-slide>
+          <swiper-slide v-for="game in swiperList" :key="game.id">
+            <img class="swiper__banner swiper-lazy" :src="game.banner" alt="banner">
+            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
       </div>
       <!-- 游戏分类 -->
       <div class="menu">
         <ul class="pure-g">
-          <li class="menu--font active pure-u-1-4">
+          <li class="menu--font pure-u-1-4">
             <router-link to="/hotgame">热门</router-link>
           </li>
           <li class="menu--font pure-u-1-4">
@@ -54,10 +57,11 @@ export default {
         pagination: {
           el: '.swiper-pagination'
         },
-        lazy: {
-          loadPrevNext: true,
+        lazy: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false
         },
-        autoplay: 3000,
       },
       swiperList: [
         {
@@ -141,6 +145,7 @@ export default {
 <style scoped>
 .game {
   padding-bottom: 110px;
+  /* background-color: #fff; */
 }
 /* 轮播图 */
 .swiper, .swiper-container {
@@ -152,6 +157,9 @@ export default {
   height: auto;
 }
 /* 切换游戏类型 */
+.menu ul {
+  background-color: #fff;
+}
 .menu .menu--font {
   line-height: 80px;
   text-align: center;

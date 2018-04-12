@@ -46,11 +46,15 @@
         </ul>
     </div>
     <div class="logout">
-        <a class="btn btn--logout" @click="logout">退出</a>
+        <a class="btn btn--logout" v-if="loginStatus" @click="logout">退出</a>
+        <a class="btn btn--logout" v-if="!loginStatus" @click="login">登陆</a>
     </div>
     <menu-bar 
       :current-menu="currentMenu" 
       :login-status="loginStatus"></menu-bar>
+    <login
+      @listen-hide-status="getHideStatus"
+      :is-hide="isHide"></login>
   </div>
 </template>
 
@@ -65,10 +69,12 @@ export default {
     data() {
         return {
             currentMenu: 5,
-            loginStatus: false,
+            loginStatus: true,
+            isHide: true
         }
     },
     methods: {
+        // 登出
         logout() {
             var that = this;
             var options = {
@@ -87,26 +93,37 @@ export default {
                 }
             }
             Reports.ajax(options);
+        },
+        // 登陆
+        login() {
+            this.isHide = false;
+        },
+        // 获取用户信息
+        getUserinfo() {
+            var that = this;
+            var options = {
+                type: 'get',
+                url: Reports.requestUrl.userinfo,
+                data: {},
+                success: function (data) {
+                    if (data.status) {
+                        that.loginStatus = true;
+                    } else {
+                        that.loginStatus = false;
+                    }
+                },
+                error: function (error) {
+                    that.loginStatus = false;
+                }
+            }
+            Reports.ajax(options);
+        },
+        getHideStatus(status) {
+            this.isHide = status;
         }
     },
     created: function () {
-        var that = this;
-        var options = {
-            type: 'get',
-            url: Reports.requestUrl.userinfo,
-            data: {},
-            success: function (data) {
-                if (data.status) {
-                    that.loginStatus = true;
-                } else {
-                    that.loginStatus = false;
-                }
-            },
-            error: function (error) {
-                that.loginStatus = false;
-            }
-        }
-        Reports.ajax(options);
+        this.getUserinfo();
     }
 }
 </script>

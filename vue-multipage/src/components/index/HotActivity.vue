@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="hotactivity">
     <p>{{ title }}</p>  
   </div>
 </template>

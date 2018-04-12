@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="hotgame">
+  <div id="hotgame" class="hotgame">
     <ul>
       <li class="gameinfo flex flex-y-center" v-for="game in gameList" :key="game.id" @click="goGameInfo(game.id)">
         <div class="icon">
@@ -89,6 +89,9 @@ export default {
 </script>
 
 <style scoped>
+.hotgame {
+  background-color: #fff;
+}
 .hotgame .gameinfo {
   padding: 20px 20px;
   border-top: 1px solid rgb(245, 245, 250);
