@@ -69,7 +69,7 @@ export default {
     data() {
         return {
             currentMenu: 5,
-            loginStatus: true,
+            loginStatus: false,
             isHide: true
         }
     },

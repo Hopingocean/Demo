@@ -84,6 +84,19 @@ a:hover {
 }
 
 
+/* 缩放比例 */
+
+.flex-grow-1 {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+
+.flex-grow-2 {
+    -webkit-flex-grow: 2;
+    flex-grow: 2;
+}
+
+
 /*x轴两端对齐*/
 
 .flex-x-between {
@@ -132,6 +145,12 @@ a:hover {
     flex-wrap: wrap;
 }
 
+.flex-no-wrap {
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
 
 /* 子元素 */
 
@@ -168,8 +187,8 @@ a:hover {
 @font-face {
     font-family: 'iconfont';
     /* project id 622303 */
-    src: url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.eot');
-    src: url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.woff') format('woff'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_zvjo1odlyfdsfw29.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.eot');
+    src: url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.woff') format('woff'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.svg#iconfont') format('svg');
 }
 
 .iconfont {

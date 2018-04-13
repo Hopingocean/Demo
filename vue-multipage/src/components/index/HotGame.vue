@@ -104,8 +104,8 @@ export default {
   text-align: center;
 }
 .gameinfo .game__icon {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
 }
 .gameinfo .game__name {
