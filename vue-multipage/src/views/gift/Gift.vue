@@ -1,5 +1,16 @@
 <template>
   <div id="app" class="gift">
+    <!-- user -->
+    <div class="user flex flex-y-center">
+        <div class="icon">
+            <img src="https://game.11h5.com/static/images/2018/0413/20180413024143872.png" alt="icon">
+        </div>
+        <div class="user--desc flex flex-list flex-v">
+            <span>{{ userinfo.username }}</span>
+            <span>{{ userinfo.reg_time }}</span>
+        </div>
+        <a href="javascript:void(0);" class="btn">签到</a>
+    </div>
     <!-- 礼包列表 -->
     <div>
         <div class="game__gift" v-for="game in giftList" :key="game.gameId">
@@ -62,6 +73,7 @@ export default {
     data() {
         return {
             loginStatus: true,
+            userinfo: '',
             currentMenu: 2,
             jjh_icon: jjh_icon,
             giftList: [
@@ -122,25 +134,29 @@ export default {
         }
     },
     created: function () {
-        var that = this;
-        var options = {
-            type: 'get',
-            url: Reports.requestUrl.userinfo,
-            data: {},
-            success: function (data) {
-                if (data.status) {
-                    that.loginStatus = true;
-                } else {
-                    that.loginStatus = false;
-                }
-            },
-            error: function (error) {
-                that.loginStatus = false;
-            }
-        }
-        Reports.ajax(options);
+        
     },
     methods: {
+        getUserinfo() {
+            var that = this;
+            var options = {
+                type: 'get',
+                url: Reports.requestUrl.userinfo,
+                data: {},
+                success: function (data) {
+                    if (data.status) {
+                        that.loginStatus = true;
+                        that.userinfo = data.data;
+                    } else {
+                        that.loginStatus = false;
+                    }
+                },
+                error: function (error) {
+                    that.loginStatus = false;
+                }
+            }
+            Reports.ajax(options);
+        },
         getGiftList($state) {
             $state.complete();
         },
@@ -153,6 +169,11 @@ export default {
         infiniteHandler($state) {
             this.getGiftList($state);
         }
+    },
+    mounted: function () {
+        this.$nextTick(function () {
+            this.getUserinfo();
+        })
     }
 }
 </script>
@@ -161,6 +182,28 @@ export default {
 .gift {
     background-color: #f5f5fa;
     padding-bottom: 110px;
+}
+.gift .user {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.gift .user .icon img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    text-align: center;
+}
+.gift .user .user--desc {
+    padding-left: 10px;
+}
+.gift .user .user--desc span:first-child {
+    color: #333;
+    font-size: 28px;
+}
+.gift .user .user--desc span:last-child {
+    color: #999;
+    font-size: 24px;
 }
 .game__gift {
     margin-bottom: 20px;

@@ -131,6 +131,7 @@ export default {
 <style scoped>
 .user {
     background-color: #f5f5fa;
+    padding-bottom: 110px;
 }
 .user .user__icon {
     box-sizing: border-box;

@@ -4,11 +4,12 @@ const baseURL = process.env.server_host;
 var Reports = {
     // 所有请求地址
     requestUrl: {
-        login: baseURL + 'admin/login', // 登陆
-        logout: baseURL + 'admin/logout', // 登出
-        userinfo: baseURL + 'admin/userinfo', // 用户信息
-        gameList: baseURL + 'open/jjh/game', // 游戏列表
+        login: baseURL + 'open/jjh/login', // 登陆
+        logout: baseURL + 'open/jjh/logout', // 登出
+        userinfo: baseURL + 'open/jjh/member', // 用户信息
         mobileCode: baseURL + 'mobileCode', // 短信验证码
+        register: baseURL + 'open/jjh/reg', // 注册
+        gameList: baseURL + 'open/jjh/game', // 游戏列表
     },
     /**
      * 封装axios

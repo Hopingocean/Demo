@@ -1,6 +1,22 @@
 <template>
   <div id="dialog__login" class="dialog__login" v-if="!isHide" @click.self="hiddenLoginDialog($event)">
+      <!-- 登陆和注册 -->
       <div class="dialog__content">
+        <div class="dialog__register" v-show="toggle == 1">
+            <input class="mobile" v-model="username" type="text" placeholder="请输入用户名">
+            <input class="mobile" v-model="password" type="text" placeholder="请输入密码">
+            <input class="mobile" v-model="passwordAgain" type="text" placeholder="请确认密码">
+            <input type="button" @click="register" value="注册">
+            <span class="toggleDialog" @click="toggleDialog(2)">登陆</span>
+        </div>
+        <div class="dialog__log" v-show="toggle == 2">
+            <input class="mobile" v-model="username" type="text" placeholder="请输入用户名">
+            <input class="mobile" v-model="password" type="text" placeholder="请输入密码">
+            <input type="button" @click="login" value="登陆">
+            <span class="toggleDialog" @click="toggleDialog(1)">注册</span>
+        </div>
+      </div>
+      <!-- <div class="dialog__content">
           <input class="mobile" v-model="mobile" type="text" placeholder="请输入手机号码">
           <div class="code">
               <input class="" v-model="mobileCode" type="text" placeholder="请输入短信验证码">
@@ -8,7 +24,7 @@
               <span class="countdown" v-if="status != 1">{{ countdown }}S</span>
           </div>
           <input type="button" @click="login" value="登陆">
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -21,10 +37,14 @@ export default {
   name: 'Login',
   data() {
       return {
+          username: '',
+          password: '',
+          passwordAgain: '',
           mobile: '',
           mobileCode: '',
           countdown: 60, // 倒计时
           status: 1, // 显示文字或者倒计时
+          toggle: 1, // 1显示注册窗口，2显示登陆窗口
       }
   },
   props: {
@@ -39,17 +59,52 @@ export default {
   },
   methods: {
     hiddenLoginDialog(event) {
-        // event.currentTarget.style.display = 'none';
         this.isHide = true;
         this.$emit('listen-hide-status', this.isHide);
     },
+    toggleDialog(i) {
+        this.toggle = i;
+    },
+    register() {
+        if (!this.username || !this.password) {
+            alert('请输入用户名或密码');
+            return;
+        }
+        if (this.password !== this.passwordAgain) {
+            alert('请确认密码是否一致');
+            return;
+        }
+        var options = {
+            type: 'post',
+            url: Reports.requestUrl.register,
+            data: {
+                username: this.username,
+                password: this.password
+            },
+            success: function (data) {
+                if (data.status) {
+                    window.location.reload();
+                } else {
+
+                }
+            },
+            error: function (error) {
+                
+            }
+        }
+        Reports.ajax(options);
+    },
     login() {
+        if (!this.username || !this.password) {
+            alert('请输入用户名或密码');
+            return;
+        }
         var options = {
             type: 'post',
             url: Reports.requestUrl.login,
             data: {
-                username: this.mobile,
-                password: this.mobileCode
+                username: this.username,
+                password: this.password
             },
             success: function (data) {
                 if (data.status) {
@@ -152,5 +207,11 @@ export default {
         top: 0;
         padding: 0 20px;
         line-height: 72px;
+    }
+    .dialog__content .toggleDialog {
+        float: right;
+        padding: 10px;
+        border: 2px solid #eee;
+        border-radius: 10px;
     }
 </style>

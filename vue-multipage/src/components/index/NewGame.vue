@@ -7,7 +7,7 @@
         </div>
         <div class="flex flex-list flex-v">
           <p class="game__name">{{ game.name }}</p>
-          <p class="game__desc">{{ game.name }}</p>
+          <p class="game__desc">{{ game.desc }}</p>
         </div>
         <a class="btn flex" :href=" 'game.html?gameId=' + game.id ">开玩</a>
       </li>
@@ -111,16 +111,10 @@ export default {
 .gameinfo .game__name {
   font-size: 28px;
   color: #333;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .gameinfo .game__desc {
   font-size: 24px;
   color: #999;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .gameinfo a {
   color: #1381f1;

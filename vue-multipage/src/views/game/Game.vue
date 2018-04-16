@@ -10,8 +10,8 @@
         <div class="userinfo flex flex-y-center">
           <img src="https://img02.jjhgame.com/game1511/images/down/gicon-fish.jpg" alt="icon">
           <div class="userinfo--id flex flex-v flex-grow-2">
-            <span>id</span>
-            <span>123456</span>
+            <span>{{ userinfo.username }}</span>
+            <span>{{ userinfo.reg_time }}</span>
           </div>
           <div class="flex flex-x-between flex-grow-1 btn--group">
             <a href="javascript:void(0);" class="btn">实名认证</a>
@@ -73,6 +73,7 @@ import Login from '@/components/Login'
 
 import draggabilly from 'draggabilly'
 
+import Reports from '@/assets/js/api'
 import common from '@/assets/js/common.js'
 export default {
   name: 'Game',
@@ -81,12 +82,14 @@ export default {
     return{
       gameUrl: '',
       gameId: '',
+      userinfo: '',
       loginStatus: false,
       isHide: true
     }
   },
   methods: {
     initDrag() {
+      var that = this;
       var drag = new draggabilly('.icon--float', {
         containment: '.game__container'
       })
@@ -107,6 +110,8 @@ export default {
       // staticClick
       drag.on('staticClick', function(event, pointer) {
         event.target.nextElementSibling.style.left = '0';
+        // 获取用户信息
+        that.getUserinfo();
       })
     },
     closeSideslip(event) {
@@ -136,6 +141,26 @@ export default {
     // 显示登陆窗口
     showLogin() {
       this.isHide = false;
+    },
+    getUserinfo() {
+      var that = this;
+      var options = {
+          type: 'get',
+          url: Reports.requestUrl.userinfo,
+          data: {},
+          success: function (data) {
+              if (data.status) {
+                  that.loginStatus = true;
+                  that.userinfo = data.data;
+              } else {
+                  that.loginStatus = false;
+              }
+          },
+          error: function (error) {
+              that.loginStatus = false;
+          }
+      }
+      Reports.ajax(options);
     },
   },
   mounted: function () {
@@ -209,9 +234,9 @@ export default {
 .userinfo .userinfo--id {
   box-sizing: border-box;
   padding: 0 20px;
-}
-.sideslip__page .userinfo .btn--group .btn {
-  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .sideslip__page .menu {
   border-top: 2px solid #eee;
