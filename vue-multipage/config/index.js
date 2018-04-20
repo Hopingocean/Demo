@@ -3,8 +3,8 @@ var path = require('path')
 
 module.exports = {
 
-    //网站模块名
-    //【views】，默认为views，修改这里的配置的同时，也要同时重命名/src/views的这个文件夹名称  
+    // 网站模块名
+    // 【views】，默认为views，修改这里的配置的同时，也要同时重命名/src/views的这个文件夹名称  
     moduleName: 'views',
 
     build: {
