@@ -9,10 +9,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-var entries = utils.getMultiEntry('./src/' + config.moduleName + '/**/**/*.js'); // 获得入口js文件
-var chunks = Object.keys(entries);
-
-
 var env = process.env.NODE_ENV === 'testing' ?
     require('../config/test.env') :
     config.build.env
@@ -68,39 +64,32 @@ var webpackConfig = merge(baseWebpackConfig, {
            chunksSortMode: 'dependency'
          }),*/
         // split vendor js into its own file
-        /*new webpack.optimize.CommonsChunkPlugin({
-          name: 'vendor',
-          minChunks: function (module, count) {
-            // any required modules inside node_modules are extracted to vendor
-            return (
-              module.resource &&
-              /\.js$/.test(module.resource) &&
-              module.resource.indexOf(
-                path.join(__dirname, '../node_modules')
-              ) === 0
-            )
-          }
-        }),*/
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: function(module, count) {
+                // any required modules inside node_modules are extracted to vendor
+                return (
+                    module.resource &&
+                    /\.js$/.test(module.resource) &&
+                    module.resource.indexOf(
+                        path.join(__dirname, '../node_modules')
+                    ) === 0
+                )
+            }
+        }),
         // extract webpack runtime and module manifest to its own file in order to
         // prevent vendor hash from being updated whenever app bundle is updated
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
-            chunks: chunks,
-            minChunks: 4 || chunks.length
+            chunks: ['vendor']
         }),
-        /*
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])*/
-
-
-
-    ]
+        // copy custom static assets
+        new CopyWebpackPlugin([{
+            from: path.resolve(__dirname, '../static'),
+            to: config.build.assetsSubDirectory,
+            ignore: ['.*']
+        }])
+    ].concat(utils.htmlPlugin())
 })
 
 if (config.build.productionGzip) {
@@ -125,22 +114,5 @@ if (config.build.bundleAnalyzerReport) {
     var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
     webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-
-//构建生成多页面的HtmlWebpackPlugin配置，主要是循环生成
-var pages = utils.getMultiEntry('./src/' + config.moduleName + '/**/**/*.html');
-for (var pathname in pages) {
-
-    var conf = {
-        filename: pathname + '.html',
-        template: pages[pathname], // 模板路径
-        chunks: ['vendor', pathname], // 每个html引用的js模块
-        inject: true, // js插入位置
-        hash: true
-    };
-
-    webpackConfig.plugins.push(new HtmlWebpackPlugin(conf));
-}
-
-
 
 module.exports = webpackConfig

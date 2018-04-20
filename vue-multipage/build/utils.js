@@ -1,7 +1,6 @@
 var path = require('path')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var glob = require('glob');
 
 
 exports.assetsPath = function(_path) {
@@ -80,85 +79,55 @@ exports.styleLoaders = function(options) {
     return output
 }
 
+// glob是webpack安装时依赖的一个第三方模块，还模块允许你使用 *等符号, 例如lib/*.js就是获取lib文件夹下的所有js后缀名的文件
+var glob = require('glob')
+    // 页面模板
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+    // 取得相应的页面路径，因为之前的配置，所以是src文件夹下的pages文件夹
+var PAGE_PATH = path.resolve(__dirname, '../src/views')
+    // 用于做相应的merge处理
+var merge = require('webpack-merge')
 
-//获取多级的入口文件
-exports.getMultiEntry = function(globPath) {
-    var entries = {},
-        basename, tmp, pathname;
-
-    glob.sync(globPath).forEach(function(entry) {
-        basename = path.basename(entry, path.extname(entry));
-        tmp = entry.split('/').splice(-4);
-
-        var pathsrc = tmp[0] + '/' + tmp[1];
-        if (tmp[0] == 'src') {
-            pathsrc = tmp[1];
-        }
-        //console.log(pathsrc)
-        pathname = pathsrc + '/' + basename; // 正确输出js和html的路径
-        entries[pathname] = entry;
-
-        //console.log(pathname+'-----------'+entry);
-
-    });
-
-    return entries;
-
+// 多入口配置
+// 通过glob模块读取pages文件夹下的所有对应文件夹下的js后缀文件，如果该文件存在
+// 那么就作为入口处理
+exports.entries = function() {
+    var entryFiles = glob.sync(PAGE_PATH + '/*/*.js')
+    var map = {}
+    entryFiles.forEach((filePath) => {
+        var filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
+        map[filename] = filePath
+    })
+    return map
 }
 
-
-var fs = require('fs'),
-    copyStat = fs.stat;
-
-/*
- * 复制目录中的所有文件包括子目录
- * @param{ String } 需要复制的目录
- * @param{ String } 复制到指定的目录
- */
-var filecopy = function(src, dst) {
-    // 读取目录中的所有文件/目录
-    fs.readdir(src, function(err, paths) {
-        if (err) {
-            throw err;
+// 多页面输出配置
+// 与上面的多页面入口配置相同，读取pages文件夹下的对应的html后缀文件，然后放入数组中
+exports.htmlPlugin = function() {
+    let entryHtml = glob.sync(PAGE_PATH + '/*/*.html')
+    let arr = []
+    entryHtml.forEach((filePath) => {
+        let filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
+        let conf = {
+            // 模板来源
+            template: filePath,
+            // 文件名称
+            filename: filename + '.html',
+            // 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
+            chunks: ['manifest', 'vendor', filename],
+            inject: true
         }
-        paths.forEach(function(path) {
-            var _src = src + '/' + path,
-                _dst = dst + '/' + path,
-                readable, writable;
-            copyStat(_src, function(err, st) {
-                if (err) {
-                    throw err;
-                }
-                // 判断是否为文件
-                if (st.isFile()) {
-                    // 创建读取流
-                    readable = fs.createReadStream(_src);
-                    // 创建写入流
-                    writable = fs.createWriteStream(_dst);
-                    // 通过管道来传输流
-                    readable.pipe(writable);
-                }
-                // 如果是目录则递归调用自身
-                else if (st.isDirectory()) {
-                    exports.startCopy(_src, _dst);
-                }
-            });
-        });
-    });
-};
-
-//在复制目录前需要判断该目录是否存在，不存在需要先创建目录
-exports.startCopy = function(src, dst) {
-    fs.exists(dst, function(exists) {
-        // 已存在
-        if (exists) {
-            filecopy(src, dst);
+        if (process.env.NODE_ENV === 'production') {
+            conf = merge(conf, {
+                minify: {
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    removeAttributeQuotes: true
+                },
+                chunksSortMode: 'dependency'
+            })
         }
-        // 不存在
-        else {
-            fs.mkdir(dst, function() {
-                filecopy(src, dst);
-            });
-        }
-    });
-};
+        arr.push(new HtmlWebpackPlugin(conf))
+    })
+    return arr
+}

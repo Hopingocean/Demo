@@ -4,13 +4,8 @@ var webpack = require('webpack')
 var config = require('../config')
 
 var glob = require('glob');
-var entries = utils.getMultiEntry('./src/' + config.moduleName + '/**/**/*.js'); // 获得入口js文件
-var chunks = Object.keys(entries);
-
-console.log(chunks)
 
 var projectRoot = path.resolve(__dirname, '../')
-    // const vuxLoader = require('vux-loader')
 
 var vueLoaderConfig = require('./vue-loader.conf')
 
@@ -20,7 +15,7 @@ function resolve(dir) {
 
 var webpackConfig = {
 
-    entry: entries,
+    entry: utils.entries(),
     output: {
         path: config.build.assetsRoot,
         filename: '[name].js',
@@ -69,22 +64,14 @@ var webpackConfig = {
     },
     plugins: [
         /*
-    // 提取公共模块
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors', // 公共模块的名称
-      chunks: chunks,  // chunks是需要提取的模块
-      minChunks: 4 || chunks.length //公共模块被使用的最小次数。比如配置为3，也就是同一个模块只有被3个以外的页面同时引用时才会被提取出来作为common chunks。
+        // 提取公共模块
+        new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendors', // 公共模块的名称
+        chunks: chunks,  // chunks是需要提取的模块
+        minChunks: 4 || chunks.length //公共模块被使用的最小次数。比如配置为3，也就是同一个模块只有被3个以外的页面同时引用时才会被提取出来作为common chunks。
 
-    }),*/
-
+        }),*/
     ]
 }
 
 module.exports = webpackConfig;
-
-// module.exports = vuxLoader.merge(webpackConfig, {
-//     options: {
-
-//     },
-//     plugins: ['vux-ui', 'progress-bar', 'duplicate-style']
-// })
