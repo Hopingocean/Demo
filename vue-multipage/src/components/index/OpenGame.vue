@@ -1,5 +1,5 @@
 <template>
-  <div id="opengame" class="opengame">
+  <div class="opengame">
     <!-- 菜单 -->
     <div class="menu">
       <ul class="flex">
@@ -16,11 +16,14 @@
 </template>
 
 <script>
+import Request from '@/assets/js/api'
+import CommonMethods from '@/assets/js/common'
+
 export default {
   name: 'OpenGame',
   data() {
     return {
-      title: '新开服游戏列表'
+      
     }
   },
   mounted: function () {
@@ -35,25 +38,30 @@ export default {
 </script>
 
 <style scoped>
-.opengame {
+.opengame .menu {
+  box-sizing: border-box;
+  padding: 20px 36px;
   background-color: #fff;
 }
-.opengame .menu ul {
-  box-sizing: border-box;
-  padding: 20px;
-  border-radius: 10px;
+.opengame .menu ul li:first-child a {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.opengame .menu ul li:last-child a {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 .opengame .menu ul li {
   text-align: center;
 }
 .opengame .menu ul li a {
-  padding: 15px 20px;
-  border: 1px solid #2697fc;
-  color: #999;
-  line-height: 24px;
+  padding: 11px 20px;
+  font-size: 28px; /* px */
+  color: #ff9c00;
+  border: 2px solid #ff9c00;
 }
 .opengame .menu ul li a.router-link-active {
   color: #fff;
-  background-color: #2697fc;
+  background-color: #ff9c00;
 }
 </style>

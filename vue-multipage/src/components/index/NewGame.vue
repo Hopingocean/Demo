@@ -1,15 +1,21 @@
 <template>
-  <div id="newgame" class="newgame">
+  <div class="newgame">
     <ul>
-      <li class="gameinfo flex flex-y-center" v-for="game in gameList" :key="game.id" @click="goGameInfo(game.id)">
+      <li class="gameInfo flex flex-y-center" v-for="game in gameList" :key="game.id" @click="goGameDetail(game.id)">
         <div class="icon">
-          <img class="game__icon" v-lazy="jjh_icon" />
+          <img class="game__icon" v-lazy="game.icon" alt="icon" />
         </div>
         <div class="flex flex-list flex-v">
-          <p class="game__name">{{ game.name }}</p>
+          <p class="gameInfo__tags">
+            <span class="game__name">{{ game.name }}</span>
+            <span class="tag" v-if="game.is_exclusive">独家</span>
+            <span class="tag" v-if="game.is_gift">礼包</span>
+            <span class="tag" v-if="game.is_recommend">推荐</span>
+          </p>
+          <p class="game__type">类型：{{ game.type }}</p>
           <p class="game__desc">{{ game.desc }}</p>
         </div>
-        <a class="btn flex" :href=" 'game.html?gameId=' + game.id ">开玩</a>
+        <a class="btn flex" :href=" 'game.html?gameId=' + game.id + '&agentId=' + agentId">开始</a>
       </li>
       <infinite-loading @infinite="infiniteHandler">
         <span slot="no-more">
@@ -26,32 +32,35 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 
-import Reports from '@/assets/js/api'
-
-import jjh_icon from '@/assets/images/common/jjh.jpg'
+import Request from '@/assets/js/api'
+import CommonMethods from '@/assets/js/common'
 
 export default {
   name: 'NewGame',
   components: { InfiniteLoading },
   data() {
     return {
+      agentId: '',
       gameList: [],
-      jjh_icon: jjh_icon,
       currentPage: 1,
+      pageSize: 12,
       totalPage: ''
     }
   },
+  created() {
+    this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
+  },
   methods: {
     getGameList ($state) {
-      var that = this;
-      var options = {
+      const that = this;
+      const options = {
         type: 'get',
-        url: Reports.requestUrl.gameList,
+        url: Request.url.gameList,
         data: {
           page: that.currentPage,
-          page_size: '',
+          page_size: that.pageSize,
           type_id: '',
-          is_hot: ''
+          is_new: 1
         },
         success: function (data) {
           if (data.code == 'success') {
@@ -70,10 +79,10 @@ export default {
           $state.complete();
         }
       }
-      Reports.ajax(options);
+      Request.ajax(options);
     },
-    goGameInfo(id) {
-      window.location.href = 'gameinfo.html?gameId=' + id;
+    goGameDetail(id) {
+      window.location.href = 'gameDetail.html?gameId=' + id + '&agentId=' + this.agentId;
     },
     // 滚动加载
     infiniteHandler($state) {
@@ -92,31 +101,56 @@ export default {
 .newgame {
   background-color: #fff;
 }
-.newgame .gameinfo {
-  padding: 20px 20px;
-  border-top: 1px solid rgb(245, 245, 250);
+.newgame .gameInfo {
+  padding: 32px 40px;
+  border-top: 2px solid #f0f0f0;
 }
-.newgame .gameinfo:nth-last-child(2) {
-  border-bottom: 1px solid rgb(245, 245, 250);
+.newgame .gameInfo:nth-last-child(2) {
+  border-bottom: 2px solid #f0f0f0;
 }
-.gameinfo .icon {
-  margin-right: 20px;
+.gameInfo .icon {
+  margin-right: 27px;
   text-align: center;
 }
-.gameinfo .game__icon {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
+.gameInfo .game__icon {
+  width: 128px;
+  height: 128px;
+  border-radius: 18px;
 }
-.gameinfo .game__name {
-  font-size: 28px;
-  color: #333;
+.gameInfo .game__name {
+  font-size: 32px; /* px */
+  color: #111;
 }
-.gameinfo .game__desc {
-  font-size: 24px;
+.gameInfo .game__type {
+  padding: 21px 0 13px 0;
+  font-size: 24px; /* px */
   color: #999;
 }
-.gameinfo a {
-  color: #1381f1;
+.gameInfo .game__desc {
+  font-size: 24px; /* px */
+  color: #999;
+}
+.gameInfo a {
+  color: #ff9c00;
+}
+.gameInfo .gameInfo__tags .tag {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 4px;
+  font-size: 20px; /* px */
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.gameInfo .gameInfo__tags span:nth-child(2) {
+  border: 2px solid #ffa800;
+  color: #ffa800;
+}
+.gameInfo .gameInfo__tags span:nth-child(3) {
+  border: 2px solid #ff0000;
+  color: #ff0000;
+}
+.gameInfo .gameInfo__tags span:nth-child(4) {
+  border: 2px solid #00a2ff;
+  color: #00a2ff;
 }
 </style>

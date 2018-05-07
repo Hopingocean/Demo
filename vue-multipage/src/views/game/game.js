@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Game from './Game.vue'
 import router from './router'
 
-import purecss from 'purecss'
+import wxJsSdk from 'weixin-js-sdk'
 import flexiable from 'lib-flexible'
 
 import '@/assets/css/common.css'

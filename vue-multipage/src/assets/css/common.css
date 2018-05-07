@@ -31,7 +31,6 @@ td {
 }
 
 html {
-    font-size: 10px;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
 }
 
@@ -41,7 +40,7 @@ ol {
 }
 
 a {
-    color: black;
+    color: #111;
     text-decoration: none;
 }
 
@@ -169,16 +168,51 @@ a:hover {
 .btn {
     box-sizing: border-box;
     display: inline-block;
-    font-size: 24px;
-    padding: 6px 20px;
-    color: #1381f1;
-    border: 2px solid #1381f1;
+    font-size: 28px;
+    /* px */
+    /*px*/
+    padding: 11px 28px;
+    color: #FF9C00;
+    border: 2px solid #FF9C00;
     white-space: nowrap;
-    -o-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    -o-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
     text-align: center;
+}
+
+
+/*input placeholder color*/
+
+input {
+    border-radius: 0;
+}
+
+ :-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #aaa;
+}
+
+ ::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #aaa;
+}
+
+input:-ms-input-placeholder {
+    color: #aaa;
+}
+
+input::-webkit-input-placeholder {
+    color: #aaa;
+}
+
+textarea:-ms-input-placeholder {
+    color: #aaa;
+}
+
+textarea::-webkit-input-placeholder {
+    color: #aaa;
 }
 
 
@@ -187,8 +221,8 @@ a:hover {
 @font-face {
     font-family: 'iconfont';
     /* project id 622303 */
-    src: url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.eot');
-    src: url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.woff') format('woff'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_flep3aqcnjh2rzfr.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_622303_6sewxv8ilc5l8fr.eot');
+    src: url('//at.alicdn.com/t/font_622303_6sewxv8ilc5l8fr.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_622303_6sewxv8ilc5l8fr.woff') format('woff'), url('//at.alicdn.com/t/font_622303_6sewxv8ilc5l8fr.ttf') format('truetype'), url('//at.alicdn.com/t/font_622303_6sewxv8ilc5l8fr.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -201,18 +235,28 @@ a:hover {
     color: #666;
 }
 
-body {
+
+/* body {
     background-color: #f5f5fa;
-}
+} */
 
 @media screen and (min-width: 750px) {
-    body {
-        background-color: #f5f5fa;
-    }
     #app,
-    #menubar {
+    #menubar,
+    #bottomBtn {
         width: 750px;
         height: auto;
         margin: 0 auto;
     }
+}
+
+
+/* 自定义加载插件 */
+
+.infinite-loading-container .infinite-status-prompt {
+    color: #999;
+    font-size: 24px;
+    /* px */
+    text-align: center;
+    padding: 20px 0;
 }

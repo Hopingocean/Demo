@@ -5,44 +5,54 @@
       <div class="swiper">
         <swiper :options="swiperOption">
           <swiper-slide v-for="game in swiperList" :key="game.id">
-            <img class="swiper__banner swiper-lazy" :src="game.banner" alt="banner">
-            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            <a :href="'game.html?gameId=' + game.id + '&agentId=' + agentId">
+              <img class="swiper__banner swiper-lazy" :src="game.image" alt="banner">
+              <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            </a>
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
       </div>
       <!-- 最近在玩 -->
-      <div class="recommend flex" v-if="loginStatus">
-        <span class="font--recommend">最<br/>近<br/>在<br/>玩</span>
+      <!-- <div class="recommend flex" v-if="gameList.length">
+        <span class="font--recommend" v-if="gameList.length">最<br/>近<br/>在<br/>玩</span>
         <ul class="">
           <li class="" v-for="game in gameList" :key="game.id">
-            <img :src="jjh_icon" alt="icon">
-            <span>{{ game.name }}</span>
-            <a :href="'game.html?gameId=' + game.id " class="btn">开始</a>
+            <a :href="'game.html?gameId=' + game.id + '&agentId=' + agentId">
+              <img :src="game.icon" alt="icon">
+              <span>{{ game.name }}</span>
+            </a>
           </li>
         </ul>
-      </div>
+      </div> -->
+      <!-- 有奖活动 -->
+      <!-- <div class="activity--prize flex flex-y-center">
+        <a :href="'activityDetail.html?gameId=' + prizeActivityInfo.gameId + '&agentId=' + agentId">
+          <span class="type">有奖活动<img :src="iconGift" alt="icon"></span>
+          <span class="desc">新游火爆上线，iPhoneX免费送</span>
+        </a>
+      </div> -->
       <!-- 游戏分类 -->
       <div class="menu">
-        <ul class="pure-g">
-          <li class="menu--font pure-u-1-4">
+        <ul class="flex">
+          <li class="menu--font flex flex-list">
             <router-link to="/hotgame">热门</router-link>
           </li>
-          <li class="menu--font pure-u-1-4">
-            <router-link to="/newgame">新上架</router-link>
+          <li class="menu--font flex flex-list">
+            <!-- <router-link to="/newgame">新上架</router-link> -->
           </li>
-          <li class="menu--font pure-u-1-4">
-            <router-link to="/hotactivity">活动</router-link>
+          <li class="menu--font flex flex-list">
+            <!-- <router-link to="/hotactivity">活动</router-link> -->
           </li>
-          <li class="menu--font pure-u-1-4">
-            <router-link to="/opengame">新开服</router-link>
+          <li class="menu--font flex flex-list">
+            <!-- <router-link to="/opengame">新开服</router-link> -->
           </li>
         </ul>
         <router-view></router-view>
       </div>
     </div>
     <menu-bar
-      :current-menu="currentMenu" 
+      :current-menu="currentMenu"
       :login-status="loginStatus"></menu-bar>
   </div>
 </template>
@@ -53,18 +63,22 @@ import {swiper, swiperSlide} from 'vue-awesome-swiper'
 import MenuBar from '@/components/MenuBar'
 import Login from '@/components/Login'
 
-import Reports from '@/assets/js/api'
+import Request from '@/assets/js/api'
+import CommonMethods from '@/assets/js/common'
 
 import jjh_icon from '@/assets/images/common/jjh.jpg'
+import iconGift from '@/assets/images/common/icon_gift.png'
 
 export default {
   name: 'Index',
   components: { MenuBar, Login, swiper, swiperSlide },
   data() {
     return {
-      loginStatus: true,
+      agentId: '',
+      loginStatus: false,
       currentMenu: 1,
       jjh_icon: jjh_icon,
+      iconGift: iconGift,
       gameList: [],
       // swiper
       swiperOption: {
@@ -77,31 +91,20 @@ export default {
           disableOnInteraction: false
         },
       },
-      swiperList: [
-        {
-          id: '1',
-          banner: 'https://game.11h5.com/static/images/2018/0403/20180403103119329.gif'
-        },
-        {
-          id: '2',
-          banner: 'https://game.11h5.com/static/images/2018/0404/20180404065347540.gif'
-        },
-        {
-          id: '3',
-          banner: 'https://game.11h5.com/static/images/2018/0412/20180412012010566.gif'
-        },
-      ],
+      swiperList: [],
+      // 有奖活动
+      prizeActivityInfo: '',
     }
   },
-  created: function () {
-
+  created() {
+    this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
   },
   methods: {
     getUserinfo () {
-      var that = this;
-      var options = {
+      const that = this;
+      const options = {
         type: 'get',
-        url: Reports.requestUrl.userinfo,
+        url: Request.url.userinfo,
         data: {},
         success: function (data) {
           if (data.status) {
@@ -114,42 +117,72 @@ export default {
             that.loginStatus = false;
         }
       }
-      Reports.ajax(options);
+      Request.ajax(options);
     },
-    getGameList () {
-      var that = this;
-      var options = {
+    // 获取轮播图列表
+    getSwiperList () {
+      const that = this;
+      const options = {
         type: 'get',
-        url: Reports.requestUrl.gameList,
+        url: Request.url.swiperList,
         data: {
-          page: '',
-          page_size: '',
-          type_id: '',
-          is_hot: ''
+          type: 1, // 首页轮播图
         },
         success: function (data) {
           if (data.code == 'success') {
-            that.gameList = data.data.data;
-          } else {
-            
+            that.swiperList = data.data.data;
           }
         },
-        error: function (error) {
-            
-        }
+        error: function (error) {}
       }
-      Reports.ajax(options);
+      Request.ajax(options);
+    },
+    // 获取有奖活动信息
+    getPrizeActivityInfo() {
+      const that = this;
+      const options = {
+        type: 'get',
+        url: Request.url.prizeActivityInfo,
+        data: {
+          
+        },
+        success: function (data) {
+          if (data.code == 'success') {
+            that.prizeActivityInfo = data.data.data;
+          }
+        },
+        error: function (error) {}
+      }
+      Request.ajax(options);
+    },
+    // 最近在玩游戏列表
+    getMyGame() {
+      const that = this;
+      const options = {
+        type: 'get',
+        url: Request.url.myGame,
+        data: {},
+        success: function (data) {
+          if (data.status) {
+            that.gameList = data.data;
+          }
+        },
+        error: function (error) {}
+      }
+      Request.ajax(options);
     }
   },
   mounted: function () {
     this.$nextTick(function() {
       this.getUserinfo();
-      this.getGameList();
+      this.getMyGame();
+      this.getSwiperList();
       // 判断当前激活路由
       if (this.$route.name == 'HotGame') {
         this.$router.push('hotgame');
       }
-      console.log(this.$route);
+      // 初始化QQ分享信息
+      CommonMethods.qqShare('集结号捕鱼', '', '', location.origin);
     })
   }
 }
@@ -157,12 +190,12 @@ export default {
 
 <style scoped>
 .game {
-  padding-bottom: 110px;
+  padding-bottom: 128px;
 }
 /* 轮播图 */
 .swiper, .swiper-container {
   width: 100%;
-  min-height: 300px;
+  min-height: 260px;
 }
 .swiper .swiper__banner {
   width: 100%;
@@ -173,23 +206,26 @@ export default {
   position: relative;
   width: 100%;
   height: auto;
-  margin: 10px 0 0 0;
+  margin: 30px 0 0 0;
   background-color: #fff;
 }
 .recommend .font--recommend {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0 10px;
+  top: 0;
+  padding: 23px 16px;
   margin: 0 auto;
-  font-size: 28px;
+  font-size: 28px; /* px */
   color: #eee;
-
+  line-height: 32px;
+  background-color: #ff5e66;
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 32px;
 }
 .recommend ul {
+  width: 100%;
   display: inline-block;
-  padding-left: 50px;
+  padding-left: 60px;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
@@ -199,44 +235,63 @@ export default {
   width: 200px;
   margin: 10px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, .2);
-  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .2);
+  overflow: hidden;
 }
 .recommend ul li img {
   display: block;
-  width: 120px;
-  height: 120px;
-  margin: -10px auto 0 auto;
-  border-radius: 20px;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto;
+  border-radius: 18px;
 }
 .recommend ul li span {
+  padding: 14px 0;
   display: block;
-  padding: 10px 0;
+  font-size: 24px; /* px */
+  color: #111;
 }
-.recommend ul li a {
-  display: block;
-  width: 100px;
-  margin: 10px auto;
+/* 有奖活动 */
+.activity--prize {
+  padding: 28px 40px;
+}
+.activity--prize .type {
+  padding: 8px 13px;
+  font-size: 28px; /* px */
+  color: #ff0000;
+  border: 2px solid #ff0000;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.activity--prize .type img {
+  padding-left: 9px;
+  width: 36px;
+  height: auto;
+  vertical-align: bottom;
+}
+.activity--prize .desc {
+  padding-left: 16px;
+  font-size: 24px; /* px */
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* 切换游戏类型 */
 .menu ul {
   background-color: #fff;
-  border-bottom: 1px solid #f5f5fa;
+  border-bottom: 2px solid #e2e2e2;
 }
 .menu .menu--font {
+  font-size: 28px; /* px */
   line-height: 80px;
-  text-align: center;
 }
 .menu .menu--font .router-link-active {
-  padding: 10px;
-  border-bottom: 4px solid #2697fc;
-  color: #2697fc;
+  border-bottom: 8px solid #ff9c00;
+  color: #ff9c00;
 }
 .menu .menu--font a {
-  font-size: 24px;
-  color: #333;
-  font-weight: 600;
-  height: 24px;
-  line-height: 24px;
+  margin: 0 auto;
+  font-size: 28px; /* px */
+  color: #111;
 }
 </style>
