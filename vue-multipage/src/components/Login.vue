@@ -1,11 +1,11 @@
 <template>
   <div id="dialog" class="dialog__login" @click.self="isHide ? hideDialog('dialog__login') : ''">
       <!-- 登陆和注册 -->
-      <div class="dialog__content">
+      <div class="dialog__content dialogContent">
         <!-- 登陆 -->
         <div class="dialog--login">
             <!-- <p>登陆</p> -->
-            <img class="icon--close" :src="iconClose" @click="hideDialog('dialog__login')" alt="icon">
+            <img class="icon--close" :src="iconClose" v-show="isHide" @click="hideDialog('dialog__login')" alt="icon">
             <div class="inputBox accountNumber">
                 <img :src="iconStatus == 1 ? iconUser1 : iconUser0" alt="icon">
                 <input :class="iconStatus == 1 ? 'active' : ''" type="text" v-model="accountNumber" @focus="iconStatus = 1" @blur="iconStatus = 0" placeholder="请输入账号">
@@ -14,12 +14,13 @@
                 <img :src="iconStatus == 2 ? iconPassword1 : iconPassword0" alt="icon">
                 <input :class="iconStatus == 2 ? 'active' : ''" type="password" v-model="password" @focus="iconStatus = 2" @blur="iconStatus = 0" placeholder="请输入密码">
             </div>
-            <button class="btn btn--commit" @click="login">一键注册/登陆</button>
+            <button class="btn--other btn--commit" @click="login">一键注册/登陆</button>
+            <a class="btn--forgetPassword" href="javascript:void(0);" @click="nextPage('dialogContent', 'forgetPassword')">忘记密码?</a>
         </div> 
         <!-- 注册 -->
         <div class="dialog--register">
             <!-- <p>注册</p> -->
-            <img class="icon--close" :src="iconClose" @click="hideDialog('dialog__login')" alt="icon">
+            <img class="icon--close" :src="iconClose" v-show="isHide" @click="hideDialog('dialog__login')" alt="icon">
             <div class="inputBox accountNumber">
                 <img :src="iconStatus == 1 ? iconUser1 : iconUser0" alt="icon">
                 <input :class="iconStatus == 1 ? 'active' : ''" type="text" v-model="accountNumber" @focus="iconStatus = 1" @blur="iconStatus = 0" placeholder="请输入账号">
@@ -33,7 +34,7 @@
                 <input :class="iconStatus == 3 ? 'active' : ''" type="text" v-model="imgCode" @focus="iconStatus = 3" @blur="iconStatus = 0" placeholder="请输入图片验证码">
                 <img :src="imgCodeSrc" alt="code" @click="refreshCode">
             </div>
-            <button class="btn btn--commit" @click="register">一键注册</button>
+            <button class="btn--other btn--commit" @click="register">一键注册</button>
         </div>
         <div class="login--third">
             <p>你也可以用以下方式登陆</p>
@@ -48,12 +49,12 @@
                         <p>微信</p>
                     </a>
                 </li>
-                <!-- <li class="flex flex-list flex-v">
+                <li class="flex flex-list flex-v">
                     <a :href="qqLogin">
                         <img :src="iconQq" alt="icon">
                         <p>QQ</p>
                     </a>
-                </li> -->
+                </li>
                 <!-- <li class="flex flex-list flex-v">
                     <img :src="iconVisitor" alt="icon">
                     <span>游客</span>
@@ -62,11 +63,13 @@
         </div>
       </div>
       <dialog-tip class="login__tip" :tip="tip"></dialog-tip>
+      <forget-password :refresh-forget-code="refreshForgetCode"></forget-password>
   </div>
 </template>
 
 <script>
 import DialogTip from '@/components/tips/DialogTip'
+import ForgetPassword from '@/components/user/ForgetPassword'
 
 import Request from '@/assets/js/api'
 import CommonMethods from '@/assets/js/common';
@@ -88,18 +91,22 @@ import iconVisitor from '@/assets/images/login/icon_visitor.png'
 
 export default {
   name: 'Login',
-  components: { DialogTip },
+  components: { DialogTip, ForgetPassword },
   data() {
       return {
+        pUserId: '',
         agentId: '',
+        gameId: '',
         accountNumber: '',
         password: '',
         imgCode: '',
         imgCodeSrc: '',
         tip: '',
+        refreshForgetCode: false, // 通知忘记密码组件请求图片验证码
         // 第三方登陆
         wxLogin: '',
         qqLogin: '',
+        isWeChat: true, // 判断移动端是否为微信浏览器
         // icon
         iconStatus: 1, // 1,2,3分别表示几个图标
         iconUser0: iconUser0,
@@ -116,19 +123,40 @@ export default {
       }
   },
   props: {
-      isHide: {
-          type: Boolean,
-          default: true
+    isHide: {
+      type: Boolean,
+      default: true
+    },
+    refreshBindCode: {
+      type: Boolean,
+      default: false
+    },
+  },
+  watch: {
+    refreshBindCode(newVal, oldVal) {
+      if (newVal) {
+        this.refreshCode();
       }
+    },
   },
   methods: {
     showDialog(el) {
+      if (el == 'forgetPassword') {
+        this.refreshForgetCode = true;
+      }
+      if (el == 'dialog--register') {
+          this.refreshCode();
+      }
       const dialog = document.getElementsByClassName(el)[0];
       dialog.style.display = 'block';
     },
     hideDialog(el) {
       const dialog = document.getElementsByClassName(el)[0];
       dialog.style.display = 'none';
+    },
+    nextPage(el1, el2) {
+        this.showDialog(el2);
+        this.hideDialog(el1);
     },
     login() {
         const that = this;
@@ -152,6 +180,9 @@ export default {
             success: function (data) {
                 if (data.status) {
                     window.location.reload();
+                } else if (data.code == 'password_error'){
+                    that.tip = data.msg;
+                    that.showDialog('login__tip');
                 } else {
                     that.hideDialog('dialog--login');
                     that.showDialog('dialog--register');
@@ -186,14 +217,22 @@ export default {
             data: {
                 username: that.accountNumber,
                 password: that.password,
-                captcha: that.imgCode
+                captcha: that.imgCode,
+                agent_id: that.agentId,
+                app_id: that.gameId
             },
             success: function (data) {
                 if (data.status) {
                     window.location.reload();
+                } else {
+                    that.tip = data.msg;
+                    that.showDialog('login__tip');
                 }
             },
-            error: function (error) {}
+            error: function (error) {
+                that.tip = '服务器忙，请稍后重试';
+                that.showDialog('login__tip');
+            }
         }
         Request.ajax(options);
     },
@@ -203,16 +242,23 @@ export default {
       that.imgCodeSrc = Request.url.imgCode + '?v=' + Math.random() * 10;
     }
   },
-  watch: {},
   created() {
     this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
+    this.gameId = CommonMethods.getUrlKey('gameId') ? CommonMethods.getUrlKey('gameId') : '';
+    this.pUserId = CommonMethods.getUrlKey('puid') ? CommonMethods.getUrlKey('puid') : '';
   },
   mounted() {
-    this.imgCodeSrc = Request.url.imgCode + '?v=' + Math.random() * 10;
+    // 判断是否为移动端微信浏览器
+    if (CommonMethods.browser.mobile || CommonMethods.browser.android || CommonMethods.browser.ios || CommonMethods.browser.iPhone || CommonMethods.browser.iPad) {
+        if (!CommonMethods.browser.weChat) {
+            this.isWeChat = false;
+        }
+    }
+    // this.imgCodeSrc = Request.url.imgCode + '?v=' + Math.random() * 10;
     // 微信登陆地址
-    this.wxLogin = Request.url.wxLogin + '?agentId=' + this.agentId;
+    this.wxLogin = Request.url.wxLogin + '?agent_id=' + this.agentId + '&app_id=' + this.gameId + '&puid=' + this.pUserId;
     // QQ登陆地址
-    this.qqLogin = Request.url.qqLogin + '?agentId=' + this.agentId;
+    this.qqLogin = Request.url.qqLogin + '?agent_id=' + this.agentId + '&app_id=' + this.gameId + '&puid=' + this.pUserId;
   }
 }
 </script>
@@ -229,11 +275,11 @@ export default {
     right: 0;
     left: 0;
     z-index: 9999;
-    max-width: 750px;
+    /* max-width: 1024px; */
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .8);
+    background-color: rgba(0, 0, 0, .5);
 }
 .dialog__login .icon--close {
     position: absolute;
@@ -305,11 +351,19 @@ export default {
     height: auto;
 }
 .dialog__content .btn--commit {
-    margin: 80px 0;
+    margin: 80px 0 40px 0;
     width: 100%;
     font-size: 32px; /* px */
     color: #fff;
     background-color: #ff9c00;
+}
+/* 忘记密码 */
+.btn--forgetPassword {
+    display: block;
+    padding: 0 0 40px 0;
+    font-size: 24px; /* px */
+    color: #111;
+    text-align: center;
 }
 /* 第三方登陆 */
 .login--third {

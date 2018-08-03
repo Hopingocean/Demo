@@ -1,37 +1,24 @@
 <template>
   <div class="activity">
     <ul class="">
-      <li class="">
-        <a :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">
+      <li class="" v-for="activity in activityList" :key="activity.id">
+        <a :href=" 'activityDetail.html?activityId=' + activity.id + '&agentId=' + agentId">
           <div class="banner">
-            <img src="https://game.11h5.com/static/images/2018/0423/20180423063547176.gif" alt="banner">
+            <img v-lazy="activity.image" alt="banner">
           </div>
           <div class="activity__info flex flex-y-center">
             <p class="flex flex-v flex-list">
-              <span>【妖怪宝可萌】4月13日更新内容！占领忍者村！</span>
-              <span>活动时间：2018/04/12 ~ 2018/04/13</span>
+              <span>{{ activity.title }}</span>
+              <span>活动时间：{{ activity.start_time }} ~ {{ activity.end_time }}</span>
             </p>
-            <a class="btn"><img :src="iconFlag" alt="icon">进行中</a>
+            <a class="btn" :class="activity.lifeline == 1 ? '' : 'ending'" v-if="activity.lifeline == 1"><img :src="iconFlag" alt="icon">进行中</a>
+            <a class="btn" :class="activity.lifeline == 2 ? 'ending' : ''" v-if="activity.lifeline == 2"><img :src="iconFlag" alt="icon">已结束</a>
           </div>
         </a>
       </li>
-      <li class="">
-        <a :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">
-          <div class="banner">
-            <img src="https://game.11h5.com/static/images/2018/0423/20180423063547176.gif" alt="banner">
-          </div>
-          <div class="activity__info flex flex-y-center">
-            <p class="flex flex-v flex-list">
-              <span>【妖怪宝可萌】4月13日更新内容！占领忍者村！</span>
-              <span>活动时间：2018/04/12 ~ 2018/04/13</span>
-            </p>
-            <a class="btn ending"><img :src="iconFlag" alt="icon">已结束</a>
-          </div>
-        </a>
-      </li>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
-          敬请期待...
+          没有更多内容了...
         </span>
         <span slot="no-results">
           服务器开小差了...
@@ -55,13 +42,20 @@ export default {
   data() {
     return {
       agentId: '',
-      gameId: '',
       activityList: [],
       currentPage: 1,
-      pageSize: 12,
       totalPage: '',
       // icon
-      iconFlag: iconFlag
+      iconFlag: iconFlag,
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      this.activityList = [];
+      this.currentPage = 1;
+      this.$nextTick(() => {
+        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+      })
     }
   },
   created() {
@@ -76,7 +70,7 @@ export default {
         url: Request.url.activityList,
         data: {
           page: that.currentPage,
-          page_size: that.pageSize
+          type: 'activity' // activity/prize/notice
         },
         success: function (data) {
           if (data.status) {
@@ -108,17 +102,21 @@ export default {
 <style scoped>
 .activity ul li {
   box-sizing: border-box;
-  padding: 20px 40px;
+  padding: 20px 40px 10px 40px;
   background-color: #fff;
   border-bottom: 2px solid #e2e2e2;
+}
+.activity ul li .banner {
+  height: 300px;
 }
 .activity ul li img {
   width: 100%;
   height: auto;
+  max-height: 300px;
   border-radius: 12px;
 }
 .activity .activity__info {
-  padding: 27px 0 16px 0;
+  padding: 10px 0 0 0;
   font-size: 28px; /* px */
   color: #111;
 }
@@ -127,7 +125,7 @@ export default {
   text-overflow: ellipsis;
 }
 .activity .activity__info p span:first-child {
-  padding-bottom: 16px;
+  padding-bottom: 8px;
   font-size: 24px; /* px */
   color: #111;
   white-space: nowrap;

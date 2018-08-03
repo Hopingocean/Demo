@@ -5,12 +5,12 @@
         <div class="icon">
           <img class="game__icon" v-lazy="game.icon" alt="icon" />
         </div>
-        <div class="flex flex-list flex-v">
-          <p class="gameInfo__tags">
+        <div class="gameDesc flex flex-list flex-v">
+          <p class="gameInfo__tags flex flex-y-center">
             <span class="game__name">{{ game.name }}</span>
-            <span class="tag" v-if="game.is_exclusive">独家</span>
-            <span class="tag" v-if="game.is_gift">礼包</span>
-            <span class="tag" v-if="game.is_recommend">推荐</span>
+            <span class="tag" :class="game.is_exclusive ? 'tag--exclusive' : ''" v-if="game.is_exclusive">{{ game.is_exclusive }}</span>
+            <span class="tag" :class="game.is_gift ? 'tag--gift' : ''" v-if="game.is_gift">{{ game.is_gift }}</span>
+            <span class="tag" :class="game.is_recommend ? 'tag--recommend' : ''" v-if="game.is_recommend">{{ game.is_recommend }}</span>
           </p>
           <p class="game__type">类型：{{ game.type }}</p>
           <p class="game__desc">{{ game.desc }}</p>
@@ -19,7 +19,7 @@
       </li>
       <infinite-loading @infinite="infiniteHandler">
         <span slot="no-more">
-          敬请期待...
+          没有更多内容了...
         </span>
         <span slot="no-results">
           服务器开小差了...
@@ -43,7 +43,6 @@ export default {
       agentId: '',
       gameList: [],
       currentPage: 1,
-      pageSize: 12,
       totalPage: ''
     }
   },
@@ -58,7 +57,6 @@ export default {
         url: Request.url.gameList,
         data: {
           page: that.currentPage,
-          page_size: that.pageSize,
           type_id: '',
           is_new: 1
         },
@@ -99,16 +97,23 @@ export default {
 
 <style scoped>
 .newgame {
+  box-sizing: border-box;
+  padding-bottom: 120px;
+  line-height: 1;
   background-color: #fff;
 }
 .newgame .gameInfo {
-  padding: 32px 40px;
-  border-top: 2px solid #f0f0f0;
+  padding: 20px 40px;
+  border-top: 2px solid #f0f0f0; /* px */
 }
 .newgame .gameInfo:nth-last-child(2) {
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0; /* px */
+}
+.gameInfo .gameDesc {
+  overflow: hidden;
 }
 .gameInfo .icon {
+  height: 128px;
   margin-right: 27px;
   text-align: center;
 }
@@ -117,18 +122,29 @@ export default {
   height: 128px;
   border-radius: 18px;
 }
+.gameInfo .gameInfo__tags {
+  padding: 8px 0;
+}
 .gameInfo .game__name {
+  display: inline-block;
   font-size: 32px; /* px */
   color: #111;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .gameInfo .game__type {
-  padding: 21px 0 13px 0;
+  padding: 8px 0;
   font-size: 24px; /* px */
   color: #999;
 }
 .gameInfo .game__desc {
+  padding: 8px 0;
   font-size: 24px; /* px */
   color: #999;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .gameInfo a {
   color: #ff9c00;
@@ -136,21 +152,22 @@ export default {
 .gameInfo .gameInfo__tags .tag {
   display: inline-block;
   box-sizing: border-box;
-  padding: 4px;
+  padding: 2px;
+  margin-left: 4px;
   font-size: 20px; /* px */
   border-radius: 6px;
   white-space: nowrap;
 }
-.gameInfo .gameInfo__tags span:nth-child(2) {
-  border: 2px solid #ffa800;
+.gameInfo .gameInfo__tags span.tag--exclusive {
+  border: 2px solid #ffa800; /* px */
   color: #ffa800;
 }
-.gameInfo .gameInfo__tags span:nth-child(3) {
-  border: 2px solid #ff0000;
+.gameInfo .gameInfo__tags span.tag--gift {
+  border: 2px solid #ff0000; /* px */
   color: #ff0000;
 }
-.gameInfo .gameInfo__tags span:nth-child(4) {
-  border: 2px solid #00a2ff;
+.gameInfo .gameInfo__tags span.tag--recommend {
+  border: 2px solid #00a2ff; /* px */
   color: #00a2ff;
 }
 </style>

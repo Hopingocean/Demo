@@ -2,7 +2,7 @@
   <div class="dialog__tip">
     <div class="dialog__content">
       <p>{{ tip }}</p>
-      <button class="btn btn--ok" @click="hideDialog($event)">好的</button>
+      <button class="btn--other btn--ok" @click="hideDialog($event)">好的</button>
     </div>
   </div>
 </template>
@@ -31,11 +31,11 @@ export default {
     right: 0;
     left: 0;
     z-index: 9999;
-    max-width: 750px;
+    max-width: 1024px;
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .8);
+    background-color: rgba(0, 0, 0, .5);
 }
 .dialog__content {
     position: absolute;

@@ -3,30 +3,65 @@
     <div class="userinfo">
       <img class="avator" :src="userinfo.head_img ? userinfo.head_img : iconUser" alt="icon">
     </div>
-    <div class="inputBox phone">
-      <img :src="iconStatus == 1 ? iconMobile1 : iconMobile0" alt="icon">
-      <input :class="iconStatus == 1 ? 'active' : ''" type="tel" v-model="phone" @focus="iconStatus = 1" @blur="iconStatus = 0" placeholder="请输入手机号码">
+    <!-- 已绑定 -->
+    <div class="dialog__alreadyPhone" v-show="isBindPhone">
+      <div class="inputBox phone">
+        <img :src="iconMobile0" alt="icon">
+        <input type="text" disabled :value="phone + '（绑定成功）'">
+      </div>
+      <!-- btn -->
+      <div class="btn__group flex">
+        <a href="javascript:void(0);" @click="hideDialog('bindPhone')" class="btn--other btn--back">返回</a>
+        <a href="javascript:void(0);" @click="nextPage('dialog__alreadyPhone', 'dialog__checkPhone')" class="btn--other btn--next flex-list">修改绑定手机</a>
+      </div>
     </div>
-    <div class="inputBox password">
-      <img :src="iconStatus == 2 ? iconPassword1 : iconPassword0" alt="icon">
-      <input :class="iconStatus == 2 ? 'active' : ''" type="password" v-model="password" @focus="iconStatus = 2" @blur="iconStatus = 0" placeholder="请输入密码">
+    <!-- 验证绑定手机 -->
+    <div class="dialog__checkPhone" v-show="false">
+      <div class="inputBox phone">
+        <img :src="iconStatus == 1 ? iconMobile1 : iconMobile0" alt="icon">
+        <input :class="iconStatus == 1 ? 'active' : ''" type="tel" v-model="phone" disabled @focus="iconStatus = 1" @blur="iconStatus = 0" placeholder="请输入手机号码">
+      </div>
+      <div class="inputBox imgCode">
+        <img :src="iconStatus == 3 ? iconCode1 : iconCode0" alt="icon">
+        <input :class="iconStatus == 3 ? 'active' : ''" type="text" v-model="imgCode" @focus="iconStatus = 3" @blur="iconStatus = 0" placeholder="请输入图片验证码">
+        <img :src="imgCodeSrc" @click="refreshCode" alt="code">
+      </div>
+      <div class="inputBox mobileCode">
+        <img :src="iconStatus == 4 ? iconCode1 : iconCode0" alt="icon">
+        <input :class="iconStatus == 4 ? 'active' : ''" type="text" v-model="mobileCode" @focus="iconStatus = 4" @blur="iconStatus = 0" placeholder="请输入手机验证码">
+        <span class="btn--code" v-if="status == 1" @click="getMobileCode">获取验证码</span>
+        <span class="countdown" v-if="status != 1">{{ countdown }}S</span>
+      </div>
+      <p class="tip">请先验证已绑定手机号码</p>
+      <!-- btn -->
+      <div class="btn__group flex">
+        <a href="javascript:void(0);" @click="prevPage('dialog__alreadyPhone', 'dialog__checkPhone')" class="btn--other btn--back">返回</a>
+        <a href="javascript:void(0);" @click="checkPhone" class="btn--other btn--commit flex-list">下一步</a>
+      </div>
     </div>
-    <div class="inputBox imgCode">
-      <img :src="iconStatus == 3 ? iconCode1 : iconCode0" alt="icon">
-      <input :class="iconStatus == 3 ? 'active' : ''" type="text" v-model="imgCode" @focus="iconStatus = 3" @blur="iconStatus = 0" placeholder="请输入图片验证码">
-      <img :src="imgCodeSrc" @click="refreshCode" alt="code">
-    </div>
-    <div class="inputBox mobileCode">
-      <img :src="iconStatus == 4 ? iconCode1 : iconCode0" alt="icon">
-      <input :class="iconStatus == 4 ? 'active' : ''" type="text" v-model="mobileCode" @focus="iconStatus = 4" @blur="iconStatus = 0" placeholder="请输入手机验证码">
-      <span class="btn--code" v-if="status == 1" @click="getMobileCode">获取验证码</span>
-      <span class="countdown" v-if="status != 1">{{ countdown }}S</span>
-    </div>
-    <p class="tip">绑定后可使用手机登陆，保障账号安全</p>
-    <!-- btn -->
-    <div class="btn__group flex">
-      <a href="javascript:void(0);" @click="prevPage('personal', 'bindPhone')" class="btn btn--back">返回</a>
-      <a href="javascript:void(0);" @click="bindPhone" class="btn btn--commit flex-list">完成绑定</a>
+    <!-- 绑定手机号 -->
+    <div class="dialog__bindPhone" v-show="!isBindPhone">
+      <div class="inputBox phone">
+        <img :src="iconStatus == 1 ? iconMobile1 : iconMobile0" alt="icon">
+        <input :class="iconStatus == 1 ? 'active' : ''" type="tel" v-model="phone" @focus="iconStatus = 1" @blur="iconStatus = 0" placeholder="请输入手机号码">
+      </div>
+      <div class="inputBox imgCode">
+        <img :src="iconStatus == 3 ? iconCode1 : iconCode0" alt="icon">
+        <input :class="iconStatus == 3 ? 'active' : ''" type="text" v-model="imgCode" @focus="iconStatus = 3" @blur="iconStatus = 0" placeholder="请输入图片验证码">
+        <img :src="imgCodeSrc" @click="refreshCode" alt="code">
+      </div>
+      <div class="inputBox mobileCode">
+        <img :src="iconStatus == 4 ? iconCode1 : iconCode0" alt="icon">
+        <input :class="iconStatus == 4 ? 'active' : ''" type="text" v-model="mobileCode" @focus="iconStatus = 4" @blur="iconStatus = 0" placeholder="请输入手机验证码">
+        <span class="btn--code" v-if="status == 1" @click="getMobileCode">获取验证码</span>
+        <span class="countdown" v-if="status != 1">{{ countdown }}S</span>
+      </div>
+      <p class="tip">完成手机绑定账号更安全</p>
+      <!-- btn -->
+      <div class="btn__group flex">
+        <a href="javascript:void(0);" @click="hideDialog('bindPhone')" class="btn--other btn--back">返回</a>
+        <a href="javascript:void(0);" @click="bindPhone" class="btn--other btn--commit flex-list">完成绑定</a>
+      </div>
     </div>
     <!-- components -->
     <dialog-tip class="bindPhone__tip" :tip="tip"></dialog-tip>
@@ -52,12 +87,13 @@ export default {
   data() {
     return {
       agentId: '',
-      phone: '',
       password: '',
       imgCode: '',
+      phone: '',
       mobileCode: '',
       countdown: 60,
       status: 1,
+      isBindPhone: false,
       tip: '',
       imgCodeSrc: '',
       // icon
@@ -74,13 +110,36 @@ export default {
   props: {
     userinfo: {
       type: Object
+    },
+    refreshBindCode: {
+      type: Boolean,
+      default: false
+    },
+  },
+  watch: {
+    refreshBindCode(newVal, oldVal) {
+      if (newVal) {
+        this.refreshCode();
+      }
+    },
+    userinfo(newVal, oldVal) {
+      this.phone = newVal.mobile;
+      if (this.phone) {
+        this.isBindPhone = true;
+      }
     }
+  },
+  computed: {
+   
   },
   created() {
     this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
   },
   methods: {
     showDialog(el) {
+      if (el == 'dialog__bindPhone' || el == 'dialog__checkPhone') {
+        this.refreshCode();
+      }
       const dialog = document.getElementsByClassName(el)[0];
       dialog.style.display = 'block';
     },
@@ -92,15 +151,60 @@ export default {
       this.showDialog(el1);
       this.hideDialog(el2);
     },
-    bindPhone() {
+    nextPage(el1, el2) {
+      this.showDialog(el2);
+      this.hideDialog(el1);
+    },
+    // 验证手机号
+    checkPhone() {
       const that = this;
       if (!that.phone || !CommonMethods.checkMobile(that.phone)) {
         that.tip = '请填写正确的手机号';
         that.showDialog('bindPhone__tip');
         return;
       }
-      if (!that.password) {
-        that.tip = '请填写账号密码';
+      if (!that.imgCode) {
+        that.tip = '请填写图片验证码';
+        that.showDialog('bindPhone__tip');
+        return;
+      }
+      if (!that.mobileCode) {
+        that.tip = '请填写手机号验证码';
+        that.showDialog('bindPhone__tip');
+        return;
+      }
+      const options = {
+        url: Request.url.checkPhone,
+        type: 'POST',
+        data: {
+          mobile_code: that.mobileCode
+        },
+        success: function (data) {
+          if(data.status) {
+            that.nextPage('dialog__checkPhone', 'dialog__bindPhone');
+            // 清除验证数据
+            that.phone = '';
+            that.imgCode = '';
+            that.status = 1;
+            that.countdown = 60;
+            that.mobileCode = '';
+          } else {
+            that.tip = data.msg;
+            that.showDialog('bindPhone__tip');
+          }
+        },
+        error: function (err) {
+          that.tip = '验证失败，请稍后重试';
+          that.showDialog('bindPhone__tip');
+        }
+      }
+      Request.ajax(options);
+    },
+    // 绑定手机号
+    bindPhone() {
+      const that = this;
+      if (!that.phone || !CommonMethods.checkMobile(that.phone)) {
+        that.tip = '请填写正确的手机号';
         that.showDialog('bindPhone__tip');
         return;
       }
@@ -128,7 +232,7 @@ export default {
               window.location.reload();
             }, 1000)
           } else {
-            that.tip = '绑定失败，请稍后重试';
+            that.tip = data.msg;
             that.showDialog('bindPhone__tip');
           }
         },
@@ -139,6 +243,7 @@ export default {
       }
       Request.ajax(options);
     },
+    // 获取手机验证码
     getMobileCode() {
       const that = this;
       if (!that.phone || !CommonMethods.checkMobile(that.phone)) {
@@ -170,9 +275,15 @@ export default {
               that.status = 1;
               that.countdown = 60;
             }, 1000)
+          } else {
+            that.tip = data.msg;
+            that.showDialog('bindPhone__tip');
           }
         },
-        error: function (err) {}
+        error: function (err) {
+          that.tip = '验证码发送失败，请稍后重试';
+          that.showDialog('bindPhone__tip');
+        }
       }
       Request.ajax(options);
     },
@@ -183,7 +294,7 @@ export default {
     }
   },
   mounted() {
-    this.imgCodeSrc = Request.url.imgCode + '?v=' + Math.random() * 10;
+
   }
 }
 </script>
@@ -193,13 +304,19 @@ export default {
   display: none;
 }
 .bindPhone {
-  display: none;
   box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  z-index: 9999;
+  display: none;
   margin: 0 auto;
-  padding: 120px 40px 128px 40px;
+  padding: 120px 40px;
   width: 100%;
-  height: auto;
-  max-width: 750px;
+  height: 100%;
   background-color: #fff;
 }
 .userinfo {
@@ -210,6 +327,13 @@ export default {
   width: 128px;
   height: 128px;
   border-radius: 50%;
+}
+/* 已绑定手机号 */
+.dialog__alreadyPhone .inputBox {
+  margin-bottom: 30px;
+}
+.dialog__alreadyPhone .inputBox input {
+  background-color: #fff;
 }
 /* input box */
 .bindPhone .inputBox {
@@ -231,6 +355,7 @@ export default {
   color: #999;
   border: none;
   border-bottom: 2px solid #f0f0f0;
+  background-color: #fff;
 }
 .inputBox input.active {
   border-bottom: 2px solid #ff9c00;
@@ -262,7 +387,7 @@ export default {
   color: #ff9c00;
   text-align: center;
   border-radius: 8px;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
 }
 .bindPhone .mobileCode .countdown {
   position: absolute;
@@ -287,7 +412,7 @@ export default {
   margin-right: 10px;
   color: #ff9c00;
 }
-.btn__group .btn--commit {
+.btn__group .btn--commit, .btn--modify, .btn--next {
   color: #fff;
   background-color: #ff9c00;
 }

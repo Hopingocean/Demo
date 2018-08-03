@@ -7,20 +7,20 @@
       个
     </p>
     <ul class="search__list">
-      <li class="flex flex-y-center" v-for="game in searchList" :key="game.gameId" @click="goGameDetail(game.gameId)">
+      <li class="flex flex-y-center" v-for="game in searchList" :key="game.id" @click="goGameDetail(game.id)">
         <div class="icon">
-          <img :src="game.gameIcon" alt="icon">
+          <img v-lazy="game.icon" alt="icon">
         </div>
         <div class="gameInfo flex flex-v flex-list">
-          <span>{{ game.gameName }}</span>
-          <span>类型：{{ game.gameType }}</span>
-          <span>{{ game.gameDesc }}</span>
+          <span>{{ game.name }}</span>
+          <span>类型：{{ game.type }}</span>
+          <span>{{ game.desc }}</span>
         </div>
-        <a :href="'game.html?gameId=' + game.gameId + '&agentId=' + agentId" class="btn">开始</a>
+        <a :href="'game.html?gameId=' + game.id + '&agentId=' + agentId" class="btn">开始</a>
       </li>
       <infinite-loading @infinite="infiniteHandler">
         <span slot="no-more">
-          敬请期待...
+          没有更多内容了...
         </span>
         <span slot="no-results">
           服务器开小差了...
@@ -45,7 +45,6 @@
         searchList: [],
         searchText: '',
         currentPage: 1,
-        pageSize: 12,
       }
     },
     props: {},
@@ -56,6 +55,7 @@
       '$route'(to, from) {
         if(to.path != from.path) {
           this.searchText = this.$route.params.searchText;
+          this.currentPage = 1;
           this.getSearchList();
         }
       }
@@ -67,33 +67,22 @@
         if (!that.searchText) {
           return;
         }
-        that.searchList = [
-          {
-            gameId: '11',
-            gameIcon: '',
-            gameName: '疯狂捕鱼',
-            gameType: '休闲',
-            gameDesc: '高还原街机移植版'
-          },
-          {
-            gameId: '12',
-            gameIcon: '',
-            gameName: '集结号捕鱼',
-            gameType: '休闲',
-            gameDesc: '高还原街机移植版'
-          }
-        ];
         const options = {
           type: 'get',
           url: Request.url.search,
           data: {
             page: that.currentPage,
-            page_size: that.pageSize,
+            name: that.searchText
           },
           success: function (data) {
             if (data.status) {
-              that.searchList = data.data.data;
+              that.searchList = that.searchList.concat(data.data.data);
+              that.currentPage = data.data.current_page + 1;
+              that.totalPage = data.data.total_page;
               $state.loaded();
+              if (that.currentPage > that.totalPage) {
+                $state.complete();
+              }
             } else {
               $state.complete();
             }
@@ -106,7 +95,7 @@
       },
       // 滚动加载
       infiniteHandler($state) {
-          this.getSearchList($state);
+        this.getSearchList($state);
       },
       // 游戏详情页
       goGameDetail(gameId) {
@@ -123,8 +112,11 @@
 </script>
 
 <style scoped>
+.search {
+  padding-bottom: 120px;
+}
 .search__desc {
-  padding: 28px 40px;
+  padding: 20px 40px;
   font-size: 32px; /* px */
   color: #111;
   border-bottom: 2px solid #f0f0f0;
@@ -134,8 +126,12 @@
 }
 .search__list li {
   box-sizing: border-box;
-  padding: 32px 40px;
+  padding: 20px 40px;
+  line-height: 1;
   border-bottom: 2px solid #f0f0f0;
+}
+.search__list .icon {
+  height: 128px;
 }
 .search__list .icon img {
   width: 128px;
@@ -145,15 +141,26 @@
 .gameInfo {
   padding-left: 27px;
   color: #999999;
+  overflow: hidden;
 }
 .gameInfo span:first-child {
+  padding: 8px 0;
   color: #111;
   font-size: 32px; /* px */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .gameInfo span:nth-child(2) {
-  padding: 24px 0 13px 0;
+  padding: 8px 0;
   font-size: 24px; /* px */
-
+}
+.gameInfo span:nth-child(3) {
+  padding: 8px 0;
+  font-size: 24px; /* px */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
 

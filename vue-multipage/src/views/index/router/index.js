@@ -34,7 +34,13 @@ export default new Router({
             path: '/hotactivity',
             name: 'HotActivity',
             component: HotActivity,
-            children: [{
+            children: [
+                {
+                    path: '/',
+                    name: 'Activity',
+                    component: Activity
+                },
+                {
                     path: 'activity',
                     name: 'Activity',
                     component: Activity
@@ -55,7 +61,13 @@ export default new Router({
             path: '/opengame',
             name: 'OpenGame',
             component: OpenGame,
-            children: [{
+            children: [
+                {
+                    path: '/',
+                    name: 'NewOpen',
+                    component: NewOpen
+                },
+                {
                     path: 'newopen',
                     name: 'NewOpen',
                     component: NewOpen

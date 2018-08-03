@@ -46,19 +46,19 @@
         </li>
         <li class="flex flex-y-center">
           <span>新密码</span>
-          <input class="flex-list" type="text" v-model="newPassword" placeholder="6-15位字母或数字">
+          <input class="flex-list" type="password" v-model="newPassword" placeholder="6-15位字母或数字">
           <img :src="iconHide" alt="icon">
         </li>
         <li class="flex flex-y-center">
           <span>确认密码</span>
-          <input class="flex-list" type="text" v-model="confirmPassword" placeholder="6-15位字母或数字">
+          <input class="flex-list" type="password" v-model="confirmPassword" placeholder="6-15位字母或数字">
           <img :src="iconHide" alt="icon">
         </li>
       </ul>
       <!-- btn -->
       <div class="btn__group flex">
-        <a href="javascript:void(0);" @click="prevPage('account__menu', 'account__password')" class="btn btn--back">返回</a>
-        <a href="javascript:void(0);" @click="modifyPassword" class="btn btn--commit flex-list">完成修改</a>
+        <a href="javascript:void(0);" @click="prevPage('account__menu', 'account__password')" class="btn--other btn--back">返回</a>
+        <a href="javascript:void(0);" @click="modifyPassword" class="btn--other btn--commit flex-list">完成修改</a>
       </div>
     </div>
     <!-- 修改昵称 -->
@@ -69,8 +69,8 @@
         <p>起个好名字，联系更方便</p>
         <!-- btn -->
         <div class="btn__group flex">
-          <a href="javascript:void(0);" @click="hideDialog('account__nickname')" class="btn btn--back">取消</a>
-          <a href="javascript:void(0);" @click="modifyUserinfo" class="btn btn--commit flex-list">确认修改</a>
+          <a href="javascript:void(0);" @click="hideDialog('account__nickname')" class="btn--other btn--back">取消</a>
+          <a href="javascript:void(0);" @click="modifyUserinfo" class="btn--other btn--commit flex-list">确认修改</a>
         </div>
       </div>
     </div>
@@ -90,8 +90,8 @@
         </div>
         <!-- btn -->
         <div class="btn__group flex">
-          <a href="javascript:void(0);" @click="hideDialog('account__sex')" class="btn btn--back">取消</a>
-          <a href="javascript:void(0);" @click="modifyUserinfo" class="btn btn--commit flex-list">确认修改</a>
+          <a href="javascript:void(0);" @click="hideDialog('account__sex')" class="btn--other btn--back">取消</a>
+          <a href="javascript:void(0);" @click="modifyUserinfo" class="btn--other btn--commit flex-list">确认修改</a>
         </div>
       </div>
     </div>
@@ -128,9 +128,9 @@ export default {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
-      mobile: this.userinfo.mobile,
-      nickname: this.userinfo.nickname,
-      sex: this.userinfo.sex == 1 ? 1 : 2,
+      mobile: '',
+      nickname: '',
+      sex: '',
       tip: '',
     }
   },
@@ -138,6 +138,16 @@ export default {
     userinfo: {
       type: Object
     }
+  },
+  watch: {
+    userinfo(newVal, oldVal) {
+      this.mobile = newVal.mobile;
+      this.nickname = newVal.nickname;
+      this.sex = newVal.sex;
+    }
+  },
+  computed: {
+    
   },
   created() {
     this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
@@ -156,6 +166,12 @@ export default {
       this.hideDialog(el2);
     },
     nextPage(el1, el2) {
+      // 第三方登陆用户提示不用修改密码
+      if (this.userinfo.flag_status && el1 == 'account__password') {
+        this.tip = '授权登陆用户不可修改密码';
+        this.showDialog('accountManage__tip');
+        return;
+      }
       this.showDialog(el1);
       this.hideDialog(el2);
     },
@@ -192,12 +208,12 @@ export default {
               window.location.reload();
             }, 1000)
           } else {
-            that.tip = '密码重置失败，请稍后尝试';
+            that.tip = '密码重置失败，请稍后重试';
             that.showDialog('accountManage__tip');
           }
         },
         error: function (error) {
-          that.tip = '密码重置失败，请稍后尝试';
+          that.tip = '密码重置失败，请稍后重试';
           that.showDialog('accountManage__tip');
         }
       }
@@ -238,12 +254,12 @@ export default {
             that.hideDialog('account__nickname');
             that.hideDialog('account__sex');
           } else {
-            that.tip = '修改失败，请稍后尝试';
+            that.tip = '修改失败，请稍后重试';
             that.showDialog('accountManage__tip');
           }
         },
         error: function (error) {
-          that.tip = '修改失败，请稍后尝试';
+          that.tip = '修改失败，请稍后重试';
           that.showDialog('accountManage__tip');
         }
       }
@@ -251,7 +267,7 @@ export default {
     },
   },
   mounted() {
-    this.getUserinfo();
+    // this.getUserinfo();
   }
 }
 </script>
@@ -264,14 +280,14 @@ export default {
   display: none;
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 24px 0 0 0;
+  padding: 20px 0 0 0;
   width: 100%;
   height: auto;
-  max-width: 750px;
+  max-width: 1024px;
   background-color: #f0f0f0;
 }
 .account__menu div {
-  padding: 20px 40px;
+  padding: 16px 40px;
   background-color: #fff;
   border-bottom: 2px solid #f0f0f0;
 }
@@ -294,7 +310,7 @@ export default {
   display: none;
 }
 .account__info div {
-  padding: 30px 40px;
+  padding: 20px 40px;
   background-color: #fff;
   border-bottom: 2px solid #f0f0f0;
 }
@@ -363,11 +379,11 @@ export default {
   right: 0;
   left: 0;
   z-index: 9999;
-  max-width: 750px;
+  max-width: 1024px;
   margin: 0 auto;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, .5);
 }
 .dialog__content {
   position: absolute;
@@ -432,7 +448,7 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid #999;
+  border: 1px solid #999; /* no */
 }
 .account__sex .dialog__content input[type='radio']:checked  + label::before {
   content: "";
@@ -442,13 +458,13 @@ export default {
   margin-top: 5px;
   border-radius: 50%;
   background-color: #ff9c00;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
 }
 .account__sex .dialog__content input[type='radio']:checked  + label {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
   text-align: center;
 }
 /* btn */

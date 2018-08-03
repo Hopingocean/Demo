@@ -34,6 +34,11 @@ html {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
 }
 
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
 ul,
 ol {
     list-style: none;
@@ -170,10 +175,25 @@ a:hover {
     display: inline-block;
     font-size: 28px;
     /* px */
-    /*px*/
-    padding: 11px 28px;
+    padding: 4px 20px;
     color: #FF9C00;
-    border: 2px solid #FF9C00;
+    border: 1px solid #FF9C00; /* no */
+    white-space: nowrap;
+    -o-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn--other {
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 28px;
+    /* px */
+    padding: 11px 26px;
+    color: #FF9C00;
+    border: 1px solid #FF9C00; /* no */
     white-space: nowrap;
     -o-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -236,17 +256,271 @@ textarea::-webkit-input-placeholder {
 }
 
 
-/* body {
-    background-color: #f5f5fa;
-} */
+/* 移动端隐藏 */
 
-@media screen and (min-width: 750px) {
+.menu--top,
+.tip--footer,
+.bg__content {
+    display: none;
+}
+
+@media screen and (min-device-width: 1024px) and (min-width: 1024px) {
     #app,
     #menubar,
     #bottomBtn {
-        width: 750px;
+        width: 1024px;
         height: auto;
         margin: 0 auto;
+    }
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+        overflow: hidden;
+    }
+    #app {
+        width: 100%;
+        height: 100%;
+        background-image: url('../images/common/bg.png');
+        background-repeat: no-repeat;
+        background-position: center 60px;
+        /* no */
+        background-size: cover;
+    }
+    .wrap__box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 420px;
+        /* no */
+        height: 760px;
+        /* no */
+        padding: 56px 21px;
+        /* no */
+        box-sizing: border-box;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        background-color: #fff;
+        border-radius: 28px;
+        /* no */
+        border: 1px solid #ffa800;
+        /* no */
+    }
+    /* PC端自定义弹框宽度和高度 */
+    .bindPhone,
+    .certification {
+        max-width: 742px;
+        max-height: 644px;
+        /* no */
+    }
+    .dialog__gift {
+        border-radius: 28px;
+        /* no */
+    }
+    #menubar, #bottomBtn {
+        position: absolute;
+        bottom: 56px;
+        /* no */
+        width: 372px;
+        /* no */
+    }
+    #menubar ul li {
+        padding: 10px 0;
+    }
+    .wrap {
+        height: 100%;
+        overflow: hidden;
+        border: 1px solid #ffa800;
+        /* no */
+    }
+    .scroll, .userAgree {
+        box-sizing: border-box;
+        width: calc(100% + 34px);
+        height: 645px;
+        /* no */
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+    /* 顶部导航 */
+    .menu--top {
+        display: block;
+        width: 100%;
+        height: 60px;
+        /* no */
+    }
+    .menu--top a:last-child {
+        margin-left: 40px;
+        /* no */
+        margin-right: 200px;
+        /* no */
+    }
+    .menu--top .icon__logo {
+        height: 41px;
+        /* no */
+        margin-left: 200px;
+        /* no */
+        margin-top: 10px;
+        /* no */
+    }
+    .menu--top .icon__phone,
+    .icon__custom {
+        width: 34px;
+        /* no */
+        height: auto;
+    }
+    .menu--top span {
+        color: #595656;
+        font-size: 16px;
+        /* no */
+    }
+    /* wrap box */
+    .bg__content {
+        display: block;
+    }
+    /* tip left */
+    .tip--left {
+        position: absolute;
+        left: -170px;
+        /* no */
+    }
+    .tip--left img:nth-child(1) {
+        display: block;
+        width: 120px;
+        /* no */
+        height: auto;
+    }
+    .tip--left img:nth-child(2) {
+        width: 50px;
+        /* no */
+        height: auto;
+        margin-left: 100px;
+        /* no */
+    }
+    .leftBtn {
+        position: absolute;
+        left: -8px;
+        top: 80px;
+    }
+    .leftBtn i {
+        width: 8px;
+        height: 76px;
+        background: #ffb100;
+        -o-border-radius: 4px 0 0 4px;
+        -moz-border-radius: 4px 0 0 4px;
+        -webkit-border-radius: 4px 0 0 4px;
+        border-radius: 4px 0 0 4px;
+    }
+    .leftBtn i:nth-child(1) {
+        height: 76px;
+    }
+    .leftBtn i:nth-child(2) {
+        margin: 50px 0 14px 0;
+    }
+    .topBtn {
+        position: absolute;
+        left: 50%;
+        top: 15px; /* no */
+        -moz-transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+    .topBtn i {
+        height: 12px;
+        width: 12px;
+        border-radius: 12px;
+        background-color: #ffa800;
+    }
+    .topBtn>i {
+        margin: auto;
+    }
+    .topBtn div {
+        position: relative;
+        margin-top: 15px;
+    }
+    .topBtn div i:first-child {
+        position: absolute;
+        left: -32px;
+        top: -4px;
+        width: 18px;
+        height: 18px;
+        border-radius: 18px;
+    }
+    .topBtn div i:last-child {
+        width: 154px;
+    }
+    .bottomBtn {
+        position: absolute;
+        left: 50%;
+        bottom: 26px;
+        -moz-transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+    .bottomBtn i {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        border: 1px solid #ffa800; /* no */
+    }
+    /* 二维码 */
+    .bg__content .code {
+        position: absolute;
+        top: 300px;
+        /* no */
+        right: -200px;
+        /* no */
+    }
+    .bg__content .code .code--border {
+        width: 160px;
+        /* no */
+        height: auto;
+    }
+    .bg__content .code .qrCode {
+        position: absolute;
+        top: 5px;
+        /* no */
+        left: 9px;
+        /* no */
+        width: 144px;
+        /* no */
+        height: auto;
+    }
+    /* 底部信息 */
+    .tip--footer {
+        display: block;
+        width: 100%;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        -moz-transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .tip--footer img {
+        padding: 0 20px;
+        /* no */
+    }
+    .tip--footer .content {
+        display: inline-block;
+        font-size: 14px;
+        /* no */
+        color: #fff;
+    }
+    .tip--footer ul {
+        padding-bottom: 10px;
+        /* no */
+    }
+    .tip--footer ul li {
+        display: inline-block;
+        font-size: 16px;
+        /* no */
+    }
+    .tip--footer ul li a {
+        color: #fff;
     }
 }
 
@@ -259,4 +533,21 @@ textarea::-webkit-input-placeholder {
     /* px */
     text-align: center;
     padding: 20px 0;
+}
+
+/* ql-editor */
+.ql-editor {
+  width: 100%;
+  height: auto;
+}
+.ql-editor img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+/* 隐藏站长统计图标 */
+
+a[title="站长统计"] {
+    display: none;
 }

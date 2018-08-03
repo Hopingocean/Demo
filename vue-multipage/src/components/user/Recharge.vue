@@ -52,8 +52,8 @@
         <p>{{ money }}</p>
         <!-- btn -->
         <div class="btn__group flex">
-          <a href="javascript:void(0);" @click="prevPage('personal', 'recharge__money')" class="btn btn--back">返回</a>
-          <a href="javascript:void(0);" @click="nextPage('recharge__mode', 'recharge__money')" class="btn btn--commit flex-list">立即充值</a>
+          <a href="javascript:void(0);" @click="prevPage('personal', 'recharge__money')" class="btn--other btn--back">返回</a>
+          <a href="javascript:void(0);" @click="nextPage('recharge__mode', 'recharge__money')" class="btn--other btn--commit flex-list">立即充值</a>
         </div>
       </div>
     </div>
@@ -102,8 +102,8 @@
     <p class="money">{{ money }}</p>
     <!-- btn -->
     <div class="btn__group flex">
-      <a href="javascript:void(0);" @click="prevPage('recharge__money', 'recharge__mode')" class="btn btn--back">返回</a>
-      <a href="javascript:void(0);" @click="pay" class="btn btn--commit flex-list">立即充值</a>
+      <a href="javascript:void(0);" @click="prevPage('recharge__money', 'recharge__mode')" class="btn--other btn--back">返回</a>
+      <a href="javascript:void(0);" @click="pay" class="btn--other btn--commit flex-list">立即充值</a>
     </div>
     <!-- 客服电话 -->
     <div class="custom">
@@ -194,7 +194,7 @@ export default {
   display: none;
   width: 100%;
   padding-top: 20px;
-  padding-bottom: 128px;
+  padding-bottom: 120px;
   background-color: #f0f0f0;
 }
 /* userinfo */
@@ -275,14 +275,14 @@ export default {
   width: 45%;
   padding: 28px 0;
   margin: 10px;
-  border: 2px solid #f0f0f0;
+  border: 1px solid #f0f0f0; /* no */
   border-radius: 12px;
   font-size: 32px; /* px */
   color: #111;
   text-align: center;
 }
 .recharge__list ul li.active {
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
   background-image: url('../../assets/images/user/icon_select.png');
   background-size: 42px;
   background-position: 0 0;
@@ -301,7 +301,7 @@ export default {
   display: none;
   width: 100%;
   padding-top: 20px;
-  padding-bottom: 128px;
+  padding-bottom: 120px;
   background-color: #f0f0f0;
 }
 .recharge__mode .title {
@@ -362,7 +362,7 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #999;
+  border: 1px solid #999; /* no */
 }
 .recharge__mode ul li input[type='radio']:checked  + label::before {
   content: "";
@@ -372,13 +372,13 @@ export default {
   margin-top: 5px;
   border-radius: 50%;
   background-color: #ff9c00;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
 }
 .recharge__mode ul li input[type='radio']:checked  + label {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
   text-align: center;
 }
 .recharge__mode .font--money {

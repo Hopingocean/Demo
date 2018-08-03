@@ -2,9 +2,11 @@ import Vue from 'vue'
 import router from './router'
 import Classify from './Classify.vue'
 
-import wxJsSdk from 'weixin-js-sdk'
-import flexiable from 'lib-flexible'
+import 'weixin-js-sdk'
+import 'lib-flexible'
 import '@/assets/css/common.css'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.min.css'
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {

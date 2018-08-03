@@ -3,14 +3,14 @@
     <!-- 菜单 -->
     <div class="menu">
       <ul class="flex">
-        <li class="flex flex-list">
-          <router-link class="flex flex-list flex-x-center" to="activity">活动</router-link>
+        <li class=" flex flex-list">
+          <a class="flex flex-list flex-x-center" href="javascript:void(0);" :class="activeMenu == 1 ? 'active' : ''" @click="viewMenu('activity', 1)">活动</a>
         </li>
-        <li class="flex-list">
-          <router-link class="flex flex-list flex-x-center" to="prize">有奖</router-link>          
-        </li>
-        <li class="flex-list">
-          <router-link class="flex flex-list flex-x-center" to="notice">公告</router-link>          
+        <!-- <li class=" flex flex-list">
+          <a class="flex flex-list flex-x-center" href="javascript:void(0);" :class="activeMenu == 2 ? 'active' : ''" @click="viewMenu('prize', 2)">攻略</a>
+        </li> -->
+        <li class=" flex flex-list">
+          <a class="flex flex-list flex-x-center" href="javascript:void(0);" :class="activeMenu == 3 ? 'active' : ''" @click="viewMenu('notice', 3)">公告</a>
         </li>
       </ul>
     </div>
@@ -26,16 +26,40 @@ export default {
   data() {
     return {
       agentId: '',
+      activityType: [],
+      activeMenu: 1,
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      if (to.name == 'HotActivity' || to.name == 'Activity') {
+        this.activeMenu = 1;
+      } else if (to.name == 'Prize') {
+        this.activeMenu = 2;
+      } else if (to.name == 'Notice') {
+        this.activeMenu = 3;
+      }
     }
   },
   created() {
     this.agentId = CommonMethods.getUrlKey('agentId') ? CommonMethods.getUrlKey('agentId') : '';
   },
+  methods: {
+    // 菜单选择
+    viewMenu(name, n) {
+      this.activeMenu = n;
+      this.$router.push('/hotactivity/' + name);
+    }
+  },
   mounted: function () {
     this.$nextTick(function () {
       // 判断当前激活路由
-      if (this.$route.name == 'HotActivity') {
-        this.$router.push('hotactivity/activity');
+      if (this.$route.name == 'HotActivity' || this.$route.name == 'Activity') {
+        this.activeMenu = 1;
+      } else if (this.$route.name == 'Prize') {
+        this.activeMenu = 2;
+      } else if (this.$route.name == 'Notice') {
+        this.activeMenu = 3;
       }
     })
   }
@@ -43,9 +67,12 @@ export default {
 </script>
 
 <style scoped>
+.hotactivity {
+  padding-bottom: 120px;
+}
 .hotactivity .menu {
   box-sizing: border-box;
-  padding: 20px 36px;
+  padding: 20px 36px 0 36px;
   background-color: #fff;
 }
 .hotactivity .menu ul li:first-child a {
@@ -61,15 +88,15 @@ export default {
 }
 .hotactivity .menu ul li:nth-child(2) a {
   border-left: none;
-  border-right: none;
+  /* border-right: none; */
 }
 .hotactivity .menu ul li a {
   padding: 11px 20px;
   font-size: 28px; /* px */
   color: #ff9c00;
-  border: 2px solid #ff9c00;
+  border: 1px solid #ff9c00; /* no */
 }
-.hotactivity .menu ul li a.router-link-active {
+.hotactivity .menu ul li a.active {
   color: #fff;
   background-color: #ff9c00;
 }

@@ -2,45 +2,29 @@
   <div id="menubar" class="menubar">
       <ul class="flex">
           <li class="flex flex-list">
-            <div v-if="currentMenu !== 1" @click="go(1)">
-                <img :src="currentMenu == 1 ? iconGame1 : iconGame0" alt="icon">
-                <span class="menu__font">游戏</span>
-            </div>
-            <div class="current" v-if="currentMenu == 1">
+            <div :class="currentMenu == 1 ? 'current' : ''" @click="go(1)">
                 <img :src="currentMenu == 1 ? iconGame1 : iconGame0" alt="icon">
                 <span class="menu__font">游戏</span>
             </div>
           </li>
-          <!-- <li class="flex flex-list">
-            <div v-if="currentMenu !== 2" @click="go(2)">
-                <img :src="iconGift0" alt="icon">
-                <span class="menu__font">礼包</span>
-            </div>
-            <div class="current" v-if="currentMenu == 2">
-                <img :src="iconGift1" alt="icon">
+          <li class="flex flex-list">
+            <div :class="currentMenu == 2 ? 'current' : ''" @click="go(2)">
+                <img :src="currentMenu == 2 ? iconGift1 : iconGift0" alt="icon">
                 <span class="menu__font">礼包</span>
             </div>
           </li>
           <li class="flex flex-list">
-            <div v-if="currentMenu !== 3" @click="go(3)">
-                <img :src="iconClassify0" alt="icon">
-                <span class="menu__font">分类</span>
-            </div>
-            <div class="current" v-if="currentMenu == 3">
-                <img :src="iconClassify1" alt="icon">
+            <div :class="currentMenu == 3 ? 'current' : ''" @click="go(3)">
+                <img :src="currentMenu == 3 ? iconClassify1 : iconClassify0" alt="icon">
                 <span class="menu__font">分类</span>
             </div>
           </li>
           <li class="flex flex-list">
-            <div v-if="currentMenu !== 4" @click="go(4)">
-                <img :src="iconCommunity0" alt="icon">
-                <span class="menu__font">社区</span>
+            <div :class="currentMenu == 4 ? 'current' : ''" @click="go(4)">
+              <img :src="currentMenu == 4 ? iconCommunity1 : iconCommunity0" alt="icon">
+              <span class="menu__font">客服</span>
             </div>
-            <div class="current" v-if="currentMenu == 4">
-                <img :src="iconCommunity1" alt="icon">
-                <span class="menu__font">社区</span>
-            </div>
-          </li> -->
+          </li>
           <li class="flex flex-list">
             <div :class="currentMenu == 5 ? 'current' : ''" @click="go(5)">
                 <img :src="currentMenu == 5 ? iconUser1 : iconUser0" alt="icon">
@@ -91,10 +75,6 @@ export default {
       currentMenu: {
           type: Number,
           default: 1
-      },
-      loginStatus: {
-          type: Boolean,
-          default: false
       }
   },
   created() {
@@ -113,7 +93,7 @@ export default {
                 window.location.href = 'classify.html?agentId=' + this.agentId;
                 break;
             case 4:
-                window.location.href = 'https://buluo.qq.com/p/barindex.html?bid=400233';
+                window.open('http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzgwMDgwMTU4MF80NTIzMTZfODAwODAxNTgwXzJf', '_blank');
                 break;
             case 5:
                 window.location.href = 'user.html?agentId=' + this.agentId;
@@ -133,6 +113,7 @@ export default {
 .menubar .current .menu__font, .current .menu__icon {
     color: #ff9c00;
 }
+/* 设置bottom: 1px防止文字模糊 */
 .menubar {
     position: fixed;
     bottom: 0;
@@ -142,18 +123,18 @@ export default {
     margin: 0 auto;
     width: 100%;
     background-color: #fff;
-    border-top: 2px solid #e2e2e2;
+    border-top: 2px solid #e2e2e2; /* px */
 }
 .menubar ul li {
     box-sizing: border-box;
-    padding: 19px 0 15px 0;
+    padding: 10px 0;
     text-align: center;
 }
 .menubar ul li div {
     margin: 0 auto;
 }
 .menubar ul li img {
-    width: 54px;
+    width: 50px;
     height: auto;
     text-align: center;
 }

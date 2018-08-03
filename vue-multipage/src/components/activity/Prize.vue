@@ -1,33 +1,14 @@
 <template>
-  <div class="prize">
+  <div class="strategy">
     <ul class="">
-      <li class="flex flex-v" v-for="activity in activityList" :key="activity.gameId">
-        <a :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">
-          <img src="https://game.11h5.com/static/images/2018/0423/20180423063547176.gif" alt="banner">
-          <div class="prize__info flex flex-x-between flex-y-center">
-            <p class="flex flex-v flex-list">
-              <span>【妖怪宝可萌】4月13日更新内容！占领忍者村！</span>
-              <span>活动时间：2018/04/12 ~ 2018/04/13</span>
-            </p>
-            <a class="btn" href="javascript:void(0);"><img :src="iconFlag" alt="icon">进行中</a>
-          </div>
-        </a>
+      <li class="flex flex-y-center" v-for="activity in activityList" :key="activity.id">
+        <a href="javascript:void(0);" class="btn">攻略</a>
+        <a class="flex-list" :href=" 'activityDetail.html?activityId=' + activity.id + '&agentId=' + agentId">{{ activity.desc }}</a>
+        <span>{{ activity.start_time }}</span>
       </li>
-      <li class="flex flex-v">
-        <a :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">
-          <img src="https://game.11h5.com/static/images/2018/0423/20180423063547176.gif" alt="banner">
-          <div class="prize__info flex flex-x-between flex-y-center">
-            <p class="flex flex-v flex-list">
-              <span>【妖怪宝可萌】4月13日更新内容！占领忍者村！</span>
-              <span>活动时间：2018/04/12 ~ 2018/04/13</span>
-            </p>
-            <a class="btn"><img :src="iconFlag" alt="icon">进行中</a>
-          </div>
-        </a>
-      </li>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
-          敬请期待...
+          没有更多内容了...
         </span>
         <span slot="no-results">
           服务器开小差了...
@@ -54,9 +35,17 @@ export default {
       gameId: '',
       activityList: [],
       currentPage: 1,
-      pageSize: 12,
       totalPage: '',
       iconFlag: iconFlag,
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      this.activityList = [];
+      this.currentPage = 1;
+      this.$nextTick(() => {
+        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+      })
     }
   },
   created() {
@@ -71,7 +60,7 @@ export default {
         url: Request.url.activityList,
         data: {
           page: that.currentPage,
-          page_size: that.pageSize
+          type: 'prize' // activity/prize/notice
         },
         success: function (data) {
           if (data.status) {
@@ -101,52 +90,28 @@ export default {
 </script>
 
 <style scoped>
-.prize ul li {
-  box-sizing: border-box;
+.strategy ul li {
   padding: 20px 40px;
   background-color: #fff;
-  border-bottom: 2px solid #e2e2e2;
-}
-.prize ul li img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-}
-.prize .prize__info {
-  padding: 27px 0 16px 0;
-  font-size: 28px; /* px */
-  color: #111;
-}
-.prize .prize__info p {
+  border-bottom: 2px solid #f0f0f0;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
-.prize .prize__info p span:first-child {
-  padding-bottom: 16px;
+.strategy ul li a {
   font-size: 24px; /* px */
+  padding: 4px;
+}
+.strategy ul li a:nth-child(2) {
+  padding-right: 18px;
+  font-size: 28px; /* px */
   color: #111;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
-.prize .prize__info p span:last-child {
-  font-size: 20px; /* px */
+.strategy ul li span:nth-child(3) {
+  font-size: 24px; /* px */
   color: #999;
-}
-.prize .prize__info a {
-  font-size: 28px; /* px */
-  color: #fff;
-  background-color: #ff9c00;
-}
-.prize .prize__info a img {
-  width: 40px;
-  height: 40px;
-  vertical-align: middle;
-}
-.prize .prize__info a.ending {
-  font-size: 28px; /* px */
-  color: #fff;
-  background-color: #aaa;
-  border: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

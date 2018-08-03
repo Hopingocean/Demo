@@ -1,24 +1,14 @@
 <template>
   <div id="notice" class="notice">
     <ul>
-      <li class="flex flex-y-center">
+      <li class="flex flex-y-center" v-for="activity in activityList" :key="activity.id">
         <a href="javascript:void(0);" class="btn">公告</a>
-        <a class="flex-list" :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">【传奇世界之仗剑天涯H5】典藏新法宝</a>
-        <span>2018-04/03</span>
+        <a class="flex-list" :href=" 'activityDetail.html?activityId=' + activity.id + '&agentId=' + agentId">{{ activity.desc }}</a>
+        <span>{{ activity.start_time }}</span>
       </li>
-      <li class="flex flex-y-center">
-        <a href="javascript:void(0);" class="btn">公告</a>
-        <a class="flex-list" :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">【传奇世界之仗剑天涯H5】典藏新法宝</a>
-        <span>2018-04/03</span>
-      </li>
-      <li class="flex flex-y-center">
-        <a href="javascript:void(0);" class="btn">公告</a>
-        <a class="flex-list" :href=" 'activityDetail.html?gameId=' + gameId + '&agentId=' + agentId">【传奇世界之仗剑天涯H5】典藏新法宝</a>
-        <span>2018-04/03</span>
-      </li>
-      <infinite-loading @infinite="infiniteHandler">
+      <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
-          敬请期待...
+          没有更多内容了...
         </span>
         <span slot="no-results">
           服务器开小差了...
@@ -43,8 +33,16 @@ export default {
       gameId: '',
       activityList: [],
       currentPage: 1,
-      pageSize: 12,
-      totalPage: ''
+      totalPage: '',
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      this.activityList = [];
+      this.currentPage = 1;
+      this.$nextTick(() => {
+        this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+      })
     }
   },
   created() {
@@ -59,7 +57,7 @@ export default {
         url: Request.url.activityList,
         data: {
           page: that.currentPage,
-          page_size: that.pageSize
+          type: 'notice' // activity/prize/notice
         },
         success: function (data) {
           if (data.status) {
@@ -90,7 +88,7 @@ export default {
 
 <style scoped>
 .notice ul li {
-  padding: 32px 40px;
+  padding: 20px 40px;
   background-color: #fff;
   border-bottom: 2px solid #f0f0f0;
   overflow: hidden;
@@ -99,7 +97,7 @@ export default {
   font-size: 24px; /* px */
   padding: 4px;
 }
-.notice ul li span:nth-child(2) {
+.notice ul li a:nth-child(2) {
   padding-right: 18px;
   font-size: 28px; /* px */
   color: #111;
@@ -110,5 +108,7 @@ export default {
 .notice ul li span:nth-child(3) {
   font-size: 24px; /* px */
   color: #999;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

@@ -1,12 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Chess from '@/components/classify/ChessGame'
-import Puzzle from '@/components/classify/PuzzleGame'
-import Casual from '@/components/classify/CasualGame'
-import Role from '@/components/classify/RoleGame'
-import Action from '@/components/classify/ActionGame'
-import Shooting from '@/components/classify/ShootingGame'
+import ClassifyGame from '@/components/classify/ClassifyGame'
 
 import Search from '@/components/classify/Search'
 import HotSearch from '@/components/classify/HotSearch'
@@ -25,34 +20,9 @@ export default new Router({
             component: Search,
         },
         {
-            path: '/chess',
-            name: 'Chess',
-            component: Chess
-        },
-        {
-            path: '/puzzle',
-            name: 'Puzzle',
-            component: Puzzle
-        },
-        {
-            path: '/casual',
-            name: 'Casual',
-            component: Casual
-        },
-        {
-            path: '/role',
-            name: 'Role',
-            component: Role
-        },
-        {
-            path: '/action',
-            name: 'Action',
-            component: Action
-        },
-        {
-            path: '/shooting',
-            name: 'Shooting',
-            component: Shooting
+            path: '/:typeId',
+            name: 'ClassifyGame',
+            component: ClassifyGame
         }
     ]
 })

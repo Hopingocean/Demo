@@ -14,8 +14,8 @@
     <p class="tip">根据最新监管要求，进行游戏需要身份验证</p>
     <!-- btn -->
     <div class="btn__group flex">
-      <a href="javascript:void(0);" @click="prevPage('personal', 'certification')" class="btn btn--back">返回</a>
-      <a href="javascript:void(0);" @click="certification" class="btn btn--commit flex-list">完成验证</a>
+      <a href="javascript:void(0);" @click="prevPage('personal', 'certification')" class="btn--other btn--back">返回</a>
+      <a href="javascript:void(0);" @click="certification" class="btn--other btn--commit flex-list">完成验证</a>
     </div>
     <!-- components -->
     <dialog-tip class="certification__tip" :tip="tip"></dialog-tip>
@@ -96,6 +96,9 @@ export default {
             setTimeout(function () {
               that.prevPage('personal', 'certification');
             }, 1000)
+          } else {
+            that.tip = data.msg;
+            that.showDialog('certification__tip');
           }
         },
         error: function (err) {
@@ -115,13 +118,19 @@ export default {
   display: none;
 }
 .certification {
-  display: none;
   box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  z-index: 9999;
+  display: none;
   margin: 0 auto;
-  padding: 120px 40px 128px 40px;
+  padding: 120px 40px;
   width: 100%;
-  height: auto;
-  max-width: 750px;
+  height: 100%;
   background-color: #fff;
 }
 .userinfo {
@@ -158,7 +167,7 @@ export default {
   border-bottom: 2px solid #ff9c00;
 }
 .certification .tip {
-  padding: 20px 0 300px 0;
+  padding: 20px 0 150px 0;
   font-size: 24px; /* px */
   color: #999;
   text-align: center;
