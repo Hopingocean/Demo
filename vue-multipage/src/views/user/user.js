@@ -6,7 +6,9 @@ import 'lib-flexible'
 import '@/assets/css/common.css'
 
 new Vue({
-    el: '#app',
-    components: { User },
-    template: '<User/>'
+  el: '#app',
+  components: {
+    User
+  },
+  template: '<User/>'
 })

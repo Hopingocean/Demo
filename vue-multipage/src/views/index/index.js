@@ -12,10 +12,10 @@ Vue.use(VueAwesomeSwiper)
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
-    preLoad: 1.3,
-    error: '',
-    loading: '',
-    attempt: 1
+  preLoad: 1.3,
+  error: '',
+  loading: '',
+  attempt: 1
 })
 
 import '@/assets/css/common.css'
@@ -24,8 +24,10 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    router,
-    components: { App },
-    template: '<App/>'
+  el: '#app',
+  router,
+  components: {
+    App
+  },
+  template: '<App/>'
 })
