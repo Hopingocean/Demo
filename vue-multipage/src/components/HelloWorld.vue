@@ -80,6 +80,7 @@
         </a>
       </li>
     </ul>
+    <a href="user.html">个人</a>
   </div>
 </template>
 

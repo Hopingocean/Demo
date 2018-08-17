@@ -1,5 +1,7 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+      {{ title }}
+  </div>
 </template>
 
 <script>
@@ -7,7 +9,9 @@ export default {
   name: "User",
   components: {},
   data() {
-    return {};
+    return {
+      title: '个人'
+    };
   },
   methods: {},
   created() {},
@@ -16,6 +20,5 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
 
