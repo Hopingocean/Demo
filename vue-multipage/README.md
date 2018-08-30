@@ -1,6 +1,6 @@
-# vue-multipage
+# fish-platform-client
 
-> A Vue.js project
+> fish platform
 
 ## Build Setup
 

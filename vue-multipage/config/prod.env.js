@@ -1,4 +1,4 @@
+'use strict'
 module.exports = {
-    NODE_ENV: '"production"',
-    server_host: '""'
+  NODE_ENV: '"production"'
 }
