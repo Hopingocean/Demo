@@ -219,7 +219,7 @@ class wechatCallbackapiTest
     private function transmitText($object, $content) {
         $textTpl = "<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
-        <FromUserName><![CDATE[%s]]></FromUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
