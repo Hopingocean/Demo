@@ -224,7 +224,7 @@ class wechatCallbackapiTest
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
         </xml>";
-        $result = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $content);
+        $result = sprintf($textTpl, $object->ToUserName, $object->FromUserName, time(), $content);
         return $result;
     }
     // 回复图文消息
@@ -249,7 +249,7 @@ class wechatCallbackapiTest
         <ArticleCount>%s</ArticleCount>
         <Articles>$item_str</Articles>
         </xml>";
-        $result = sprintf($newsTpl, $object->FromUserName, $object->ToUserName, time(), count($arr_item));
+        $result = sprintf($newsTpl, $object->ToUserName, $object->FromUserName, time(), count($arr_item));
         return $result;
     }
 }
