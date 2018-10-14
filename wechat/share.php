@@ -7,7 +7,7 @@ function weChatShare() {
     $url = $_GET['url'];
 	$app_id = 'wx99c4aef7a7db55e2';
 	$app_secret = '2af16363d812c02f9f571a30bf86b9c6';
-	$access_token = getAccessToken();
+    $access_token = getAccessToken();
 
     // 获取签名
     $noncestr = createNonceStr();
@@ -25,7 +25,6 @@ function weChatShare() {
       'signature' => $signature
     );
     $data = json_encode($data);
-    // var_dump($data);
     echo $data;
 }
 
@@ -59,5 +58,5 @@ function getJsApiTicket($token) {
       return $jsapi_ticket->errcode;
     }
     $ticket = get_object_vars($jsapi_ticket);
-    return $ticket->jsapi_ticket;
+    return $ticket['ticket'];
 }
