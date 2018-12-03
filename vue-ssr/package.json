@@ -1,0 +1,22 @@
+{
+  "name": "vue-ssr",
+  "version": "1.0.0",
+  "description": "a vue-ssr demo",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.2",
+    "vue-server-renderer": "^2.5.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue",
+    "ssr"
+  ],
+  "author": "Lee",
+  "license": "ISC"
+}
