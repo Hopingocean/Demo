@@ -6,6 +6,12 @@
  import { createApp } from './app'
 
 //  客户端特定引导逻辑
-const { app } = createApp()
+const { app, router, store } = createApp()
+
+if (window.__INITIAL_STATE__) {
+    store.replaceState(window.__INITIAL_STATE__)
+}
 // 假设App.vue模板中根元素具有id=app
-app.$mount('#app')
+router.onReady(() => {
+    app.$mount('#app')
+})
