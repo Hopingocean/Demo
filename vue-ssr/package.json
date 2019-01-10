@@ -9,7 +9,10 @@
     "vue-router": "^3.0.2",
     "vue-server-renderer": "^2.5.17"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vuex": "^3.0.1",
+    "vuex-router-sync": "^5.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
