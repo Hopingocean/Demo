@@ -8,6 +8,16 @@
  import { createRouter } from './router'
  import { createStore } from './store'
  import { sync } from 'vuex-router-sync'
+ import titleMixin from './utils/title'
+ import * as filters from './utils/filters'
+
+//  mixin for handling title
+Vue.mixin(titleMixin)
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
 
 //  导出一个工厂函数，用于创建新的应用程序、router和store实例
 export function createApp() {
