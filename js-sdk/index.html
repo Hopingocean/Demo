@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SDK Test</title>
+  <script>
+    document.write("<script type='text/javascript' src='http://183.146.209.142:8094/yawy_sdk.js?v=" + Date.now() + "'><\/script>");
+  </script>
+</head>
+<body>
+  <div>
+    <a href="javascript:void(0);" onclick="share()">分享</a>
+    <a href="javascript:void(0);" onclick="pay()">支付</a>
+    <a href="javascript:void(0);" onclick="follow()">关注</a>
+  </div>
+  <script>
+    // 初始化
+    var gameyawy = new GameYAWY({
+      gameid: 100240
+    })
+    // 分享
+    function share() {
+      const data = {
+        action: 'share',
+        gameid: '100240'
+      }
+      gameyawy.share(data);
+    }
+    // 支付
+    function pay() {
+      const data = {
+        action: 'pay',
+        gameid: 100240, // 游戏ID
+        username: 'Lee003', // 用户名
+        roleid: '115062330', // 角色名称
+        amount: 100, // 金额
+        cp_orderid: 123, // 订单ID
+        productname: 123, // 商品名称
+        paytime: Date.parse(new Date()) / 1000, // 时间戳
+        sign: 123, // 加密字符串
+        attach: null, // 透传参数
+      }
+      gameyawy.pay(data);
+    }
+    // 关注
+    function follow() {
+      const data = {
+        action: 'follow',
+        gameid: '100240'
+      }
+      gameyawy.checkFollow(show);
+    }
+    // 关注回掉
+    function show(e) {
+      if (e) {
+        console.log(e);
+      } else {
+        var data = {
+          serverid: 1,
+          ext: null,
+        }
+        gameyawy.showFollow(data);
+      }
+    }
+  </script>
+</body>
+</html>
