@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "devDependencies": {
     "babel-preset-latest": "^6.24.1",
-    "browser-sync": "^2.26.0",
+    "browser-sync": "^2.26.5",
     "gulp": "^3.9.1",
     "gulp-asset-rev": "0.0.15",
     "gulp-babel": "^8.0.0",
