@@ -80,7 +80,7 @@ a {
     display: none;
   }
 }
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 415px) and (max-width: 767px) {
   .header[data-behavior='1'] {
     width: 100%;
     display: block;
@@ -102,6 +102,30 @@ a {
   }
   .content[data-behavior='2'] {
     width: calc(100% - 200px);
+    overflow: hidden;
+  }
+}
+@media screen and (max-width: 414px) {
+  .header[data-behavior='1'] {
+    width: 100%;
+    display: block;
+  }
+  .header[data-behavior='2'] {
+    display: block;
+    width: 100%;
+    float: right;
+  }
+  .sidebar[data-behavior='1'] {
+    display: none;
+  }
+  .sidebar[data-behavior='2'] {
+    display: block;
+    height: 100%;
+  }
+  .content[data-behavior='1'] {
+    width: 100%;
+  }
+  .content[data-behavior='2'] {
     overflow: hidden;
   }
 }

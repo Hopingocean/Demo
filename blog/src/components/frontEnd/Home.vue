@@ -87,6 +87,7 @@ export default {
   padding-bottom: 10px;
   font-size: 18px;
   color: #5e5e5e;
+  word-break: break-all;
 }
 .home .blog__info .font--read {
   font-size: 16px;

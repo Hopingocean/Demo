@@ -51,6 +51,7 @@ export default {
 
 <style scoped>
 .content .tag {
+  width: 100%;
   max-width: 750px;
   margin: 0 auto;
 }
