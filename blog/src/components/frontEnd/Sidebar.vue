@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" :data-behavior="behavior">
     <div class="avator" @click="toggleAbout">
-      <img src="http://oak1q2h54.bkt.clouddn.com/blog/lf.jpg" alt="lf">
+      <img src="@/assets/img/avatar.jpg" alt="lf">
       <p>Lee</p>
     </div>
     <ul>
@@ -85,8 +85,9 @@ export default {
   height: 100%;
   float: left;
   text-align: center;
-  background-image: url('http://oak1q2h54.bkt.clouddn.com/blog/db.jpg');
+  background-image: url('../../../static/img/666.jpg');
   background-repeat: no-repeat;
+  /* background-size: 100% cover; */
   font-size: 16px;
   color: #ebebeb;
   animation: sidebarBg 15s ease-in forwards;

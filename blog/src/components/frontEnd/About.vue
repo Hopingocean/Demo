@@ -1,8 +1,8 @@
 <template>
   <div class="about" v-show="aboutState" @click="toggleAbout()">
-    <img :src="icon" alt="" class="blur about__bg">
+    <img src="@/assets/img/sky_1.png" alt="" class="blur about__bg">
     <div class="dialog__box">
-      <p class="user--icon"><img :src="userinfo.icon" alt="usericon"></p>
+      <p class="user--icon"><img src="@/assets/img/avatar.jpg" alt="usericon"></p>
       <p class="user--name">{{userinfo.name}}</p>
       <p class="user--desc">{{userinfo.desc}}</p>
       <p class="user--address">{{userinfo.address}}</p>
@@ -14,13 +14,11 @@
 <script>
 import store from '@/store'
 import { mapActions, mapGetters, mapState, mapMutations} from 'vuex'
-import icon from './img/avatar.jpg'
 export default {
   data() {
     return {
       userinfo: {
         name: 'Lee',
-        icon: icon,
         desc: '听海...',
         email: 'h_opingocean@outlook.com',
         address: '浙江 - 杭州'

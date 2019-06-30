@@ -4,7 +4,7 @@
       <h3>搜索分类</h3>
       <ul>
         <li v-for="(category, i) in categoryList" :key="i">
-          <a :href="category.id">{{ category.name }}</a>
+          <router-link :to="category.id">{{ category.name }}</router-link>
         </li>
       </ul>
     </div>
@@ -19,23 +19,23 @@ export default {
     return {
       categoryList: [
         {
-          id: '#personal',
+          id: '/',
           name: '个人总结'
         },
         {
-          id: '#javaScript',
+          id: '/',
           name: 'javaScript'
         },
         {
-          id: '#vue',
+          id: '/',
           name: 'Vue'
         },
         {
-          id: '#tips',
+          id: '/',
           name: 'Tips'
         },
         {
-          id: '#life',
+          id: '/',
           name: '生活'
         }
       ]

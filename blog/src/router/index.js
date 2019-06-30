@@ -2,17 +2,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import NotFound from '../components/NotFound'
-import Home from '../components/frontEnd/Home'
-import About from '../components/frontEnd/About'
-import Article from '../components/frontEnd/Article'
-import Header from '../components/frontEnd/Header'
-import Tags from '../components/frontEnd/Tags'
-import Category from '../components/frontEnd/Category'
+const NotFound = () => import('../components/NotFound')
+const Home = () => import('../components/frontEnd/Home')
+const About = () => import('../components/frontEnd/About')
+const Article = () => import('../components/frontEnd/Article')
+const Header = () => import('../components/frontEnd/Header')
+const Tags = () => import('../components/frontEnd/Tags')
+const Category = () => import('../components/frontEnd/Category')
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/notFound',

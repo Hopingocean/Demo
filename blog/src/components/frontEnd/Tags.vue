@@ -3,7 +3,7 @@
     <div class="tag">
       <h3>搜索标签</h3>
       <div class="tag__list">
-        <a v-for="(tag, i) in tagList" :href="tag.id" :key="i">{{ tag.name }}</a>
+        <router-link v-for="(tag, i) in tagList" :to="tag.id" :key="i">{{ tag.name }}</router-link>
       </div>
     </div>
   </div>
@@ -17,27 +17,27 @@ export default {
     return {
       tagList: [
         {
-          id: '#html5',
+          id: '/',
           name: 'HTML5'
         },
         {
-          id: '#ajax',
+          id: '/',
           name: 'ajax'
         },
         {
-          id: '#vue',
+          id: '/',
           name: 'Vue'
         },
         {
-          id: '#linux',
+          id: '/',
           name: 'linux'
         },
         {
-          id: '#css3',
+          id: '/',
           name: 'css3'
         },
         {
-          id: '#optimize',
+          id: '/',
           name: '优化'
         },
       ]

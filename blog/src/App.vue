@@ -43,6 +43,9 @@ html, body {
 ul, li {
   list-style: none;
 }
+a {
+  text-decoration: none;
+}
 .content {
   float: right;
   padding: 20px 20px;

@@ -7,7 +7,7 @@
     </span>
     <p class="font--name">Lee's blog</p>
     <a class="avator" @click="toggleAbout">
-      <img src="http://oak1q2h54.bkt.clouddn.com/blog/lf.jpg" alt="lf">
+      <img src="@/assets/img/avatar.jpg" alt="lf">
     </a>
   </div>
 </template>

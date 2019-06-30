@@ -8,8 +8,8 @@
         <div class="blog__info">
           <p class="blog__info--title">{{blog.title}}</p>
           <p class="blog__info--date">{{blog.date}}</p>
-          <p class="blog__info--desc">{{blog.desc}}</p>
-          <a href="#" class="font--read">阅读全文</a>
+          <p class="blog__info--desc">项目地址：<a :href="blog.link">{{ blog.link }}</a></p>
+          <!-- <a href="#" class="font--read">阅读全文</a> -->
         </div>
       </li>
     </ul>
@@ -19,16 +19,26 @@
 <script>
 import store from '@/store'
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
+import sky_1 from '@/assets/img/sky_1.png'
+import sky_2 from '@/assets/img/sky_2.jpg'
 export default {
   name: 'Home',
   data() {
     return {
       homeBlogList: [
         {
-          icon: 'http://oak1q2h54.bkt.clouddn.com/blog/0.jpg',
+          icon: sky_1,
           title: 'cloc代码统计工具',
           desc: '项目地址：https://github.com/AlDanial/cloc',
+          link: 'https://github.com/AlDanial/cloc',
           date: '2017年04月18日'
+        },
+        {
+          icon: sky_2,
+          title: 'Layabox开发微信小游戏好友排行榜功能流程',
+          desc: '',
+          link: 'https://blog.csdn.net/u010568344/article/details/93379648',
+          date: '2019-06-23 12:01:30'
         }
       ]
     }
@@ -54,6 +64,10 @@ export default {
 .home ul li {
   position: relative;
   border-bottom: 1px solid #cecece;
+}
+.home .blog__icon {
+  display: flex;
+  align-items: center;
 }
 .home .blog__icon img {
   width: 100%;
@@ -82,7 +96,7 @@ export default {
 
 @media screen and (min-width: 480px) {
   .home .blog__icon {
-    display: inline-block;
+    /* display: inline-block; */
     width: 160px;
     height: 160px;
     overflow: hidden;
