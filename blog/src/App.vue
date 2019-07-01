@@ -95,7 +95,8 @@ a {
   }
   .sidebar[data-behavior='2'] {
     display: block;
-    height: 100%;
+    width: 100%;
+    height: auto;
   }
   .content[data-behavior='1'] {
     width: 100%;
@@ -120,7 +121,8 @@ a {
   }
   .sidebar[data-behavior='2'] {
     display: block;
-    height: 100%;
+    width: 100%;
+    height: auto;
   }
   .content[data-behavior='1'] {
     width: 100%;

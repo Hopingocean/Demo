@@ -130,6 +130,7 @@ export default {
 }
 .sidebar .avator img {
   width: 50%;
+  max-width: 128px;
   height: auto;
   border-radius: 50%;
 }
