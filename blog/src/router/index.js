@@ -13,7 +13,7 @@ const Category = () => import('../components/frontEnd/Category')
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     {
       path: '/notFound',
