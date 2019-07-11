@@ -43,6 +43,7 @@
     "is-my-json-valid": "^2.20.0",
     "lodash": "^4.17.14",
     "macaddress": "^0.2.9",
+    "mem": "^5.1.1",
     "men": "^2.2.1",
     "mime": "^2.4.3",
     "node-macaddress": "^0.2.4",
