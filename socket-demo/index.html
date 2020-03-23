@@ -56,6 +56,7 @@
 
 <body>
   <ul id="messages"></ul>
+  <button id="print" onclick=window.print();>打印</button>
   <form action="">
     <input id="msg" autocomplete="off" />
     <button>Send</button>
@@ -64,7 +65,9 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     $(function () {
-      var socket = io();
+      console.log(new Date());
+      var socket = io({ timeout: 20000 });
+      // 发送信息
       $('form').submit(function(e) {
         e.preventDefault();
         socket.emit('chat message', $('#msg').val());
@@ -73,7 +76,39 @@
       });
       socket.on('chat message', function(msg) {
         $('#messages').append($('<li>').text(msg));
-      })
+      });
+      socket.on('connect_error', function (reason) {
+        console.log('connect_error:' + reason);
+      });
+      socket.on('connect_timeout', function (reason) {
+        console.log('connect_timeout:' + reason);
+      });
+      socket.on('disconnect', function (reason) {
+        console.log('disconnect:' + reason);
+      });
+      socket.on('reconnect', function (reason) {
+        console.log('reconnect:' + reason);
+      });
+      socket.on('reconnect_attempt', function (reason) {
+        console.log('reconnect_attempt:' + reason);
+      });
+      socket.on('reconnecting', function (reason) {
+        console.log('reconnecting:' + reason);
+      });
+      socket.on('reconnect_error', function (reason) {
+        console.log('reconnect_error:' + reason);
+      });
+      socket.on('reconnect_failed', function (reason) {
+        console.log('reconnect_failed:' + reason);
+      });
+      socket.on('ping', function (reason) {
+        console.log('ping:' + reason);
+        // socket.send('hi')
+        console.log(new Date());
+      });
+      socket.on('pong', function (reason) {
+        console.log('pong:' + reason);
+      });
     })
   </script>
 </body>
