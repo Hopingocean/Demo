@@ -56,14 +56,14 @@
 
 <body>
   <ul id="messages"></ul>
-  <button id="print" onclick="printJS('messages', 'html')">打印</button>
+  <button id="print" onclick="printJS('printJS-form', 'html')">打印</button>
   <form id="printJS-form" action="">
     <input id="msg" autocomplete="off" />
     <button>Send</button>
   </form>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+  <script src="/print-js/dist/print.js"></script>
   <script>
     $(function () {
       console.log(new Date());
