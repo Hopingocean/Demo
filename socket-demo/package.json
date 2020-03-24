@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
+    "print-js": "^1.0.63",
     "socket.io": "^2.3.0"
   }
 }

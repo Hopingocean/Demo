@@ -1,8 +1,8 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http, {
-  pingInterval: 10000,
-  pingTimeout: 25000
+  pingInterval: 10000, // how many ms before sending a new ping packet
+  pingTimeout: 25000 // how many ms without a pong packet to consider the connection closed
 });
 
 app.get('/', function(req, res) {
@@ -27,15 +27,6 @@ io.on('connection', function(socket) {
   socket.on('disconnecting', function(reason) {
     console.log('disconnecting:' + reason);
   });
-  // socket.on('reconnect', function(msg) {
-  //   console.log('user reconnect' + msg);
-  // });
-  // socket.on('connect_error', function() {
-  //   console.log('user connect_error');
-  // });
-  // socket.on('connect_timeout', function() {
-  //   console.log('user connect_timeout');
-  // });
 });
 
 http.listen(3000, function() {
