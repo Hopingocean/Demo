@@ -56,7 +56,7 @@
 
 <body>
   <ul id="messages"></ul>
-  <button id="print" onclick="printJS('printJS-form', 'html')">打印</button>
+  <button id="print" onclick=window.print();>打印</button>
   <form id="printJS-form" action="">
     <input id="msg" autocomplete="off" />
     <button>Send</button>
@@ -67,7 +67,7 @@
   <script>
     $(function () {
       console.log(new Date());
-      var socket = io({ timeout: 20000, reconnectionAttempts: 1 });
+      var socket = io({ timeout: 20000, reconnectionAttempts: 3 });
       // 发送信息
       $('form').submit(function(e) {
         e.preventDefault();
