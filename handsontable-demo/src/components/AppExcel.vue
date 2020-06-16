@@ -2,7 +2,7 @@
   <div class="app_excel hot-excel">
     <button @click="print">打印</button>
     <hot-table ref="hot" :settings="hotSettings"></hot-table>
-    <hot-table v-show="showModal" ref="print" :settings="settings"></hot-table>
+    <!-- <hot-table v-show="showModal" ref="print" :settings="settings"></hot-table> -->
   </div>
 </template>
 
@@ -18,75 +18,75 @@ export default {
     HotTable
   },
   data() {
-    let _this = this;
-    function negativeValueRenderer(
-      instance,
-      td,
-      row,
-      col,
-      prop,
-      value,
-      cellProperties
-    ) {
-      Handsontable.renderers.TextRenderer.apply(this, arguments);
-      if (prop == 2) {
-        if (_this.linkData.includes(value)) {
-          _this.createElementLink(td, row, col, prop, value);
-        }
-      }
-    }
-    Handsontable.renderers.registerRenderer(
-      "negativeValueRenderer",
-      negativeValueRenderer
-    );
+    // let _this = this;
+    // function negativeValueRenderer(
+    //   instance,
+    //   td,
+    //   row,
+    //   col,
+    //   prop,
+    //   value,
+    //   cellProperties
+    // ) {
+    //   Handsontable.renderers.TextRenderer.apply(this, arguments);
+    //   if (prop == 2) {
+    //     if (_this.linkData.includes(value)) {
+    //       _this.createElementLink(td, row, col, prop, value);
+    //     }
+    //   }
+    // }
+    // Handsontable.renderers.registerRenderer(
+    //   "negativeValueRenderer",
+    //   negativeValueRenderer
+    // );
     return {
-      settings: {
-        data: excel.data,
-        cell: excel.cell.items,
-        mergeCells: excel.mergeCells, // 合并单元格
-        colHeaders: true,
-        rowHeaders: true,
-        readOnlyCellClassName: "htReadOnly", // 定义只读class类名
-        stretchH: "all",
-        loadClass: excel.loadClass.items, // 边框样式
-        loadStyle: excel.loadStyle, // 字体样式
-        loadBK: [], // 单元格底色
-        borderClass: excel.borderClass,
-        renderAllRows: true,
-        autoColumnSize: false,
-        comments: true, // 评论插件
-        // 启动复制粘贴插件
-        copyPaste: {
-          columnsLimit: 25,
-          rowsLimit: 50,
-          pasteMode: "shift_down"
-        },
-        startRows: 11, // 行列范围
-        startCols: 6,
-        minRows: 30, // 最小行列
-        minCols: 25,
-        // maxRows: 500, // 最大行列
-        // maxCols: 100,
-        readOnly: true, // 只读
-        minSpareRows: 2, // 行留白
-        currentRowClassName: "currentRow", // 为选中行添加类名，可以更改样式
-        currentColClassName: "currentCol", // 为选中列添加类名
-        autoWrapRow: false, // 切换行
-        autoWrapCol: false, // 切换列
-        wordWrap: false,
-        fillHandle: false,
-        // 配置右键菜单
-        contextMenu: false,
-        outsideClickDeselects: false,
-        // 设置边框
-        customBorders: false,
-        className: "htCenter htMiddle",
-        manualRowResize: true,
-        manualColumnResize: true,
-        manualRowMove: true,
-        manualColumnMove: true,
-        licenseKey: "non-commercial-and-evaluation"
-      },
+      // settings: {
+      //   data: excel.data,
+      //   cell: excel.cell.items,
+      //   mergeCells: excel.mergeCells, // 合并单元格
+      //   colHeaders: true,
+      //   rowHeaders: true,
+      //   readOnlyCellClassName: "htReadOnly", // 定义只读class类名
+      //   stretchH: "all",
+      //   loadClass: excel.loadClass.items, // 边框样式
+      //   loadStyle: excel.loadStyle, // 字体样式
+      //   loadBK: [], // 单元格底色
+      //   borderClass: excel.borderClass,
+      //   renderAllRows: true,
+      //   autoColumnSize: false,
+      //   comments: true, // 评论插件
+      //   // 启动复制粘贴插件
+      //   copyPaste: {
+      //     columnsLimit: 25,
+      //     rowsLimit: 50,
+      //     pasteMode: "shift_down"
+      //   },
+      //   startRows: 11, // 行列范围
+      //   startCols: 6,
+      //   minRows: 30, // 最小行列
+      //   minCols: 25,
+      //   // maxRows: 30, // 最大行列
+      //   // maxCols: 100,
+      //   readOnly: true, // 只读
+      //   minSpareRows: 2, // 行留白
+      //   currentRowClassName: "currentRow", // 为选中行添加类名，可以更改样式
+      //   currentColClassName: "currentCol", // 为选中列添加类名
+      //   autoWrapRow: false, // 切换行
+      //   autoWrapCol: false, // 切换列
+      //   wordWrap: false,
+      //   fillHandle: false,
+      //   // 配置右键菜单
+      //   contextMenu: false,
+      //   outsideClickDeselects: false,
+      //   // 设置边框
+      //   customBorders: false,
+      //   className: "htCenter htMiddle",
+      //   manualRowResize: true,
+      //   manualColumnResize: true,
+      //   manualRowMove: true,
+      //   manualColumnMove: true,
+      //   licenseKey: "non-commercial-and-evaluation"
+      // },
       hotSettings: {
         data: excel.data,
         readOnlyCellClassName: "htReadOnly",
@@ -102,7 +102,7 @@ export default {
         startCols: 6,
         minRows: 25, //最小行列
         minCols: 25,
-        // maxRows: 3000, //最大行列
+        // maxRows: 30, //最大行列
         // maxCols: 1000,
         rowHeights: 28,
         colWidths: 100,
@@ -129,9 +129,9 @@ export default {
           // show where are hidden rows
           // indicators: true
         },
-        cells: function(row, col, prop) {
-          this.renderer = negativeValueRenderer;
-        },
+        // cells: function(row, col, prop) {
+        //   this.renderer = negativeValueRenderer;
+        // },
         licenseKey: "non-commercial-and-evaluation"
       },
       showModal: false,
