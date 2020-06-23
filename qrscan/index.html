@@ -1,17 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <title>qrcode scan</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="ZXing for JS">
+  <title>ZXing Decoding from camera stream</title>
   <script src="./jsQR.js"></script>
-  <script src="//s.url.cn/qqun/qun/qqweb/m/qun/confession/js/vconsole.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
 </head>
+
 <body>
-  <div class="qrcode">
-    <button onclick="qrScan()">扫码</button>
-    <canvas id="canvas" hidden></canvas>
-    <p id="output"></p>
+  <div>
+    <h1 id="entry">Scan 1D/2D Code from Video Camera</h1>
+    <div>
+      <button onclick="scan()">二维码</button>
+      <button id="startButton">Start</button>
+      <button id="resetButton">Reset</button>
+    </div>
+    <div>
+      <canvas id="canvas" hidden></canvas>
+      <video id="video" style="border: 1px solid gray"></video>
+    </div>
+
+    <label>Result:</label>
+    <pre><code id="result"></code></pre>
   </div>
   <script src="alloy-lever.js"></script>
   <script>
@@ -21,69 +34,137 @@
       reportPrefix: 'qun',    //错误上报msg前缀，一般用于标识业务类型
       reportKey: 'msg',        //错误上报msg前缀的key，用户上报系统接收存储msg
       otherReport: {              //需要上报的其他信息
-          uin: 491862102
+        uin: 491862102
       },
       entry:"#entry"          //请点击这个DOM元素6次召唤vConsole。//你可以通过AlloyLever.entry('#entry2')设置多个机关入口召唤神龙
     })
   </script>
-  <script>
-    var video = document.createElement('video');
+  <script type="text/javascript">
+    let selectedDeviceId;
+    let codeReader;
+    var video = document.getElementById('video');
     var canvasElement = document.getElementById('canvas');
     var canvas = canvasElement.getContext('2d');
-    var output = document.getElementById('output');
-	
-    // 扫码
-    function qrScan () {
+    window.addEventListener('load', function () {
+      codeReader = new ZXing.BrowserMultiFormatReader()
+      console.log('ZXing code reader initialized')
+      initBarcode();
+    })
+    // 扫码1
+    function scan () {
       navigator.mediaDevices.enumerateDevices().then(function (devices) {
         console.log(devices);
-        let deviceId;
         let constraints;
         devices.forEach(function (item, i) {
           if (item.label === 'Microsoft Camera Rear') {
-          deviceId = item.deviceId;
+            selectedDeviceId = item.deviceId;
           }
         })
-        console.log(deviceId);
-        if (deviceId) {
-          constraints = { video: {deviceId: { exact: deviceId }}};
+        if (isSurface() && selectedDeviceId) {
+          constraints = { video: {deviceId: { exact: selectedDeviceId }}};
         } else {
           constraints = { video: { facingMode: { exact: "environment" }}};
         }
         navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-          if (deviceId) {
+          console.log(stream);
+          if (isSurface() && selectedDeviceId) {
             video.srcObject = stream;
             video.setAttribute('playsinline', true);
             video.play();
             requestAnimationFrame(tick);
+          } else if (isSurface()) {
+            scan();
           } else {
-            qrScan();
+            video.srcObject = stream;
+            video.setAttribute('playsinline', true);
+            video.play();
+            requestAnimationFrame(tick);
           }
         })
       });
     }
     function tick () {
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        canvasElement.hidden = false;
+        // canvasElement.hidden = false;
         canvasElement.height = video.videoHeight;
         canvasElement.width = video.videoWidth;
         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
         var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        var code = jsQR(imageData.data, imageData.width, imageData.height, {
+        // 二维码
+        var result = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: 'dontInvert',
         });
-        if (code) {
-          output.innerText = code.data;
-		  video.pause();
-		  console.log(video.srcObject);
-		  video.srcObject.getTracks().forEach(function (track) {
-			track.stop();
-		  })
-        } else {
-          // output.innerText = 'No QR code detected.';
+        if (result && result.data) {
+          qrScan(result.data);
         }
       }
       requestAnimationFrame(tick);
     }
+    // 扫码二维码
+    function qrScan (code) {
+      video.pause();
+      cancelAnimationFrame(tick);
+      document.getElementById('result').textContent = code;
+      video.srcObject.getTracks().forEach(function (track) {
+        track.stop();
+      })
+    }
+    // 扫描条形码
+    function barCode () {
+      codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+        if (isSurface() && selectedDeviceId) {
+          if (result) {
+            console.log(result)
+            document.getElementById('video').pause();
+            document.getElementById('result').textContent = result.text
+          }
+          if (err && !(err instanceof ZXing.NotFoundException)) {
+            console.error(err)
+            document.getElementById('result').textContent = err
+          }
+        } else {
+          initBarcode(1);
+        }
+      })
+    }
+    // 初始化barcode
+    function initBarcode (type) {
+      codeReader.getVideoInputDevices().then((videoInputDevices) => {
+        console.log(videoInputDevices);
+        if (videoInputDevices.length >= 1) {
+          videoInputDevices.forEach((element) => {
+            if (element.label === 'Microsoft Camera Rear') {
+              selectedDeviceId = element.deviceId;
+            }
+          })
+        }
+        console.log(selectedDeviceId)
+        if (type === 1) {
+          barCode();
+        } else {
+          document.getElementById('startButton').addEventListener('click', () => {
+            barCode();
+          })
+
+          document.getElementById('resetButton').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+        }
+      }).catch((err) => {
+        console.error(err)
+      })
+    }
+    // isSurface
+    function isSurface () {
+      let u = navigator.userAgent;
+      let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;   //判断是否是 android终端
+      let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);     //判断是否是 iOS终端
+      return navigator.maxTouchPoints > 0 && !isAndroid && !isIOS;
+    }
   </script>
+
 </body>
+
 </html>

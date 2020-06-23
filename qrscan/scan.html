@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>qrcode scan</title>
+  <script src="./jsQR.js"></script>
+  <script src="./quagga.min.js"></script>
+</head>
+<body>
+  <div class="qrcode">
+    <h1 id="entry">扫码</h1>
+    <button onclick="scan()">扫码1</button>
+    <canvas id="canvas" hidden></canvas>
+    <p id="output"></p>
+  </div>
+  <script src="alloy-lever.js"></script>
+  <script>
+    AlloyLever.config({
+      cdn:'//s.url.cn/qqun/qun/qqweb/m/qun/confession/js/vconsole.min.js',  //vconsole的CDN地址
+      reportUrl: "//a.qq.com",  //错误上报地址
+      reportPrefix: 'qun',    //错误上报msg前缀，一般用于标识业务类型
+      reportKey: 'msg',        //错误上报msg前缀的key，用户上报系统接收存储msg
+      otherReport: {              //需要上报的其他信息
+        uin: 491862102
+      },
+      entry:"#entry"          //请点击这个DOM元素6次召唤vConsole。//你可以通过AlloyLever.entry('#entry2')设置多个机关入口召唤神龙
+    })
+  </script>
+  <script>
+    var time;
+    var deviceId;
+    var video = document.createElement('video');
+    var canvasElement = document.getElementById('canvas');
+    var canvas = canvasElement.getContext('2d');
+    var output = document.getElementById('output');
+    // isSurface
+    function isSurface () {
+      let u = navigator.userAgent;
+      let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;   //判断是否是 android终端
+      let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);     //判断是否是 iOS终端
+      return navigator.maxTouchPoints > 0 && !isAndroid && !isIOS;
+    }
+    // 扫码1
+    function scan () {
+      navigator.mediaDevices.enumerateDevices().then(function (devices) {
+        console.log(devices);
+        let constraints;
+        devices.forEach(function (item, i) {
+          if (item.label === 'Microsoft Camera Rear') {
+            deviceId = item.deviceId;
+          }
+        })
+        console.log('deviceId:', deviceId);
+        if (isSurface() && deviceId) {
+          constraints = { video: {deviceId: { exact: deviceId }}};
+        } else {
+          constraints = { video: { facingMode: { exact: "environment" }}};
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+          console.log(stream);
+          if (isSurface() && deviceId) {
+            video.srcObject = stream;
+            video.setAttribute('playsinline', true);
+            video.play();
+            requestAnimationFrame(tick);
+          } else if (isSurface()) {
+            scan();
+          } else {
+            video.srcObject = stream;
+            video.setAttribute('playsinline', true);
+            video.play();
+            requestAnimationFrame(tick);
+          }
+        })
+      });
+    }
+    function tick () {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvasElement.hidden = false;
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        // 二维码
+        var result = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: 'dontInvert',
+        });
+        if (result && result.data) {
+          qrScan(result.data);
+        } else {
+          barScan(canvasElement.toDataURL());
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    // 二维码
+    function qrScan (code) {
+      output.innerText = code;
+      video.pause();
+      cancelAnimationFrame(tick);
+      video.srcObject.getTracks().forEach(function (track) {
+        track.stop();
+      })
+    }
+    // 条形码
+    function barScan (imgBase64) {
+      Quagga.decodeSingle({
+        locator: {
+          patchSize: "medium",
+          halfSample: true
+        },
+        decoder: {
+          readers: [{
+            format: "code_128_reader",
+            config: {}
+          }],
+          debug: {
+            drawBoundingBox: false,
+            showFrequency: false,
+            drawScanline: false,
+            showPattern: false
+          }
+        },
+        numOfWorkers: navigator.hardwareConcurrency || 2,
+        locate: false,
+        src: imgBase64
+      }, function (result) {
+        if (result){
+          console.log('bar code', result);
+          if(result.codeResult) {
+            var code = result.codeResult.code;
+            if (code) {
+              output.innerText = code;
+              video.pause();
+              cancelAnimationFrame(tick);
+              video.srcObject.getTracks().forEach(function (track) {
+                track.stop();
+              })
+              Quagga.stop();
+            }
+          } else {
+            console.log("正在扫条形码...not detected");
+          }
+        }
+      })
+    }
+  </script>
+</body>
+</html>
