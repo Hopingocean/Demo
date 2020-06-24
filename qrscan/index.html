@@ -6,20 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="ZXing for JS">
   <title>ZXing Decoding from camera stream</title>
-  <script src="./jsQR.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+  <!-- <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script> -->
+  <script type="text/javascript" src="zxing.min.js"></script>
 </head>
 
 <body>
   <div>
     <h1 id="entry">Scan 1D/2D Code from Video Camera</h1>
     <div>
-      <button onclick="scan()">二维码</button>
-      <button id="startButton">Start</button>
-      <button id="resetButton">Reset</button>
+      <button onclick="initScan()">Start</button>
+      <button onclick="reset()">Reset</button>
     </div>
     <div>
-      <canvas id="canvas" hidden></canvas>
       <video id="video" style="border: 1px solid gray"></video>
     </div>
 
@@ -43,118 +41,60 @@
     let selectedDeviceId;
     let codeReader;
     var video = document.getElementById('video');
-    var canvasElement = document.getElementById('canvas');
-    var canvas = canvasElement.getContext('2d');
-    window.addEventListener('load', function () {
-      codeReader = new ZXing.BrowserMultiFormatReader()
-      console.log('ZXing code reader initialized')
-      initBarcode();
+    window.addEventListener('load', () => {
+      codeReader = new ZXing.BrowserMultiFormatReader();
     })
-    // 扫码1
-    function scan () {
-      navigator.mediaDevices.enumerateDevices().then(function (devices) {
+
+    // 初始化
+    function initScan () {
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
         console.log(devices);
         let constraints;
-        devices.forEach(function (item, i) {
+        devices.forEach((item, i) => {
           if (item.label === 'Microsoft Camera Rear') {
             selectedDeviceId = item.deviceId;
           }
         })
         if (isSurface() && selectedDeviceId) {
-          constraints = { video: {deviceId: { exact: selectedDeviceId }}};
-        } else {
+          constraints = { video: { deviceId: { exact: selectedDeviceId }}}
+          navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            video.srcObject = stream;
+            barScan();
+          })
+        } else if (isSurface()) {
           constraints = { video: { facingMode: { exact: "environment" }}};
+          navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            console.log(stream);
+            stream.getTracks().forEach((track) => {
+              track.stop();
+            })
+            initScan();
+          })
+        } else {
+          barScan();
         }
-        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-          console.log(stream);
-          if (isSurface() && selectedDeviceId) {
-            video.srcObject = stream;
-            video.setAttribute('playsinline', true);
-            video.play();
-            requestAnimationFrame(tick);
-          } else if (isSurface()) {
-            scan();
-          } else {
-            video.srcObject = stream;
-            video.setAttribute('playsinline', true);
-            video.play();
-            requestAnimationFrame(tick);
-          }
-        })
       });
     }
-    function tick () {
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        // canvasElement.hidden = false;
-        canvasElement.height = video.videoHeight;
-        canvasElement.width = video.videoWidth;
-        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        // 二维码
-        var result = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: 'dontInvert',
-        });
-        if (result && result.data) {
-          qrScan(result.data);
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-    // 扫码二维码
-    function qrScan (code) {
-      video.pause();
-      cancelAnimationFrame(tick);
-      document.getElementById('result').textContent = code;
-      video.srcObject.getTracks().forEach(function (track) {
-        track.stop();
-      })
-    }
-    // 扫描条形码
-    function barCode () {
+    // 扫描
+    function barScan () {
       codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-        if (isSurface() && selectedDeviceId) {
-          if (result) {
-            console.log(result)
-            document.getElementById('video').pause();
-            document.getElementById('result').textContent = result.text
-          }
-          if (err && !(err instanceof ZXing.NotFoundException)) {
-            console.error(err)
-            document.getElementById('result').textContent = err
-          }
-        } else {
-          initBarcode(1);
+        if (result) {
+          console.log(result);
+          video.pause();
+          video.srcObject.getTracks().forEach((track) => {
+            track.stop();
+          })
+          document.getElementById('result').textContent = result.text;
+        }
+        if (err && !(err instanceof ZXing.NotFoundException)) {
+          console.error(err)
+          document.getElementById('result').textContent = err;
         }
       })
     }
-    // 初始化barcode
-    function initBarcode (type) {
-      codeReader.getVideoInputDevices().then((videoInputDevices) => {
-        console.log(videoInputDevices);
-        if (videoInputDevices.length >= 1) {
-          videoInputDevices.forEach((element) => {
-            if (element.label === 'Microsoft Camera Rear') {
-              selectedDeviceId = element.deviceId;
-            }
-          })
-        }
-        console.log(selectedDeviceId)
-        if (type === 1) {
-          barCode();
-        } else {
-          document.getElementById('startButton').addEventListener('click', () => {
-            barCode();
-          })
-
-          document.getElementById('resetButton').addEventListener('click', () => {
-            codeReader.reset()
-            document.getElementById('result').textContent = '';
-            console.log('Reset.')
-          })
-        }
-      }).catch((err) => {
-        console.error(err)
-      })
+    function reset () {
+      codeReader.reset();
+      document.getElementById('result').textContent = '';
     }
     // isSurface
     function isSurface () {
