@@ -12,4 +12,5 @@
 ### vuex vuex demo
 ### webpack-demo webpack demo
 ### wechat 微信登录授权、分享api
+### qrscan 移动端扫描二维码和条形码
 
