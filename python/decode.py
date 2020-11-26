@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# @ description:
-# @ author:
+# @ description: 过滤vue项目指定文件夹中的所有中文字符串
+# @ author: LeeO
 # @ created: 2020/11/25
 
 import os
@@ -89,7 +89,7 @@ def extract(path):
                     sub_file = extract_file(path + "/" + file)
                     if sub_file:
                         result.update(sub_file)
-            elif file != 'locale':
+            elif file != 'locale' and file != 'assets':
                 child = extract(path + "/" + file)
                 if child:
                     result.update(child)
@@ -99,12 +99,13 @@ def extract(path):
 if __name__ == '__main__':
     path = "F:/EBR_V2.0/src"
     result = extract(path)
-    res_file = open("text3.txt", "w")
+    # 字符串
+    res_file = open("E:/Demo/python/text3.txt", "w")
     for s in result:
         res_file.write(s + "\n")
 
 if __name__ == '__main__':
-    path = "C:/Users/limy/text3.txt"
+    path = "E:/Demo/python/text3.txt"
     result = set()
     with open(path, 'r') as f:
         lines = f.readlines()
@@ -114,10 +115,12 @@ if __name__ == '__main__':
             line = line.strip('\n')
             newLines1.append([line + ','])
             newLines2.append(line)
-        with open("text3.csv", "w", newline='') as csvFile:
+        # csv
+        with open("E:/Demo/python/text3.csv", "w", newline='') as csvFile:
             excelFile = csv.writer(csvFile)
             excelFile.writerow(['name'])
             excelFile.writerows(newLines1)
-        with open("text3-1.txt", "w") as file:
+        # 数组
+        with open("E:/Demo/python/text3-1.txt", "w") as file:
             file.write(json.dumps(newLines2, ensure_ascii=False))
                 
