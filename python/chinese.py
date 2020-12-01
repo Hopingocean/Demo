@@ -101,7 +101,8 @@ if __name__ == '__main__':
     result = extract(path)
     # 字符串
     res_file = open("E:/Demo/python/text3.txt", "w")
-    for s in result:
+    result1 = sorted(result, key=lambda i: len(i), reverse=True)
+    for s in result1:
         res_file.write(s + "\n")
 
 if __name__ == '__main__':
