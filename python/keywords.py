@@ -6,6 +6,7 @@ import codecs
 import json
 import re
 import csv
+import pinyin.cedict
 from datetime import datetime
 
 
@@ -225,10 +226,11 @@ def printResult(asciiDict, wdDict, wordLenMin=2, timesLimit=1,
     result = sorted(result, key=lambda x: x[1], reverse=True)
 
     if doPrint:
-        res_file = open("E:/Demo/python/text3-2.txt", "w")
+        res_file = open("E:/Demo/python/text4-1.txt", "w")
         # drawTitle('Keywords Ranking')
         for i in result[:topLimit]:  # 打印前XX位
             print('%5s %s' % (i[1], i[0]))
+            # en = pinyin.cedict.translate_word(i[0])
             res_file.write('%5s %s' % (i[1], i[0]) + "\n")
 
     return result[:topLimit]
@@ -276,23 +278,31 @@ def detectKeywords(content, timesLimit=10, wordLenMin=2, wordLenMax=5,
 if __name__ == '__main__':
     startTime = datetime.now()
 
-    filename = 'text3.txt'
+    filename = 'E:/Demo/python/text3.txt'
     content = loadFile(filename)
 
     debug = 0
     # debug = 1
     timesLimit = 5  # 最小出现次数
     wordLenMin = 2  # 最短词长度
-    wordLenMax = 5  # 最长词长度
+    wordLenMax = 2  # 最长词长度
     thresholdMin = 0.6  # 主词占因子比例，越小越容易选到非词组。(e.g.互=17,联=21,互联=16)
     thresholdMax = 0.1  # 越大越容易选到常用字。(e.g.域名的=15,域名=20,的=200)
     topLimit = 5000  # 输出结果长度
     doPrint = True  # 是否打印结果
     keywordsList = detectKeywords(content, timesLimit, wordLenMin, wordLenMax, thresholdMin, thresholdMax, topLimit, doPrint, debug)
-
+    # print(keywordsList)
     print('---\nUsed: %s' % (datetime.now() - startTime))
     # csv
-    with open("E:/Demo/python/text3.csv", "w", newline='') as csvFile:
+    keyWords = []
+    keyValues = []
+    for words in keywordsList:
+        keyValues.append(words[0])
+        chToEn = pinyin.cedict.translate_word(words[0])
+        chToPinyin = pinyin.get(words[0], format='strip')
+        if isinstance(chToEn, list):
+            keyWords.append(chToEn[0].replace(' ', ''))
+    with open("E:/Demo/python/text4.csv", "w", newline='') as csvFile:
         excelFile = csv.writer(csvFile)
-        excelFile.writerow(['词组', '出现频率'])
-        excelFile.writerows(keywordsList)
+        excelFile.writerow(keyWords)
+        excelFile.writerows([keyValues])

@@ -18,13 +18,9 @@ def translate(string):
     line = string.strip()  # 处理前进行相关的处理，包括转换成Unicode等
     slotList = subString(line)
     for slot in slotList:
-        # isContain = isContainChinese(slot)
-        # if isContain:
         if u'\u4e00' <= slot <= u'\u9fff':
             # string = delString(slot)
             out.add(slot)
-            # zh = filterChinese(slot)
-            # out.add(zh)
     return out
 
 # 获取指定字符串
@@ -35,18 +31,13 @@ def subString(string):
     slotList1 = re.findall(rule1, string)
     slotList2 = re.findall(rule2, string)
     slotList3 = re.findall(rule3, string)
-    slotList4 = []
-    if '`' in string:
-        slotList4 = string.split('`')
-    sublotList = slotList1 + slotList2 + slotList3 + slotList4
+    sublotList = slotList1 + slotList2 + slotList3
     return sublotList
 
 # 获取中文
 def filterChinese(string):
     p2 = re.compile(r'[^\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b\u4e00-\u9fa5]')  # 中文的编码范围是：[^\u4e00-\u9fa5] 双字节[^\x00-\xff]
     zh = " ".join(p2.split(string)).strip()
-    # for s in zh.split():
-    #     out.add(s)  # 经过相关处理后得到中文的文本
     return zh
 
 # 删除指定字符串
@@ -88,7 +79,7 @@ def extract_file(path):
         for line in lines:
             line = line.strip()
             head, sep, tail = line.partition('//')
-            if not line.startswith('/*') and not line.startswith('<!--') and not line.startswith('*') and not line.startswith('console'):       # 判断是否是注释行/* */
+            if not line.startswith('/*') and not line.startswith('<!--') and not line.startswith('*') and not line.startswith('console'): # 判断是否是注释行/* */
                 string = translate(head)
                 if string:
                     result.update(string)
@@ -101,28 +92,19 @@ def extract(path):
     result = set()
     files = os.listdir(path)
     for file in files:
-        if not file.startswith("."):
-            # 判断是否是文件夹，不是文件夹才打开ssgsg判断是否是文件夹，不是文件夹才打开
-            if os.path.isdir(path + "/" + file) and file == 'locale':
-                print(file)
-            if not os.path.isdir(path + "/" + file):
-                    sub_file = extract_file(path + "/" + file)
-                    if sub_file:
-                        result.update(sub_file)
-            elif file != 'locale' and file != 'assets' and file != 'libs':
-                child = extract(path + "/" + file)
-                if child:
-                    result.update(child)
+        if file == 'validate.js':
+            sub_file = extract_file(path + "/" + file)
+            if sub_file:
+                result.update(sub_file)
     return result
 
 
 if __name__ == '__main__':
-    path = "F:/EBR_V2.0/src"
+    path = "F:/EBR_V2.0/src/libs"
     result = extract(path)
     # 字符串
-    res_file = open("E:/Demo/python/text3.txt", "w")
+    res_file = open("E:/Demo/python/validate.txt", "w")
     result1 = sorted(result, key=lambda i: len(i), reverse=True)
     for s in result1:
         newStr = s.replace(u'\xa9', u'')
         res_file.write(newStr + "\n")
-                
