@@ -58,7 +58,7 @@
     "lodash": "^4.17.14",
     "mockjs": "^1.0.1-beta3",
     "node-macaddress": "^0.2.4",
-    "node-notifier": "^5.2.1",
+    "node-notifier": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "ora": "^3.0.0",
     "portfinder": "^1.0.17",
