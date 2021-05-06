@@ -41,7 +41,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "is-my-json-valid": "^2.20.0",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "macaddress": "^0.2.9",
     "mem": "^5.1.1",
     "men": "^2.2.1",
