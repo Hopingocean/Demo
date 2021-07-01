@@ -13,30 +13,77 @@
   <script src="../libs/vue.js"></script>
   <script src="../libs/vuex.js"></script>
   <script>
+    // myPlugin
+    var myPlugin = store => {
+      store.subscribe((mutation, state) => {
+        // 每次mutation之后调用,type为mutation名称;
+        // mutation的格式为{type, payload}
+        console.log(mutation, state);
+      })
+    }
     // 创建store
     var store = new Vuex.Store({
+      plugins: [myPlugin],
       state: {
         count: 0
       },
+      getters: {
+        addCount: (state) => {
+          return state.count + 1
+        },
+        dobuleCount: (state, getters) => {
+          return getters.addCount + 1
+        }
+      },
       mutations: {
-        increment: function (state) {
-          state.count++
+        increment: function (state, value) {
+          state.count += value;
         },
         decrement (state) {
           state.count--
+        }
+      },
+      actions: {
+        updateCount (context, value) {
+          context.commit('increment', value);
         }
       }
     })
     // 创建一个Counter组件
     var Counter = {
       template: `
-        <p>{{ count }}</p>
+        <div>
+          <p>{{ count }}</p>
+          <p>{{ count1 }}</p>
+          <p>{{ count2 }}</p>
+          <input type="number" v-model="count3" />
+          <button @click="add">add</button>
+        </div>
       `,
       computed: {
         count: function () {
           return this.$store.state.count
+        },
+        count1 () {
+          return this.$store.getters.addCount
+        },
+        count2 () {
+          return this.$store.getters.dobuleCount
+        },
+        count3: {
+          get() {
+            return this.$store.state.count;
+          },
+          set(value) {
+            this.$store.dispatch('updateCount', value)
+          }
         }
-      }
+      },
+      methods: {
+        add () {
+          this.$store.commit('increment');
+        }
+      },
     }
     // 创建Vue
     var app = new Vue({
