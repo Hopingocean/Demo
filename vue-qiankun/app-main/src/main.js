@@ -3,7 +3,13 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import routes from './router';
 
+import ViewUI from 'view-design';
+import 'view-design/dist/styles/iview.css';
+
+
 Vue.use(VueRouter);
+Vue.use(ViewUI);
+
 const router = new VueRouter({
   mode: 'history',
   routes
@@ -14,8 +20,8 @@ import { registerMicroApps, start } from 'qiankun';
 registerMicroApps([
   {
     name: 'app-vue',
-    entry: '//localhost:8080',
-    container: '#app',
+    entry: '//localhost:8081',
+    container: '#container',
     activeRule: '/app-vue'
   }
 ])

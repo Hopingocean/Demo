@@ -1,13 +1,28 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <AppMain></AppMain>
+    <Row>
+      <Col span="8">
+          <Menu>
+              <Submenu name="1">
+                  <template slot="title">
+                      <Icon type="ios-paper" />
+                      App
+                  </template>
+                  <MenuItem name="1-1" to="app-vue">App Vue</MenuItem>
+                  <MenuItem name="1-2">App React</MenuItem>
+                  <MenuItem name="1-3">App Angular</MenuItem>
+              </Submenu>
+          </Menu>
+      </Col>
+      <Col span="16">
+          <router-view v-show="$route.name"></router-view>
+          <div v-show="!$route.name" id="container"></div>
+      </Col>
+  </Row>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import AppMain from '@/view/AppMain.vue'
 
 export default {

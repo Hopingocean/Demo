@@ -12,13 +12,12 @@ function render(props = {}) {
   const { container } = props;
   Vue.use(VueRouter);
   router = new VueRouter({
-    base: window.__POWERED_BY_QIANKUN__ ? '/app-vue/' : '/',
+    base: window.__POWERED_BY_QIANKUN__ ? '/app-vue' : '/',
     mode: 'history',
     routes
   });
 
   instance = new Vue({
-    el: '#app',
     router,
     render: (h) => h(App)
   }).$mount(container ? container.querySelector('#app') : '#app');
