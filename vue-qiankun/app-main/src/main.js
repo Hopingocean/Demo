@@ -26,7 +26,9 @@ registerMicroApps([
   }
 ])
 // start qiankun
-start();
+start({
+  sandbox: true
+});
 
 Vue.config.productionTip = false
 

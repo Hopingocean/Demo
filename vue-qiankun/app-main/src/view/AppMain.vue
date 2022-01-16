@@ -1,5 +1,7 @@
 <template>
-    <div>主应用</div>
+    <div class="home">
+        <h1>主应用</h1>
+    </div>
 </template>
 
 <script>
@@ -10,3 +12,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.home {
+    font-size: 48px;
+}
+</style>

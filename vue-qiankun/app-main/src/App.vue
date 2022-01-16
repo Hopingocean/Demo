@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Row>
-      <Col span="8">
-          <Menu>
+    <Row type="flex">
+      <Col>
+          <Menu :open-names="['1']">
               <Submenu name="1">
                   <template slot="title">
                       <Icon type="ios-paper" />
@@ -14,7 +14,7 @@
               </Submenu>
           </Menu>
       </Col>
-      <Col span="16">
+      <Col flex="1">
           <router-view v-show="$route.name"></router-view>
           <div v-show="!$route.name" id="container"></div>
       </Col>
