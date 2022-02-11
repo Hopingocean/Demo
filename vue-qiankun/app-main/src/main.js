@@ -20,19 +20,19 @@ import { registerMicroApps, start } from 'qiankun';
 registerMicroApps([
   {
     name: 'app-vue',
-    entry: '//localhost:8082',
+    entry: '//localhost:8888',
     container: '#container',
     activeRule: '/app-vue'
   },
   {
     name: 'ebr',
-    entry: '//localhost:8081',
+    entry: '//localhost:8082',
     container: '#container',
     activeRule: '/ebr'
   },
   {
     name: 'visual',
-    entry: '//localhost:8082',
+    entry: '//localhost:8083',
     container: '#container',
     activeRule: '/visual'
   }
