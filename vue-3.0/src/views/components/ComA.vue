@@ -1,5 +1,5 @@
 <template>
-  <div class="com_a"></div>
+  <input type="text" :value="modelValue" @input="emitValue">
 </template>
 
 <script>
@@ -40,6 +40,36 @@ export default {
       default() {
         return 'default function value'
       }
+    },
+    modelValue: String,
+    modelModifiers: {
+      default: () => ({})
+    }
+  },
+  emits: {
+    // 验证submit事件
+    submit: ({email, password}) => {
+      if (email && password) {
+        return true;
+      } else {
+        console.warn('Invalid submit');
+        return false;
+      }
+    }
+  },
+  created() {
+    console.log(this.modelModifiers);
+  },
+  methods: {
+    submitForm(email, password) {
+      this.$emit('submit', {email, password});
+    },
+    emitValue(e) {
+      let value = e.target.value;
+      if (this.modelModifiers.capitalize) {
+        value = value.charAt(0).toUpperCase() + value.slice(1);
+      }
+      this.$emit('update:modelValue', value);
     }
   }
 }
