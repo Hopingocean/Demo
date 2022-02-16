@@ -1,21 +1,49 @@
 <template>
   <div id="app">
-    <AppCom v-model.capitalize="myText"></AppCom>
+    <ComProps v-model.capitalize="myText"></ComProps>
     {{myText}}
+    <ComSlot :items="items">
+      <template v-slot:header>
+        <h1>header</h1>
+      </template>
+      <template v-slot:default="slotProps">
+        <p>{{slotProps.name}}</p>
+      </template>
+      <template v-slot:footer>
+        <p>footer</p>
+      </template>
+    </ComSlot>
   </div>
 </template>
 
 <script>
-import AppCom from '@/views/components/ComA.vue'
+import ComProps from '@/views/components/ComProps.vue'
+import ComSlot from '@/views/components/ComSlot.vue'
 
 export default {
   name: 'App',
+  provide() {
+    return {
+      itemsLength: this.items.length
+    }
+  },
   components: {
-    AppCom
+    ComProps,
+    ComSlot
   },
   data () {
     return {
-      myText: ''
+      myText: '',
+      items: [
+        {
+          id: 1,
+          name: 'aaa'
+        },
+        {
+          id: 2,
+          name: 'bbb'
+        }
+      ]
     }
   }
 }
