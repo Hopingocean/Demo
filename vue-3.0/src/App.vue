@@ -13,10 +13,19 @@
         <p>footer</p>
       </template>
     </ComSlot>
+    <AsyncComp>
+      <template v-slot:header>
+        <h2>header2</h2>
+      </template>
+    </AsyncComp>
   </div>
 </template>
 
+<script setup>
+</script>
+
 <script>
+import {defineAsyncComponent} from 'vue';
 import ComProps from '@/views/components/ComProps.vue'
 import ComSlot from '@/views/components/ComSlot.vue'
 
@@ -29,7 +38,8 @@ export default {
   },
   components: {
     ComProps,
-    ComSlot
+    ComSlot,
+    AsyncComp: defineAsyncComponent(() => import('@/views/components/ComSlot.vue'))
   },
   data () {
     return {
