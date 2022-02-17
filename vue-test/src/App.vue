@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { BrowserMultiFormatReader, NotFoundException, ChecksumException, FormatException } from '@zxing/library';
 import AppWatch from './views/watch/AppWatch.vue'
 
 export default {
