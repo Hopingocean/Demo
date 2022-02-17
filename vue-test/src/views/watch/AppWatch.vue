@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { BrowserMultiFormatReader, NotFoundException, ChecksumException, FormatException } from '@zxing/library';
 export default {
   name: 'AppWatch',
   data() {

@@ -18,6 +18,7 @@
         <h2>header2</h2>
       </template>
     </AsyncComp>
+    <ComSetup></ComSetup>
   </div>
 </template>
 
@@ -28,6 +29,7 @@
 import {defineAsyncComponent} from 'vue';
 import ComProps from '@/views/components/ComProps.vue'
 import ComSlot from '@/views/components/ComSlot.vue'
+import ComSetup from '@/views/components/ComSetup.vue'
 
 export default {
   name: 'App',
@@ -39,6 +41,7 @@ export default {
   components: {
     ComProps,
     ComSlot,
+    ComSetup,
     AsyncComp: defineAsyncComponent(() => import('@/views/components/ComSlot.vue'))
   },
   data () {
