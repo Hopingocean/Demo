@@ -23,11 +23,8 @@
   </div>
 </template>
 
-<script setup>
-</script>
-
 <script>
-import {defineAsyncComponent} from 'vue';
+import {defineAsyncComponent, inject} from 'vue';
 import ComProps from '@/views/components/ComProps.vue'
 import ComSlot from '@/views/components/ComSlot.vue'
 import ComSetup from '@/views/components/ComSetup.vue'
@@ -38,6 +35,17 @@ export default {
   provide() {
     return {
       itemsLength: this.items.length
+    }
+  },
+  setup () {
+    const userLocation = inject('location');
+    const userGeolocation = inject('geolocation');
+    const updateGeolocation = inject('updateGeolocation');
+    console.log(userLocation, userGeolocation);
+    return {
+      userLocation,
+      userGeolocation,
+      updateGeolocation
     }
   },
   components: {

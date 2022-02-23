@@ -12,7 +12,7 @@
 // 组合式函数
 import useUserinfo from '@/composables/useUserinfo.js';
 import useUsername from '@/composables/useUsername.js';
-import { onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onErrorCaptured, onMounted, onRenderTracked, onRenderTriggered, onUnmounted, onUpdated, toRefs } from 'vue';
+import { onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onErrorCaptured, onMounted, onRenderTracked, onRenderTriggered, onUnmounted, onUpdated, toRefs, provide, ref, reactive, readonly } from 'vue';
 export default {
   name: 'ComSetup',
   data () {
@@ -24,6 +24,13 @@ export default {
       default: ''
     }
   },
+  // provide: {
+  //   location: 'xxx',
+  //   geolocation: {
+  //     longitude: 100,
+  //     latitude: 200
+  //   }
+  // },
   setup(props, context) {
     console.log(props);
     
@@ -88,6 +95,26 @@ export default {
       getUser
     })
 
+    // 添加响应性
+    const location = ref('north pole');
+    const geolocation = reactive({
+      longitude: 100,
+      latitude: 200
+    })
+
+    // 使用provide，如果要确保provide的数据不会被inject的组件更改，可以对property使用readonly
+    provide('location', readonly(location));
+    provide('geolocation', readonly(geolocation))
+
+    // 当需要在注入数据的组件内部更新inject数据，建议provide一个方法负责改变响应式property
+    const updateGeolocation = () => {
+      geolocation.value = {
+        longitude: 101,
+        latitude: 201
+      }
+    };
+    provide('updateGeolocation', updateGeolocation);
+
     // 结合模板使用，如果setup返回一个对象，那么该对象的property以及传递给setup的props中的参数中的property可以在模板中使用
     return {
       userinfo,
@@ -101,6 +128,13 @@ export default {
   },
   mounted () {
     this.getUser();
+  },
+  methods: {
+    // 修改响应式property
+    updateLocation () {
+      // 当使用响应式provide/inject值时，建议尽可能将对响应式property的所有修改限制在定义provide的组件内部
+      this.location = 'South pole';
+    }
   }
 }
 </script>
