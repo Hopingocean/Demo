@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <input v-focus>
     <ComProps v-model.capitalize="myText"></ComProps>
     {{myText}}
     <ComSlot :items="items">

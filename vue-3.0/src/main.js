@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { directives } from '@/directive'
 
-createApp(App).mount('#app')
+createApp({
+  App,
+  directives
+}).mount('#app')
