@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFC</title>
+    <style type="text/css">
+        .bfc-2, .bfc-3 {
+            box-sizing: border-box;
+        }
+        .bfc-2 .box1, .bfc-2 .box2 {
+            margin: 10px 0;
+        }
+        .bfc-3 {
+            border-left: 15px solid red;
+        }
+        .bfc-3 p{
+            margin-left: 10px;
+        }
+        .bfc-4 img {
+            float: left;
+        }
+        .bfc-4 p {
+            overflow: hidden;
+        }
+        .bfc-4, .bfc-5 {
+            overflow: hidden;
+        }
+        .float-left {
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- BFC特性 -->
+    <h4>1.内部box会在垂直方向顺序放置</h4>
+    <h4>2.Box垂直方向的距离由margin决定,在一个BFC中,相邻的块级盒子的垂直外边距会产生重叠</h4>
+    <div class="bfc-2">
+        <div class="box1">box1</div>
+        <div class="box2">box2</div>
+    </div>
+    <h4>3.每一个盒子的左外边缘(margin-left)会触碰到容器的左边缘(border-left)</h4>
+    <div class="bfc-3">
+        <p>bfc-3</p>
+    </div>
+    <h4>4.BFC区域不会与float box重叠</h4>
+    <div class="bfc-4">
+        <img src="../icon.png" alt="">
+        <p>我是超长内容</p>
+    </div>
+    <h4>5.计算BFC高度时,浮动元素也参与计算</h4>
+    <div class="bfc-5">
+        <div class="float-left">浮动元素</div>
+    </div>
+</body>
+</html>
