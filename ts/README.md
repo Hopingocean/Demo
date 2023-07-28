@@ -1,6 +1,7 @@
 # TypeScript学习
 
 * [1.1 TypeScript和JavaScript区别](#1.1)
+* [1.2 获取TypeScript](#1.2)
 
 <h3 id="1.1">TypeScript和JavaScript区别</h3>
 

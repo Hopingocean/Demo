@@ -30,6 +30,7 @@ enum DirectionStr {
     EAST = 'EAST',
     WEST = 'WEST'
 }
+console.log(DirectionStr);
 
 // 异构枚举，成员值是数字和字符串的混合(数字枚举相对字符串枚举多了反向映射)
 enum Enum {
@@ -62,7 +63,7 @@ value1 = Math.random;
 value1 = null;
 value1 = undefined;
 value1 = new TypeError();
-value1 = Symbol('type');
+// value1 = Symbol('type');
 // 对unknown类型的变量赋值都被认为是类型正确的，但是将unknown类型的变量赋值给其他类型的变量是错误的（any除外）；
 let v: unknown;
 let v1: unknown = v; // ok
@@ -108,4 +109,20 @@ function controlFlowAnalysisWithNever(foo: Foo) {
         const check: never = foo;
     }
 }
+
+// 交叉类型，将多个类型合并为一个类型
+interface IPerson {
+    id: string;
+    age: number;
+}
+interface IWork {
+    companyId: string;
+}
+type IStaff = IPerson & IWork;
+const staff: IStaff = {
+    id: 'E001',
+    age: 20,
+    companyId: 'efg'
+};
+console.dir(staff)
 

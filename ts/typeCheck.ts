@@ -78,6 +78,7 @@ enum CarTransimission {
     Automatic = 200,
     Manual = 300
 }
+// console.log(CarTransimission);
 interface Motorcycle {
     vType: 'motorcycle';
     make: number
