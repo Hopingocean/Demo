@@ -5,34 +5,34 @@
   <main>
     <ul>
       <li v-for="item in items" :key="item.id">
-        <slot :item="item"></slot>
+        <slot :item="item" v-bind="item"></slot>
       </li>
     </ul>
   </main>
   <footer>
-    <slot name="footer"></slot>
+    <slot name="footer" msg="test"></slot>
   </footer>
 </template>
 
 <script>
 export default {
-  name: 'ComSlot',
+  name: "ComSlot",
   props: {
     items: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  inject: ['itemsLength'],
-  data () {
-    return {}
+  inject: ["itemsLength"],
+  data() {
+    return {};
   },
-  created () {
+  created() {
     console.log(this.items);
     console.log(this.itemsLength);
   },
-  mounted () {
+  mounted() {
     console.log(this.itemsLength);
-  }
-}
+  },
+};
 </script>
