@@ -85,6 +85,8 @@ let v2: any = v; // ok
 // Tuple，元组用于定义有限数量的未命名属性的类型，每个属性都有一个关联的类型，使用元组时，必须提供每个属性的值
 let tupleType: [string, boolean];
 tupleType = ['xxx', false]; // 类型和值不匹配时，ts编译器会提示错误
+tupleType[0] = 'yyy';
+// tupleType.push(true);
 
 // void类型，当一个函数没有返回值时，通常其返回值类型是void
 function warnUser(): void {
