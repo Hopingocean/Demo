@@ -1,5 +1,9 @@
 <script setup>
+// import { inject } from "vue";
 import { store } from "./store/index.js";
+
+// const i18n = inject("i18n");
+// console.log(i18n.greetings.hello);
 </script>
 <template>
   <div id="app">
@@ -8,7 +12,7 @@ import { store } from "./store/index.js";
       v-model.capitalize="myText"
       v-model:first-name.upper="firstName"
     ></ComProps>
-    {{ myText }}
+    {{ myText + $translate("greetings.hello") }}
     <ComSlot :items="items">
       <template v-slot:header>
         <h1>header</h1>
@@ -27,7 +31,7 @@ import { store } from "./store/index.js";
     </AsyncComp>
     <ComSetup></ComSetup>
     <ComWatch></ComWatch>
-    <p>{{ store.count }}</p>
+    <p @click="store.increment()">{{ store.count }}</p>
     <ComAttrs
       class="my-attrs"
       :myText="myText"
@@ -52,11 +56,13 @@ export default {
     };
   },
   setup() {
+    const i18n = inject("i18n");
     const userLocation = inject("location");
     const userGeolocation = inject("geolocation");
     const updateGeolocation = inject("updateGeolocation");
-    console.log(userLocation, userGeolocation);
+    console.log(i18n, userLocation, userGeolocation);
     return {
+      i18n,
       userLocation,
       userGeolocation,
       updateGeolocation,
