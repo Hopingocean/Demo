@@ -1,17 +1,13 @@
-<script setup>
-// import { inject } from "vue";
-import { store } from "./store/index.js";
-
-// const i18n = inject("i18n");
-// console.log(i18n.greetings.hello);
-</script>
 <template>
   <div id="app">
     <input v-focus />
     <ComProps
+      ref="comProps"
       v-model.capitalize="myText"
       v-model:first-name.upper="firstName"
+      @sendMessage="getMessage"
     ></ComProps>
+    <p>{{ myName }}</p>
     {{ myText + $translate("greetings.hello") }}
     <ComSlot :items="items">
       <template v-slot:header>
@@ -38,15 +34,26 @@ import { store } from "./store/index.js";
       :items="items"
       @click="onClick"
     ></ComAttrs>
+    <button @click="show = !show">fade</button>
+    <ComTransition>
+      <div v-if="show">Hello</div>
+    </ComTransition>
+    <ComTransitionGroup>
+      <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+    </ComTransitionGroup>
+    <ComTeleport></ComTeleport>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent, inject } from "vue";
+// import { defineAsyncComponent, inject } from "vue";
 import ComProps from "@/views/components/ComProps.vue";
 import ComSlot from "@/views/components/ComSlot.vue";
 import ComSetup from "@/views/components/ComSetup.vue";
 import ComWatch from "@/views/components/ComWatch.vue";
+import ComTransition from "@/views/components/ComTransition.vue";
+import ComTransitionGroup from "@/views/components/ComTransitionGroup.vue";
+import ComTeleport from "@/views/components/ComTeleport.vue";
 
 export default {
   name: "App",
@@ -55,25 +62,28 @@ export default {
       itemsLength: this.items.length,
     };
   },
-  setup() {
-    const i18n = inject("i18n");
-    const userLocation = inject("location");
-    const userGeolocation = inject("geolocation");
-    const updateGeolocation = inject("updateGeolocation");
-    console.log(i18n, userLocation, userGeolocation);
-    return {
-      i18n,
-      userLocation,
-      userGeolocation,
-      updateGeolocation,
-    };
-  },
+  // setup() {
+  //   const i18n = inject("i18n");
+  //   const userLocation = inject("location");
+  //   const userGeolocation = inject("geolocation");
+  //   const updateGeolocation = inject("updateGeolocation");
+  //   console.log(i18n, userLocation, userGeolocation);
+  //   return {
+  //     i18n,
+  //     userLocation,
+  //     userGeolocation,
+  //     updateGeolocation,
+  //   };
+  // },
   components: {
     ComProps,
     ComSlot,
     ComSetup,
     ComWatch,
     ComAttrs: () => import("@/views/components/ComAttrs.vue"),
+    ComTransition,
+    ComTransitionGroup,
+    ComTeleport,
     AsyncComp: defineAsyncComponent(() =>
       import("@/views/components/ComSlot.vue")
     ),
@@ -92,12 +102,38 @@ export default {
           name: "bbb",
         },
       ],
+      show: true,
     };
   },
   methods: {
     onClick() {},
   },
 };
+</script>
+
+<script setup>
+import { ref, defineAsyncComponent, inject, onMounted } from "vue";
+import { store } from "./store/index.js";
+
+const i18n = inject("i18n");
+const userLocation = inject("location");
+const userGeolocation = inject("geolocation");
+// const updateGeolocation = inject("updateGeolocation");
+console.log(i18n, userLocation, userGeolocation);
+
+// const i18n = inject("i18n");
+// console.log(i18n.greetings.hello);
+let myName = ref("");
+const getMessage = (name) => {
+  console.log(name);
+  myName = name;
+};
+
+const comProps = ref(null);
+onMounted(() => {
+  console.log(comProps.value);
+  comProps.value.sendMessage();
+});
 </script>
 
 <style>

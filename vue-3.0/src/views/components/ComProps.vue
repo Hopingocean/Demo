@@ -1,5 +1,7 @@
 <template>
+  <div>items:{{ itemsLength }}</div>
   <input type="text" :value="modelValue" @input="emitValue" />
+  <button @click="sendMessage">sendMsg</button>
 </template>
 
 <script>
@@ -77,4 +79,16 @@ export default {
     },
   },
 };
+</script>
+
+<script setup>
+import { defineEmits, defineExpose, inject } from "vue";
+const emit = defineEmits(["send-message"]);
+const sendMessage = () => {
+  emit("send-message", "leeo");
+};
+defineExpose({
+  sendMessage,
+});
+const itemsLength = inject("itemsLength");
 </script>
