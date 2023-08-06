@@ -1,30 +1,35 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import SideMenu from '@/pages/home/menu.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="common-layout">
+    <el-container>
+      <el-header>
+        header
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <SideMenu></SideMenu>
+        </el-aside>
+        <el-container>
+          <el-main>
+            <router-view></router-view>
+          </el-main>
+          <el-footer>
+            footer
+          </el-footer>
+        </el-container>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+      </el-container>
+    </el-container>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.common-layout {
+  width: 100%;
+  height: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -32,10 +37,6 @@ header {
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
   }
 
   header .wrapper {

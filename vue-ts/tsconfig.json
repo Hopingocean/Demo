@@ -8,10 +8,11 @@
       "path": "./tsconfig.app.json"
     }
   ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "isolatedModules": true,
     "paths": {
-      "@": ["./src"]
+      "@/*": ["./src/*"]
     }
   }
 }
