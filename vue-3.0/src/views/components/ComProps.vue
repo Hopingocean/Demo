@@ -8,8 +8,8 @@
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
 interface Book {
-  title: string,
-  year?: number
+  title: string;
+  year?: number;
 }
 export default defineComponent({
   name: "ComA",
@@ -18,7 +18,7 @@ export default defineComponent({
       type: Object as PropType<Book>,
       // 如果你的 TypeScript 版本低于 4.7，确保使用箭头函数
       default: () => ({
-        title: 'Arrow Function Expression'
+        title: "Arrow Function Expression"
       }),
       validator: (book: Book) => !!book.title
     },
@@ -28,12 +28,12 @@ export default defineComponent({
     // 必填字符串
     propC: {
       type: String,
-      required: true,
+      required: true
     },
     // 默认值数字
     propD: {
       type: Number,
-      default: 100,
+      default: 100
     },
     // 默认值对象
     propE: {
@@ -41,7 +41,7 @@ export default defineComponent({
       // 对象或数组的默认值必须从一个工厂函数返回
       default() {
         return { message: "hello" };
-      },
+      }
     },
     // 自定义验证函数
     // propF: {
@@ -55,21 +55,21 @@ export default defineComponent({
       // 与对象或数组不通，这不是一个工厂函数，这是一个用作默认值的函数
       default() {
         return "default function value";
-      },
+      }
     },
     modelValue: String,
     modelModifiers: {
-      default: () => ({}),
+      default: () => ({})
     },
     firstNameValue: String,
     firstNameModifiers: {
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   emits: {
     addBook(payload: { bookName: string }) {
       // 执行运行时校验
-      return payload.bookName.length > 0
+      return payload.bookName.length > 0;
     },
     // 验证submit事件
     submit: ({ email, password }) => {
@@ -79,7 +79,7 @@ export default defineComponent({
         console.warn("Invalid submit");
         return false;
       }
-    },
+    }
   },
   created() {
     console.log(this.modelModifiers);
@@ -94,8 +94,8 @@ export default defineComponent({
         value = value.charAt(0).toUpperCase() + value.slice(1);
       }
       this.$emit("update:modelValue", value);
-    },
-  },
+    }
+  }
 });
 </script>
 
@@ -106,7 +106,7 @@ const sendMessage = () => {
   emit("send-message", "leeo");
 };
 defineExpose({
-  sendMessage,
+  sendMessage
 });
 const itemsLength = inject("itemsLength");
 </script>
