@@ -1,15 +1,19 @@
 <script setup lang="ts">
 // import request from "@/utils/request";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { getHospitalList } from "@/api/";
 import type { HosResponseData, HosContent } from "@/api/type";
+import { useHomeStore } from "@/store/modules/home";
 let pageNum = ref<number>(1);
 let pageSize = ref<number>(10);
 let hosList = ref<HosContent>([]);
+const homeStore = useHomeStore();
+const hosStateList = homeStore.hosList;
 onMounted(() => {
   // request.get("/hosp/hospital/1/10").then((res) => {
   //   console.log(res);
   // });
+  homeStore.getHosStateList();
   hospitalList({ page: pageNum.value, limit: pageSize.value });
 });
 const hospitalList = async (obj: { page: number; limit: number }) => {
