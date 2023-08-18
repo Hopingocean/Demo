@@ -1,3 +1,9 @@
-import {createPinia} from 'pinia';
+import { useHomeStore } from "@/store/modules/home";
+import { useTestStore } from "./modules/test";
 
-export default createPinia();
+export const useStore = () => {
+  return {
+    homeStore: useHomeStore(),
+    testStore: useTestStore(),
+  };
+};

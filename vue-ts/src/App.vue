@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import SideMenu from '@/pages/home/menu.vue';
+import SideMenu from "@/pages/home/menu.vue";
 </script>
 
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
-        header
-      </el-header>
+      <el-header> header </el-header>
       <el-container>
         <el-aside width="200px">
           <SideMenu></SideMenu>
@@ -16,11 +14,8 @@ import SideMenu from '@/pages/home/menu.vue';
           <el-main>
             <router-view></router-view>
           </el-main>
-          <el-footer>
-            footer
-          </el-footer>
+          <el-footer> footer </el-footer>
         </el-container>
-
       </el-container>
     </el-container>
   </div>
